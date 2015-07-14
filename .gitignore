@@ -1,2 +1,6 @@
 /thesis/thesis.*
 !/thesis/thesis.tex
+
+/thesis/images/**/*.pdf
+
+__pycache__/

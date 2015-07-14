@@ -1,0 +1,138 @@
+\documentclass[10pt, twoside, final]{book}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\usepackage[letterpaper, bindingoffset=0.125 in, margin=1 in, headheight=12.2 pt]{geometry}
+
+\usepackage[color, notref]{showkeys}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{booktabs}
+\usepackage{braket}
+\usepackage{commath}
+\usepackage{indentfirst}
+\usepackage{mathtools}
+\usepackage[version=3]{mhchem}
+\usepackage{textcomp}
+\usepackage[nottoc]{tocbibind}
+
+\usepackage[backend=biber, style=phys, biblabel=brackets, defernumbers=true]{biblatex}
+% We use shorthands for the bib entries, and they should be sorted in
+% alphabetical order, not in the order they appear in the text.
+\DeclareSortingScheme{customsort}{
+  \sort{\field{shorthand}}
+}
+\addbibresource{references.bib}
+
+% Use the spacing from parskip, but keep paragraphs indented.
+\newlength{\oldparindent}
+\setlength{\oldparindent}{\parindent}
+\usepackage{parskip}
+\setlength{\parindent}{\oldparindent}
+
+\usepackage[format=hang, font=small, labelfont=bf]{caption}
+\usepackage{subcaption}
+\DeclareCaptionLabelFormat{boldparen}{\textbf{(#2)}}
+\captionsetup{subrefformat=boldparen}
+
+\usepackage[bottom, hang, perpage, symbol*]{footmisc}
+\setlength{\footnotemargin}{0pt}
+\DefineFNsymbols*{footsymbols}[math]{\ddagger\S\P\|{\ddagger\ddagger}{\S\S}{\P\P}{\|\|}}
+\setfnsymbol{footsymbols}
+
+\usepackage{graphicx}
+\graphicspath{
+	{images/plots/}
+	{images/schematics/}
+}
+% Show images even in draft mode.
+\setkeys{Gin}{draft=false}
+
+\usepackage{emptypage}
+\usepackage{fancyhdr}
+
+\usepackage{siunitx}
+\sisetup{
+	retain-unity-mantissa=false,
+}
+
+\usepackage[intoc]{nomencl}
+\makenomenclature
+
+\usepackage{varioref}
+\usepackage[final, hidelinks]{hyperref}
+\usepackage{cleveref}
+
+
+\begin{document}
+
+\frontmatter
+
+\pagenumbering{roman}
+\pagestyle{plain}
+
+\begin{titlepage}
+\begin{center}
+
+\mbox{}\vfill
+\vfill
+\vfill
+
+{ \LARGE \bfseries
+	Variations on PIGS: \\[1 mm]
+	Non-standard approaches for \\[1 mm]
+	imaginary-time path integrals
+} \\[5 mm]
+
+by \\[5 mm]
+
+{ \Large Dmitri Iouchtchenko }
+
+\vfill
+\vfill
+\vfill
+
+A thesis presented to the University of Waterloo in fulfillment of \\
+the thesis requirement for the degree of Master of Science in Chemistry.
+
+\vfill
+
+Waterloo, Ontario, Canada
+
+\vfill
+
+\copyright 2015 Dmitri Iouchtchenko
+
+\vfill
+
+\end{center}
+\end{titlepage}
+
+\input{01_declaration}
+
+\tableofcontents
+
+\renewcommand{\nomname}{List of abbreviations}
+\def\nomlabel#1{\hspace{5 mm}\textbf{#1}\hfil}
+\printnomenclature[1 in]
+
+\renewcommand{\listfigurename}{List of figures}
+\listoffigures
+
+\renewcommand{\listtablename}{List of tables}
+\listoftables
+
+\mainmatter
+
+\pagestyle{fancy}
+
+\appendix
+
+\backmatter
+
+\printbibliography[title={References}, heading=bibnumbered, sorting=customsort]
+
+\end{document}
