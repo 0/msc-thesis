@@ -1,0 +1,163 @@
+\chapter{Semiclassical IVR with PIGS}
+\chaptermark{SC-IVR}
+
+\label{chap:semiclassical}
+
+Real-time correlation functions are of particular interest in chemistry, because they relate to experimental observables.
+For example, the spectrum (\textit{i.e.} the Fourier transform) of the dipole-dipole correlation function of a molecule is proportional to the electromagnetic spectrum of that molecule~\cite[12,56]{zwanzig2001nonequilibrium},\cite[473]{mcquarrie1976statistical}.
+The ability to computationally generate spectra for molecules in various chemical environments (such as clusters) could help with the identification of existing compounds and the creation of novel ones.
+
+The time evolution of a quantum mechanical system is well-known and is described in the Schrödinger picture by the time-dependent Schrödinger equation~\cite[111]{dirac1981principles}
+\begin{align}
+	\dpd{}{t} \ket{\psi(t)} = -\frac{i}{\hbar} \hat{H} \ket{\psi(t)}.
+\end{align}
+Starting from an initial state $\ket{\psi}$, this has the formal solution
+\begin{align}
+	\ket{\psi(t)}
+	&= e^{-\frac{i \hat{H} t}{\hbar}} \ket{\psi}.
+\end{align}
+We will refer to the operator
+\begin{align}
+	\hat{U}(t)
+	&= e^{-\frac{i \hat{H} t}{\hbar}}
+\end{align}
+as the \emph{real-time propagator}.
+We find it convenient to work in the Heisenberg picture, where we propagate the operators through time, rather than the wavefunctions.
+Since we wish to preserve expectation values, for any operator $\hat{O}$, it must be that
+\begin{align}
+	\braket{\psi(t) | \hat{O} | \psi(t)}
+	&= \braket{\psi | \hat{U}\adj(t) \hat{O} \hat{U}(t) | \psi}
+	= \braket{\psi | \hat{O}(t) | \psi},
+\end{align}
+which gives us the usual definition for the time dependence of an operator,~\cite[315]{messiah1999quantum}
+\begin{align}
+	\hat{O}(t)
+	&= \hat{U}\adj(t) \hat{O} \hat{U}(t)
+	= e^{\frac{i \hat{H} t}{\hbar}} \hat{O} e^{-\frac{i \hat{H} t}{\hbar}}.
+\end{align}
+
+The correlation functions in which we are interested have the general form
+\begin{align}
+	C_{\hat{A} \hat{B}}(t)
+	&= \mean{\hat{A}(t) \hat{B}}
+	= \frac{\Tr{\hat{\rho} \hat{A}(t) \hat{B}}}{\Tr{\hat{\rho}}},
+\end{align}
+for a density operator $\hat{\rho}$ and some operators $\hat{A}$ and $\hat{B}$.
+In the case that the state is a normalized ground state $\ket{0}$ with energy $E_0$, we may write this as
+\begin{align}
+	C_{\hat{A} \hat{B}}(t)
+	&= \braket{0 | \hat{A}(t) \hat{B} | 0}
+	= \braket{0 | e^{\frac{i \hat{H} t}{\hbar}} \hat{A} e^{-\frac{i \hat{H} t}{\hbar}} \hat{B} | 0}
+	= e^{\frac{i E_0 t}{\hbar}} \braket{0 | \hat{A} \hat{U}(t) \hat{B} | 0}.
+\end{align}
+At $t = 0$, this is simply the ground state expectation value of $\hat{A} \hat{B}$.
+However, at later times, we must take into account the real-time propagator $\hat{U}(t)$; to do this exactly is as difficult as diagonalizing $\hat{H}$, which is essentially impossible for interesting problems.
+
+Consider a particle of mass $m$ in a potential $\hat{V}$.\footnote{
+	In this \namecref{chap:semiclassical}, we look at only the one-dimensional problem, but all the discussion is applicable to any number of degrees of freedom with some modifications.
+	Among other things, the scaling factor in the coherent state resolution of the identity is changed to $(2 \pi \hbar)^{-F}$ for $F$ degrees of freedom, $\gamma$ is turned into a matrix, and the HK prefactor is generalized to be in the form of the determinant of a matrix.
+}
+One approximation to the real-time propagator is given by the \nomencl{HK}{Herman--Kluk} propagator~\cite{miller2002alternate}
+\begin{align}
+	\hat{U}\hk(t)
+	&= \frac{1}{2 \pi \hbar} \iint\! \dif p \dif q \,
+			R\coh{p}{q}_t e^{\frac{i}{\hbar} S\coh{p}{q}_t}
+			\ketbra{p\coh{p}{q}_t \, q\coh{p}{q}_t}{p \, q},
+\end{align}
+where $p\coh{p}{q}_t$ and $q\coh{p}{q}_t$ are phase space variables for classical trajectories, $p$ and $q$ are the initial conditions for those trajectories, $\ket{p \, q}$ is a coherent state\footnote{
+	An introduction to coherent states may be found in ref.~\cite[242-245]{schulman1996techniques} and a thorough summary of their properties is available in ref.~\cite[99-106]{gardiner2004quantum}.
+} of reciprocal width $\gamma$,
+\begin{align}
+	R\coh{p}{q}_t
+	&= \sqrt{\frac{1}{2} \left(
+			\dpd{p\coh{p}{q}_t}{p}
+			+ \dpd{q\coh{p}{q}_t}{q}
+			+ \frac{i}{\hbar \gamma} \dpd{p\coh{p}{q}_t}{q}
+			- i \hbar \gamma \dpd{q\coh{p}{q}_t}{p}
+		\right)}
+\end{align}
+is the HK prefactor,
+\begin{align}
+	S\coh{p}{q}_t
+	&= \int_0^t\! \dif \tau \, (p\coh{p}{q}_\tau \dot{q}\coh{p}{q}_\tau - H\coh{p}{q})
+	= \frac{1}{m} \int_0^t\! \dif \tau \, (p\coh{p}{q}_\tau)^2 - t H\coh{p}{q}
+\end{align}
+is the classical action, and
+\begin{align}
+	H\coh{p}{q}
+	&= \frac{p^2}{2 m} + V(q)
+\end{align}
+is the classical Hamiltonian (total energy) for the given initial conditions.
+This approximation is a \emph{semiclassical} one, because it relies on the combination of classical trajectories to produce time evolution that takes into account quantum effects, such as interference~\cite{gelabert2000log,thoss2001generalized}.
+Unlike other semiclassical methods, this one does not suffer from the root search problem, because it is an initial value method; it is part of a family of methods known as \nomencl{SC-IVR}{Semiclassical Initial Value Representation}~\cite{gelabert2000log}.
+At $t = 0$, it is exact:
+\begin{align}
+	\hat{U}\hk(t = 0)
+	&= \frac{1}{2 \pi \hbar} \iint\! \dif p \dif q \, \ketbra{p \, q}{p \, q}
+	= \hat{1}
+	= \hat{U}(t = 0).
+\end{align}
+At later times, we need to obtain the aforementioned quantities from classical trajectories.
+For all but the most trivial of problems, this will need to be done by numerical integration of the equations of motion with a time step $\dt\alt$.
+
+For simplicity, we will consider $\hat{A} = \hat{B} = \hat{1}$, in which case the correlation function is trivially unity:
+\begin{align}
+	C_{\hat{1} \hat{1}}(t)
+	&= e^{\frac{i E_0 t}{\hbar}} \braket{0 | \hat{U}(t) | 0}
+	= 1.
+\end{align}
+This may appear to be useless, but it contains a quantity known as the \emph{survival amplitude}~\cite{issack2007semiclassical}
+\begin{align}
+	S_{\psi}(t)
+	&= \braket{\psi | \hat{U}(t) | \psi}
+	= \braket{\psi | \psi(t)},
+\end{align}
+which is the overlap of a wavefunction with itself at a later time.
+The survival amplitude retains nearly all the difficulty associated with correlation functions, since it still contains the real-time propagator.
+
+In order to verify our methods, we wish to look at the ground state survival amplitude
+\begin{align}
+	S_0(t)
+	&= \braket{0 | \hat{U}(t) | 0}
+	= e^{-\frac{i E_0 t}{\hbar}}
+	= \cos{(\omega_0 t)} - i \sin{(\omega_0 t)}
+\end{align}
+for model systems, where $\omega_0 = E_0 / \hbar$ may also be determined by other means.
+Our method of choice for finding the ground state is PIGS in the position representation, so we have some access to $\braket{q | 0}$, but not to $\braket{p \, q | 0}$.
+However, the HK propagator is explicitly in the coherent state representation.
+We may try to get around the difference in representations by inserting a resolution of the identity in the position representation, as in
+\begin{subequations}
+\begin{align}
+	\braket{p \, q | 0}
+	&= \int\! \dif q' \, \braket{p \, q | q'} \braket{q' | 0} \\
+	&= \int\! \dif q' \, \expb{-\frac{\gamma}{2} (q' - q)^2 - \frac{i}{\hbar} p (q' - q)} \braket{q' | 0}.
+\end{align}
+\end{subequations}
+When we try to use the HK propagator to obtain the ground state survival amplitude, we get
+\begin{subequations}
+\begin{align}
+	S_0\hk(t)
+	&= \braket{0 | \hat{U}\hk(t) | 0} \\
+	&= \frac{1}{2 \pi \hbar} \iint\! \dif p \dif q \,
+			R\coh{p}{q}_t e^{\frac{i}{\hbar} S\coh{p}{q}_t}
+			\braket{0 | p\coh{p}{q}_t \, q\coh{p}{q}_t} \braket{p \, q | 0} \\
+	&= \frac{1}{2 \pi \hbar} \iiiint\! \dif p \dif q\LLup \dif q \dif q\RRup \,
+			R\coh{p}{q}_t e^{\frac{i}{\hbar} S\coh{p}{q}_t}
+			\braket{0 | q\LLup} \braket{q\LLup | p\coh{p}{q}_t \, q\coh{p}{q}_t}
+			\braket{p \, q | q\RRup} \braket{q\RRup | 0} \\
+	&= \frac{1}{2 \pi \hbar} \iiiint\! \dif p \dif q\LLup \dif q \dif q\RRup \,
+			R\coh{p}{q}_t \braket{0 | q\LLup} \braket{q\RRup | 0}
+			\expb{-\frac{\gamma}{2} \left( (q\LLup - q\coh{p}{q}_t)^2 + (q\RRup - q)^2 \right)} \notag \\
+	&\qquad\qquad\qquad\times
+			\expb{\frac{i}{\hbar} \left( S\coh{p}{q}_t + p\coh{p}{q}_t (q\LLup - q\coh{p}{q}_t) - p (q\RRup - q) \right)}.
+				\label{eq:survival-hk}
+\end{align}
+\end{subequations}
+Naturally, one cannot hope to perform this integration analytically.
+Should we try to use another method, we are faced with the fact that all the integrals are from $-\infty$ to $\infty$.
+For the position coordinates, we at least have some hope of narrowing this range down thanks to the exponential decay of the ground state wavefunctions and the Gaussian from the coherent states.
+For the momentum coordinate, however, there is no such possibility; instead, we will be forced to explore other ideas.
+
+
+\input{13_1_numerical}
+\input{13_2_stochastic}

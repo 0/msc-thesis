@@ -1,4 +1,5 @@
 font.family: serif
 font.serif: cm
 
+text.latex.preamble: \usepackage{amsopn},\usepackage[retain-unity-mantissa=false]{siunitx},\DeclareMathOperator{\Tr}{Tr},\renewcommand{\rho}{\varrho}
 text.usetex: True

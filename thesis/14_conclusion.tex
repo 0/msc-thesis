@@ -1,0 +1,40 @@
+\chapter{Conclusion}
+
+\section{Summary}
+
+We have shown that it is possible to obtain the second Rényi entropy $S_2$ for use as a measure of particle entanglement from PIMD simulations using LePIGS.
+First, we demonstrated that it is futile to attempt this with the replica trick using simulations in the $Z$-sector.
+Then we added to MMTK the capability to change sectors and successfully used the replica trick along with a modified sampling distribution to efficiently sample the entropy.
+So far, we have only done this for a simple model system, but the implementation should be directly applicable to more interesting systems, such as molecular clusters.
+
+We have also combined the Herman--Kluk SC-IVR propagator with LePIGS simulations to obtain ground state survival amplitudes.
+This worked well for the harmonic oscillator, using both direct numerical integration and the stochastic LePIGS approach.
+As with the entanglement entropy, we showed that improved results are possible if one is willing to move away from the $Z$-sector.
+Unfortunately, we were not able to obtain acceptable results for the double well system.
+
+
+\section{Future work}
+
+The natural next step for both methods is the application to physical systems.
+Such systems include molecular dimers and trimers, as well as entire molecular clusters.
+For example, we would like to compare the Lindemann criterion for determining whether a cluster is ``solid-like'' or ``liquid-like''~\cite{schmidt2014inclusion} to the Rényi entropy to investigate any connections between the structure of and entanglement within clusters.
+Since the clusters in question are composed of bosons, we would have to add updates to our simulations in order to preserve permutation symmetry~\cite{herdman2014path}, but the major part of the implementation for this is already in place.
+
+
+\subsection{Entanglement entropy}
+
+In addition to particle entanglement, it is also possible to partition space rather than particles and investigate \emph{spatial entanglement}~\cite{herdman2014path}.
+As the necessary connectivity updates for spatial entanglement are coupled to the spatial moves, they are non-trivial to implement in a molecular dynamics framework, which does not reject any updates.
+It may be necessary to reset the momenta after a rejected update, as described in ref.~\cite[296]{tuckerman2010statistical}.
+
+The present work is restricted to ground state systems, but it is also interesting (perhaps more interesting) to look at finite-temperature systems.
+One quantity used a measure of entanglement in thermal systems is the \emph{mutual information}, and it may be obtained from the Rényi entropy~\cite{singh2011finite}.
+Thus, there is hope that we will be able to use the replica trick in MMTK to estimate mutual information for finite-temperature systems.
+
+
+\subsection{Real-time correlation functions}
+
+Although the method for ground state survival amplitudes appears to fail for the strongly anharmonic double well system, we would like to see how effective it is for mildly anharmonic ones, such as those with quartic or Lennard-Jones interactions.
+
+Finally, we have only considered survival amplitudes in the present work, but it should be straightforward to incorporate operators that are diagonal in the position representation in order to calculate correlation functions.
+It is these correlation functions which may be used to find various spectra associated with molecular systems.

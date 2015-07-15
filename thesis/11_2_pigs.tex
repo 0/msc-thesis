@@ -1,0 +1,152 @@
+\section{Path integral ground state}
+
+The present work is concerned with two fundamental aspects of quantum mechanics: entanglement and time evolution.
+For the former, we look at the Rényi entropy as a measure of entanglement in quantum systems in \cref{chap:renyi}.
+Specifically, we implement a method for obtaining particle entanglement in molecular systems.
+For the latter, we investigate a novel approach to semiclassical IVR for real-time correlation functions in \cref{chap:semiclassical}.
+The novelty involves using stochastic sampling of ground state wavefunctions in order to find ground-state correlation functions.
+
+Quantum many-body problems are in general impossible to approach in a direct fashion~\cite[391-392]{tuckerman2010statistical}.
+This is due to the well-known ``curse of dimensionality,'' which implies that the amount of memory and computational effort needed to perform a calculation scale exponentially with the number of degrees of freedom.
+For a cluster of only 16 point particles in 3 dimensions (48 degrees of freedom), a grid of just 2 points in each spatial direction (which is so small as to be utterly useless) would require on the order of terabytes to represent a single state vector.
+There are various tricks involving more sophisticated representations, which allow either the reduction of necessary degrees of freedom (by some clever choice of coordinates) or of the number of points used to represent each degree of freedom (by some clever choice of basis set), but these only offer a limited improvement to the problem.
+One of more effective ways to get around the curse is to use statistical methods, such as those based on the path integral formulation of quantum mechanics.
+
+The \nomencl{PIGS}{Path Integral Ground State} method is a variational method, involving the propagation of a trial function $\ket{\psiT}$ by the Boltzmann operator $e^{-\beta \hat{H}}$ to project out the ground state of a Hamiltonian $\hat{H}$ in the $\beta \to \infty$ limit~\cite{sarsa2000pigs}.
+In the present work, we use only Hamiltonians for itinerant particles in Cartesian coordinates:
+\begin{align}
+	\hat{H}
+	&= \left[ \sum_{n=0}^{N-1} \frac{\abs{\hat{\vec{p}}_n}^2}{2 m_n} \right]
+		+ V(\hat{\vec{q}}).
+\end{align}
+
+\begin{DefExercise}{PIGS limit}{ex:pigs-limit}
+	Consider a Hamiltonian $\hat{H}$ with a non-degenerate ground state $\ket{0}$: $\hat{H} \ket{0} = E_0 \ket{0}$.
+	Show that when $\braket{\psiT | 0} \ne 0$,
+	\begin{align}
+		\ket{0}
+		&\propto \lim_{\beta \to \infty} e^{-\beta \hat{H}} \ket{\psiT}.
+	\end{align}
+\end{DefExercise}
+
+Our convention will be to propagate the trial function by $\beta/2$, giving the following (unnormalized) approximation to the ground state:
+\begin{align}
+	\ket{0}_\beta
+	&= e^{-\frac{\beta}{2} \hat{H}} \ket{\psiT}
+	\approx \ket{0}.
+\end{align}
+The outer product of this with itself gives us an approximate ground state density operator
+\begin{align}
+	\hat{\rho}_\beta
+	&= \ketbrabetaself{0},
+\end{align}
+which approaches (up to normalization) the true ground state density operator $\hat{\rho}$ as $\beta \to \infty$.
+From this, we get the approximate ground state pseudo partition function
+\begin{align}
+	Z_\beta
+	&= \Tr{\hat{\rho}_\beta}
+	= \braket{\psiT | e^{-\beta \hat{H}} | \psiT}.
+\end{align}
+Although the trace of a normalized density operator is trivially unity, $Z_\beta$ is an arbitrary constant and we must be careful to explicitly normalize any expectation values:
+\begin{align}
+	\mean{\hat{A}}_{\hat{\rho}_\beta}
+	&= \frac{\Tr{\hat{\rho}_\beta \hat{A}}}{\Tr{\hat{\rho}_\beta}}.
+\end{align}
+
+\begin{DefExercise}{PIGS classical isomorphism}{ex:pigs-isomorphism}
+	Show that $Z_\beta$ can be approximated arbitrarily well by the partition function of a classical system of open-chain polymers.
+	Also show that this classical system can be used to find expectation values of quantum properties.
+
+	\textit{Hint:} Chapter 12 of ref.~\cite{tuckerman2010statistical} provides a detailed derivation for finite-temperature systems and the resulting cyclic polymers.
+\end{DefExercise}
+
+Thanks to the isomorphism between quantum and classical statistical mechanics (originally introduced in ref.~\cite{chandler1981exploiting}), it is possible to side-step the dreaded ``curse of dimensionality'' and run purely classical simulations for quantum systems.
+The classical simulations consist of many copies of the quantum system coupled by harmonic springs, as depicted in \cref{fig:beads}.
+
+\begin{figure}
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.4\textwidth]{11/pimd_beads}
+		\caption{
+			Closed (cyclic) paths for a finite temperature PIMD simulation using the PILE.
+		}
+		\vspace{4 mm}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.8\textwidth]{11/pigs_beads}
+		\caption{
+			Open paths for a PIGS simulation using LePIGS.
+			The $\ket{\psiT}$ signify the action of the trial function on the end beads.
+		}
+	\end{subfigure}
+	\caption[
+		Examples of paths used in path integral simulations
+	]{
+		Examples of paths used in path integral simulations with the PILE and LePIGS integrators.
+		In both cases, there are two particles $A$ and $B$ made up of seven beads each.
+		The beads interact via the ``kinetic'' springs (shown as blue wavy lines) and the scaled quantum potential (shown as red dashed lines).
+		The segment labelled $\tau$ corresponds to propagation in imaginary time by $\tau$.
+	}
+	\label{fig:beads}
+\end{figure}
+
+The family of methods that make use of this isomorphism is known as \nomencl{PIMD}{Path Integral Molecular Dynamics}~\cite[471,479]{tuckerman2010statistical}.\footnote{
+	As opposed to \nomencl{PIMC}{Path Integral Monte Carlo} methods, which use rejection sampling to sample from the canonical distribution.
+}
+In order to use these methods to sample from the canonical distribution, one needs to have thermostatted equations of motion describing the evolution of the classical system.
+While this is in principle a solved problem (there are several well-known thermostat algorithms for simulating the canonical ensemble, such as Andersen and Nose--Hoover chains), many approaches suffer from issues including not sampling the correct ensemble and inefficient sampling~\cite{bussi2007accurate,ceriotti2010efficient}.
+In order to avoid these issues, the \nomencl{PILE}{Path Integral Langevin Equation} method, makes use of a transformation to normal modes and a Langevin dynamics thermostat~\cite{ceriotti2010efficient}.
+
+Since the PILE is applicable only to finite-temperature quantum systems (which feature closed paths), it is necessary to modify it for the open paths of PIGS.
+This was done in ref.~\cite{constable2013langevin}, which introduced the \nomencl{LePIGS}{Langevin equation Path Integral Ground State} method. 
+This method is a variant of the PILE and offers a way to efficiently simulate classical systems of polymers corresponding to an approximate PIGS ground state.
+Both the PILE and LePIGS are implemented in the \nomencl{MMTK}{Molecular Modelling Toolkit}~\cite{hinsen2000molecular}.\footnote{
+	\url{http://dirac.cnrs-orleans.fr/MMTK/}
+}
+Since MMTK is the tool of choice in the present work, in an effort to be consistent with it (and in contrast with ref.~\cite{ceriotti2010efficient}), we use the conventions that the reciprocal temperature of the simulation is $\beta$ and the fictitious masses are $\fict{m}_n = m_n / \links$.
+
+\begin{DefExercise}{PIGS normal mode transformation}{ex:pigs-normal-mode}
+	Transform the PIGS ``free particle'' (\ie{} $\hat{V} = 0$) classical polymers of \cref{eq:classical-equations} to the normal mode representation of independent oscillators.
+\end{DefExercise}
+
+\begin{DefExercise}{LePIGS algorithm}{ex:lepigs-algorithm}
+	Using the Langevin dynamics equations of motion, derive the LePIGS algorithm.
+\end{DefExercise}
+
+Using LePIGS, we are able to stochastically evaluate integrals of the form
+\begin{align}
+	\mean{A}
+	&= \frac{
+			\int\! \dif \vec{q} \,
+				\psiT(\vec{q}\bead{0})
+				\left[ \prod_{j=0}^{P-2} \expb{
+					-\frac{m}{2 \hbar^2 \tau} \abs{\vec{q}\bead{j} - \vec{q}\bead{j+1}}^2
+					- \frac{\tau}{2} \left( V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right)
+				} \right]
+				\psiT(\vec{q}\bead{P-1})
+				A(\vec{q})
+		}{
+			\int\! \dif \vec{q} \,
+				\psiT(\vec{q}\bead{0})
+				\left[ \prod_{j=0}^{P-2} \expb{
+					-\frac{m}{2 \hbar^2 \tau} \abs{\vec{q}\bead{j} - \vec{q}\bead{j+1}}^2
+					- \frac{\tau}{2} \left( V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right)
+				} \right]
+				\psiT(\vec{q}\bead{P-1})
+		}
+			\label{eq:lepigs-integral-function-full}
+\end{align}
+for any function $A(\vec{q})$.
+For ground state expectation values of operators that are diagonal in the position representation, this function depends only on the position of the middle beads.
+We may write \cref{eq:lepigs-integral-function-full} in a more compact form as
+\begin{align}
+	\mean{A}
+	&= \frac{
+			\int\! \dif \vec{q} \, \pi(\vec{q}) A(\vec{q})
+		}{
+			\int\! \dif \vec{q} \, \pi(\vec{q})
+		},
+			\label{eq:lepigs-integral-function}
+\end{align}
+where $\pi(\vec{q})$ is the distribution and $A(\vec{q})$ is the estimator.

@@ -5,6 +5,11 @@
 
 \usepackage[letterpaper, bindingoffset=0.125 in, margin=1 in, headheight=12.2 pt]{geometry}
 
+\usepackage[table]{xcolor}
+\definecolor{_row}{gray}{0.9}
+\definecolor{_red}{rgb}{0.8,0.2,0.0}
+\newcommand{\red}[1]{\textcolor{_red}{#1}}
+
 \usepackage[color, notref]{showkeys}
 
 \usepackage{amsmath}
@@ -12,11 +17,14 @@
 \usepackage{bm}
 \usepackage{booktabs}
 \usepackage{braket}
+\usepackage{chngcntr}
 \usepackage{commath}
 \usepackage{indentfirst}
 \usepackage{mathtools}
+\usepackage{mdframed}
 \usepackage[version=3]{mhchem}
 \usepackage{textcomp}
+\usepackage{titlesec}
 \usepackage[nottoc]{tocbibind}
 
 \usepackage[backend=biber, style=phys, biblabel=brackets, defernumbers=true]{biblatex}
@@ -50,6 +58,10 @@
 }
 % Show images even in draft mode.
 \setkeys{Gin}{draft=false}
+\newlength{\figspacing}
+
+\usepackage{enumitem}
+\setlist{nosep}
 
 \usepackage{emptypage}
 \usepackage{fancyhdr}
@@ -59,12 +71,137 @@
 	retain-unity-mantissa=false,
 }
 
+\usepackage{exercise}
+\counterwithin{Exercise}{chapter}
+\renewcommand{\AnswerHeader}{\section*{\ExerciseName\ \ExerciseHeaderNB}}
+
+\newcommand{\AnswerLabel}{}
+
+\newenvironment{DefExercise}[2]{
+\vspace{2 mm}
+\begin{mdframed}[nobreak=true]
+\begin{Exercise}[title=#1, label=#2]
+	\renewcommand{\AnswerLabel}{#2-Answer}
+	\setlength{\parindent}{0 pt}
+}{
+
+	\textit{Solution on \cpageref{\AnswerLabel}.}\smallskip
+\end{Exercise}
+\end{mdframed}
+}
+
+\newenvironment{DefAnswer}[1]{
+\begin{Answer}[ref=#1]
+}{
+\end{Answer}
+}
+
 \usepackage[intoc]{nomencl}
 \makenomenclature
 
 \usepackage{varioref}
 \usepackage[final, hidelinks]{hyperref}
 \usepackage{cleveref}
+
+
+\DeclareMathOperator{\sinc}{sinc}
+\DeclareMathOperator{\Tr}{Tr}
+
+\let\origrho\rho
+\renewcommand{\rho}{\varrho}
+
+\let\origphi\phi
+\renewcommand{\phi}{\varphi}
+
+\renewcommand{\vec}[1]{\bm{\mathbf{#1}}}
+\newcommand{\mat}[1]{\underline{\vec{#1}}}
+
+\newcommand{\psiT}{\psi_\mathrm{T}}
+\newcommand{\VT}{V_\mathrm{T}}
+\newcommand{\Vspring}{V_\mathrm{spr}}
+\newcommand{\Veff}{V_\mathrm{eff}}
+\newcommand{\Hcl}{H_\mathrm{cl}}
+
+\newcommand{\links}{\ell}
+
+\newcommand{\bead}[1]{^{(#1)}}
+\newcommand{\sys}[1]{^{[#1]}}
+\newcommand{\beadsys}[2]{^{(#1)[#2]}}
+
+\newcommand{\fict}[1]{{#1}^\star}
+\newcommand{\nm}[1]{\tilde{#1}}
+\newcommand{\trans}{^\mathrm{T}}
+\newcommand{\inv}{^{-1}}
+\newcommand{\adj}{^\dagger}
+\newcommand{\conj}{^*}
+
+\newcommand{\omegaint}{\omega_\text{int}}
+
+\newcommand{\kB}{k_\mathrm{B}}
+
+\newcommand{\ketbra}[2]{\ket{#1}\!\!\bra{#2}}
+\newcommand{\ketbraself}[1]{\ketbra{#1}{#1}}
+
+\newcommand{\ketbeta}[1]{\ket{#1}_\beta}
+\newcommand{\ketbrabeta}[2]{\ketbeta{#1}\!\bra{#2}}
+\newcommand{\ketbrabetaself}[1]{\ketbrabeta{#1}{#1}}
+
+\newcommand{\braketbeta}[1]{\braket{#1}_\beta}
+\newcommand{\betabraket}[1]{\prescript{}{\beta}{\braket{#1}}}
+
+\newcommand{\expb}[1]{\exp{\left[ #1 \right]}}
+
+\newcommand{\alt}{^\star}
+\newcommand{\LL}{_L}
+\newcommand{\LLup}{_\mathrm{L}}
+\newcommand{\MM}{_M}
+\newcommand{\RR}{_R}
+\newcommand{\RRup}{_\mathrm{R}}
+
+\newcommand{\halfsqrt}{\frac{1}{\sqrt{2}}}
+
+\newcommand{\mean}[1]{\langle #1 \rangle}
+\newcommand{\bigmean}[1]{\left\langle #1 \right\rangle}
+
+\newcommand{\hugefrac}[2]{\left. #1 \;\middle/\; #2 \right.}
+
+\newcommand{\ddf}[1]{\delta\!\left( #1 \right)}
+
+\newcommand{\coh}[2]{^{#1,#2}}
+
+\newcommand{\dt}{\Delta t}
+\newcommand{\DP}{\Delta p}
+\newcommand{\DQ}{\Delta q}
+
+\newcommand{\bigo}[1]{\mathcal{O}\!\left( #1 \right)}
+
+\newcommand{\paraH}{\textit{para}-\ce{H2}}
+
+\newcommand{\initial}{_\mathrm{i}}
+\newcommand{\final}{_\mathrm{f}}
+\newcommand{\mx}{_\mathrm{max}}
+
+\newcommand{\hk}{^\mathrm{HK}}
+\newcommand{\hkg}{^\mathrm{HK,G}}
+
+\newcommand{\symb}[1]{\;\vcenter{\vspace{2 mm}\hbox{\includegraphics[trim={0.5mm 0 0.5mm 0},clip,width=16 mm]{#1}}\vspace{2 mm}}\;}
+\newcommand{\symbdist}[1]{\quad\vcenter{\vspace{2 mm}\hbox{\includegraphics[width=18 mm]{#1}}\vspace{2 mm}}\quad}
+\newcommand{\symbdistwide}[1]{\quad\vcenter{\vspace{2 mm}\hbox{\includegraphics[width=30 mm]{#1}}\vspace{2 mm}}\quad}
+\newcommand{\symbdistdq}[1]{\quad\vcenter{\vspace{2 mm}\hbox{\includegraphics[width=23 mm]{#1}}\vspace{2 mm}}\quad}
+
+\newcommand{\ie}{\textit{i.e.}}
+
+\newcommand{\nomencl}[2]{#2 (#1\nomenclature{#1}{#2})}
+
+\newcommand{\explainplotentropy}{Dashed lines indicate the exact answer; dotted curves are the expected convergence obtained from a direct numerical method; crosses mark the values in \vref{tab:model-parameters}.}
+\newcommand{\explainplotsazero}{Dashed lines indicate the exact answer; dotted lines mark the values in \vref{tab:model-sa0-harmonic-oscillator}.}
+\newcommand{\explainplotsas}{Dashed curves indicate the exact answers.}
+
+\newcommand{\collab}[1]{
+	{ \footnotesize \itshape \noindent The results of this section were found in collaboration with #1. }
+	\vspace{3 mm}
+}
+\newcommand{\cont}{\textit{(continued)}}
 
 
 \begin{document}
@@ -125,11 +262,23 @@ Waterloo, Ontario, Canada
 \renewcommand{\listtablename}{List of tables}
 \listoftables
 
+\input{02_notation}
+
 \mainmatter
 
 \pagestyle{fancy}
 
+\input{11_0_introduction}
+\input{12_0_renyi_entropy}
+\input{13_0_semiclassical}
+\input{14_conclusion}
+
 \appendix
+
+\input{21_formulas}
+\input{22_dct}
+\input{23_oscillators}
+\input{24_solutions}
 
 \backmatter
 

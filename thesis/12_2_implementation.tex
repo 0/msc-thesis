@@ -1,0 +1,294 @@
+\section{Implementation details}
+
+Our tool of choice in the present work is MMTK, which contains an implementation of LePIGS.\footnote{
+	As of this writing, the implementation in question has not been pushed upstream to \url{https://bitbucket.org/khinsen/mmtk}.
+	There are plans to rectify this in the near future.
+}
+Prior to this work, the implementation was implicitly targeted at $Z$-sector simulations.
+However, in order to use the minimal estimator of the trace, we are required to sample from a different sector.
+This required ensuring that the LePIGS algorithm works outside the $Z$-sector and making the appropriate changes to MMTK.
+
+The three distinct parts of the LePIGS procedure are:
+\begin{itemize}
+	\item propagate free particles in normal modes;
+	\item apply force fields to Cartesian momenta; and
+	\item thermostat normal modes.
+\end{itemize}
+Implicit in these is the conversion between Cartesian coordinates and normal modes.
+The conversion itself works for paths of any length and is independent of the force fields, so it is not problematic.
+
+The same is true for the free particle propagation: once we have converted the coordinates to normal modes, the equations of motion are the same for all paths.
+The only subtleties involved have to do with masses and frequencies, but these are simple to deal with.
+The effective masses of the normal modes are the same as those of the beads ($\fict{m}_n$), so we do not need to do anything to them even if we change sectors.
+The frequencies $\omega_k$ depend on $\tau$ (the ``length'' of each link) and $P$ (the number of beads in the path).
+The former is unchanged between the sectors we are considering, but the latter is a property of the paths that is now allowed to change.
+
+Application of the force fields is similarly straightforward: some of the forces may be scaled or missing entirely, so the changes to the momenta will be modified accordingly.
+
+Thermostatting of the normal modes is potentially tricky, due to the appearance of $\beta$, which in the derivation starts out as the imaginary time propagation length.
+Since some of the paths may change length, it may be tempting to adjust the value of $\beta$ for each path to account for the varying length.
+However, that would be incorrect, because the $\beta$ which appears in the thermostat is related to the temperature of the simulation and is a global property.
+Indeed, it is the same $\beta$ which appears in the exponent of \vref{eq:classical-Z}, and it is not affected by anything we might do to the connectivity of paths or scaling of potentials inside $\Hcl$.
+
+Thus, to implement transitions to the sectors of interest, there were three requirements which had to be satisfied by MMTK:
+\begin{itemize}
+	\item it must be possible to scale the force fields arbitrarily;
+	\item the integrator must deal with paths, rather than particles; and
+	\item there must be a convenient mechanism for changing the force field scaling and path connectivity.
+\end{itemize}
+
+In order for the force fields to be scalable, it was necessary to add a function pointer field called \texttt{scale\_func} to the \texttt{PyFFEnergyTermObject} struct.
+This function takes the new scaling value and is responsible for updating the force field to effect the change.
+To declare that it has support for this mechanism, a force field must override \texttt{supportsDynamicScaling} to return \texttt{True}.
+Pure Python force fields, which do not have direct access to the fields of \texttt{PyFFEnergyTermObject}, should implement a \texttt{setScaling} method; it is assigned automatically in the \texttt{PyEnergyTerm} Cython class from which all pure Python force field terms inherit.
+The built-in restraint force fields, such as \texttt{HarmonicDistanceRestraint}, were modified to support this scaling; these modifications involve scaling the energy, gradients, and force constants by the required amount.
+
+In order for the integrator to deal with paths explicitly (rather than with particles, which only map to paths exactly in the $Z$-sector), it was necessary to perform some subtle changes.
+When calculating $\omega_\links$ (see \vref{eq:omega-links}) in \texttt{propagateOscillators}, \texttt{springEnergyNormalModes}, and \texttt{applyThermostat}, it would no longer be correct to determine $\tau$ as $\beta / \links$ (since the effective $\beta$ of each path would change with $\links$, while $\tau$ remains constant), so a particular value of $\tau$ was assigned to each path, and this value does not change even as the paths are broken and recombined.
+On the other hand, it was important \emph{not} to change the $\beta$ which appears in the random force component of \texttt{applyThermostat}, as this has to do with the ``physical'' temperature of the simulation, not the length of the path.
+
+To keep track of the connectivity of the paths, the global array \texttt{connectivity} was introduced, alongside the existing \texttt{bead\_data}.
+This array consists of three columns and as many rows as there are beads in the simulation; the beads of a single path are stored in contiguous rows of the array.
+Each of the three columns stores a different kind of information about the beads:
+\begin{enumerate}[start=0]
+	\item the index of the bead in the universe, which acts as a pointer into the existing data structures;
+	\item the positive length of the path (used as a sentinel to signal the first bead of a path) \emph{or} the negative offset to the beginning of the path; and
+	\item a flag indicating whether the path is closed (as in finite temperature simulations) or open (as in ground state simulations).
+\end{enumerate}
+Two additional consequences of this new array were the ability to combine the finite temperature and ground state integrators, reducing code duplication, and the ability to open and close paths during a simulation.
+This connectivity data may be written to the output trajectory file and analyzed later.
+The ability to view the connectivity as it changed during a simulation was added to the \texttt{tviewer} application which is included with MMTK.
+
+In order to simplify for the end user the manipulation of the scaling of the force fields and the connectivity of the paths, the Cython class \texttt{PIReconnector} was provided.
+If a class inheriting from \texttt{PIReconnector} is given to the path integral integrator, its \texttt{step} method is called at the end of each integrator step, allowing the user to manipulate the simulation.
+For convenience, the following methods are provided:
+\begin{itemize}
+	\item \texttt{getScaling} to get the scaling of a force field term;
+	\item \texttt{setScaling} to set the scaling of a force field term;
+	\item \texttt{openPath} to open a closed path (\textit{i.e.} make a linear path out of a cyclic one);
+	\item \texttt{closePath} to close an open path (\textit{i.e.} make a cyclic path out of a linear one);
+	\item \texttt{breakPath} to break a single path into two paths; and
+	\item \texttt{joinPaths} to join two paths into a single path.
+\end{itemize}
+The four methods for operating on paths allow the user to achieve any connectivity with the restriction that a single bead may be connected via no more than two links.
+Additionally, because one can manipulate the connectivity during the simulation, it is possible to perform the sort of updates discussed in ref.~\cite{herdman2014path} which are necessary to preserve permutation symmetry with broken paths.
+Although the idea is not pursued in the present work, the above methods in principle also allow for sampling of the grand canonical ensemble via the worm algorithm: previously ``hidden'' beads may be added to the simulation from a reservoir by joining them to a path and turning on their force field terms.
+
+
+\subsection{Simulated link}
+
+\label{subsec:simulated-link}
+
+One simple test for the implementation of broken paths is to break an open PIGS path into two parts and add a force field between the new free ends that simulates the removed link.
+This should allow us to sample from an identical ensemble, so the distribution of all bead positions (including the middle bead) should be unchanged.
+Since we know what the middle bead distribution should be for a harmonic oscillator, we perform this test for a single particle in a harmonic trap and compare to the exact distribution.
+
+The Hamiltonian of the one-dimensional harmonic oscillator with mass $m$ and angular frequency $\omega$ is
+\begin{align}
+	\hat{H}
+	&= \frac{\hat{p}^2}{2 m} + \frac{1}{2} m \omega^2 \hat{q}^2,
+		\label{eq:harmonic-oscillator-hamiltonian}
+\end{align}
+so its ground state wavefunction is~\cite[440-441,492]{messiah1999quantum}
+\begin{align}
+	\psi_0(q)
+	&= \left( \frac{m \omega}{\pi \hbar} \right)^\frac{1}{4} e^{-\frac{m \omega}{2 \hbar} q^2}
+		\label{eq:ho-position-wf}
+\end{align}
+and the corresponding diagonal density is
+\begin{align}
+	\rho(q)
+	&= \abs{\psi_0(q)}^2
+	= \left( \frac{m \omega}{\pi \hbar} \right)^\frac{1}{2} e^{-\frac{m \omega}{\hbar} q^2}.
+		\label{eq:ho-position-distribution}
+\end{align}
+This is what we expect to see for the middle bead distribution when we have converged in both the $\beta \to \infty$ and $\tau \to 0$ limits.
+We will remove the link from bead $M - 1$ to bead $M$ (where $M$, as usual, is the index of the middle bead), which corresponds to dividing
+\begin{align}
+	\expb{-\frac{m}{2 \hbar^2 \tau} \left( q\bead{M-1} - q\bead{M} \right)^2}
+\end{align}
+out of the distribution.
+In order to reinsert this in the form of a force field, we use the same approach as for trial functions in ref.~\cite{schmidt2014inclusion}.
+The potential $V(\vec{q})$ for a force field enters the distribution as
+\begin{align}
+	e^{-\tau V(\vec{q})},
+\end{align}
+so the potential we require is the harmonic distance restraint
+\begin{align}
+	V(q\bead{M-1}, q\bead{M})
+	&= \frac{m}{2 \hbar^2 \tau^2} \left( q\bead{M-1} - q\bead{M} \right)^2.
+\end{align}
+
+We choose the mass $m$ to be that of a single electron and the angular frequency to be $\omega = \SI{1}{\kelvin}$.
+With the parameters $\beta = \SI{8}{\per\kelvin}$, $\links = 256$, $\tau = \SI{3.125e-2}{\per\kelvin}$, $\dt = \SI{0.1}{\pico\second}$, $\gamma\bead{0} = \SI{0.1}{\per\pico\second}$, and $\num{1e6}$ steps, we get the distribution in \cref{fig:simulated-link-regular} when we sample regularly.
+If we remove the link, we instead get the distribution in \cref{fig:simulated-link-broken}, which, as expected, does not match the ``exact'' value.
+The actual test is, of course, to simulate the link using an explicit harmonic distance restraint, as in \cref{fig:simulated-link-fixed}, where we see that the distribution is restored.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/simulated_link_regular}
+		\caption{
+			Sampling a regular PIGS path in a harmonic trapping potential.
+		}
+		\label{fig:simulated-link-regular}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/simulated_link_broken}
+		\caption{
+			Sampling a broken PIGS path in a harmonic trapping potential.
+			The break is between the middle bead (whose distribution is displayed) and an adjacent bead.
+		}
+		\label{fig:simulated-link-broken}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/simulated_link_fixed}
+		\caption{
+			Sampling a fixed PIGS path in a harmonic trapping potential.
+			The break in the path is filled with an explicit harmonic distance restraint.
+		}
+		\label{fig:simulated-link-fixed}
+	\end{subfigure}
+	\caption[
+		Broken path middle bead distribution
+	]{
+		Middle bead distribution of a harmonic oscillator in various path configurations.
+		Dashed curves are the exact harmonic oscillator ground state density.
+	}
+\end{figure}
+
+
+\subsection{Momentum distribution}
+
+Another way to check that the implementation works correctly is to look at the harmonic oscillator momentum distribution.
+We will consider the same system as in \cref{subsec:simulated-link}, but we will actually use the broken path to our advantage.
+The momentum distribution, like the position distribution in \cref{eq:ho-position-distribution}, is the square of the magnitude of the wavefunction, but in the momentum representation.
+The momentum representation of a wavefunction may be obtained by the Fourier transform of the position representation~\cite{ceperley1995path}, so we obtain (by \vref{eq:gaussian-integral-amu})
+\begin{subequations}
+\begin{align}
+	\psi_0(p)
+	&= \frac{1}{\sqrt{2 \pi \hbar}} \int\! \dif q \, e^{-\frac{i}{\hbar} p q} \psi_0(q)
+	= \left( \frac{m \omega}{4 \pi^3 \hbar^3} \right)^\frac{1}{4} \int\! \dif q \, e^{-\frac{m \omega}{2 \hbar} q^2 - \frac{i}{\hbar} p q}
+	= \left( \frac{1}{\pi \hbar m \omega} \right)^\frac{1}{4} e^{-\frac{1}{2 \hbar m \omega} p^2} \\
+	\rho(p)
+	&= \abs{\psi_0(p)}^2
+	= \left( \frac{1}{\pi \hbar m \omega} \right)^\frac{1}{2} e^{-\frac{1}{\hbar m \omega} p^2}.
+\end{align}
+\end{subequations}
+Both of the densities so far described are \emph{diagonal} and may be expressed in terms of the more general \emph{off-diagonal} densities
+\begin{subequations}
+\begin{align}
+	\rho(q)
+	&= \rho(q ; q)
+	= \braket{q | \hat{\rho} | q} \\
+	\rho(p)
+	&= \rho(p ; p)
+	= \braket{p | \hat{\rho} | p}.
+\end{align}
+\end{subequations}
+
+The translation operator~\cite[651]{messiah1999quantum}
+\begin{align}
+	\hat{T}(x)
+	&= \expb{- \frac{i}{\hbar} x \hat{p}}
+\end{align}
+has the action~\cite[650]{messiah1999quantum}
+\begin{align}
+	\hat{T}(x) \ket{q}
+	&= \ket{q + x},
+\end{align}
+where $\ket{q}$ is a position state ket and $\hat{p}$ is the momentum operator along the same direction as $q$.
+Applying the Fourier transform to the momentum distribution, since the trace is independent of basis, we find
+\begin{subequations}
+\begin{align}
+	\mathcal{F}[\rho(p)](\delta q)
+	&= \frac{1}{\sqrt{2 \pi \hbar}} \int\! \dif p \, \expb{-\frac{i}{\hbar} p (\delta q)} \rho(p) \\
+	&= \frac{1}{\sqrt{2 \pi \hbar}} \int\! \dif p \, \braket{p | \hat{\rho} \hat{T}(\delta q) | p} \\
+	&= \frac{1}{\sqrt{2 \pi \hbar}} \Tr{\left[ \hat{\rho} \hat{T}(\delta q) \right]} \\
+	&= \frac{1}{\sqrt{2 \pi \hbar}} \int\! \dif q \, \braket{q | \hat{\rho} \hat{T}(\delta q) | q} \\
+	&= \frac{1}{\sqrt{2 \pi \hbar}} \int\! \dif q \, \rho(q, q + \delta q).
+\end{align}
+\end{subequations}
+We define the quantity
+\begin{align}
+	\rho(\delta q)
+	&= \int\! \dif q \, \rho(q, q + \delta q),
+		\label{eq:rho-delta-q}
+\end{align}
+which is dimensionless, unlike the densities we have seen so far, and normalized so that $\rho(\delta q = 0) = 1$.
+For a harmonic oscillator, it is given by
+\begin{align}
+	\rho(\delta q)
+	&= \left( \frac{1}{\pi \hbar m \omega} \right)^\frac{1}{2} \int\! \dif p \, e^{-\frac{1}{\hbar m \omega} p^2 - \frac{i}{\hbar} p (\delta q)}
+	= e^{-\frac{m \omega}{4} (\delta q)^2}.
+\end{align}
+It is clear that we may recover the momentum distribution from this quantity via the inverse Fourier transform:
+\begin{align}
+	\rho(p)
+	&= \frac{1}{\sqrt{2 \pi \hbar}} \mathcal{F}\inv[\rho(\delta q)](p).
+\end{align}
+
+In order to figure out how to estimate $\rho(\delta q)$, we write it in the more suggestive form
+\begin{align}
+	\rho(\delta q)
+	&= \int\! \dif q \, \braket{0 | q + \delta q} \braket{q | 0}.
+\end{align}
+If we were to expand each ground state $\ket{0}$ into half of a PIGS path, we would see that the halves only meet in the $\delta q = 0$ case.
+Indeed, we may write this as
+\begin{align}
+	\rho(\delta q)
+	&= \hugefrac{
+			\int\! \dif q \, \symbdist{12/dist_one_particle_offset}
+		}{
+			\int\! \dif q \, \symbdist{12/dist_one_particle}
+		}.
+\end{align}
+We have been careful to include the central potential in the diagrams, as it is important for this problem.
+The separation between the ``real'' and ``virtual'' beads at $M$ is, of course, $\delta q$:
+\begin{align}
+	\symbdistdq{12/dist_one_particle_offset_labelled}.
+\end{align}
+We may therefore estimate $\rho(\delta q)$ by sampling from the broken distribution
+\begin{align}
+	\symbdist{12/dist_one_particle_minimal}
+\end{align}
+and using the ratio estimator
+\begin{align}
+	\hugefrac{
+		\bigmean{\symb{12/link_one_particle_offset}}
+	}{
+		\bigmean{\symb{12/link_one_particle}}
+	},
+\end{align}
+thereby testing the broken path implementation in MMTK.
+Note that unlike the estimators we've encountered so far, which have not depended on any parameters, this estimator is a function of $\delta q$.
+
+For the simulation, we used the same parameters as in \cref{subsec:simulated-link}, with the exception that configurations are sampled every $\SI{1}{\pico\second}$ rather than every $\SI{0.1}{\pico\second}$.
+The results for $\rho(\delta q)$ and $\rho(p)$ for the harmonic oscillator system are shown in \cref{fig:momentum-dist}.
+While the raw estimator output differs slightly from the expected curve, the Fourier transform provides a sufficient amount of smoothing that the obtained momentum distribution is indistinguishable from the expected one.
+
+\begin{figure}
+	\setlength{\figspacing}{10 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/momentum_dist_untransformed}
+		\caption{
+			The quantity from \cref{eq:rho-delta-q} for a harmonic oscillator.
+		}
+		\label{fig:momentum-dist-untransformed}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/momentum_dist}
+		\caption{
+			Momentum distribution of a harmonic oscillator, obtained as the Fourier transform of the function in \subref{fig:momentum-dist-untransformed}.
+		}
+	\end{subfigure}
+	\caption[
+		Broken path momentum distribution
+	]{
+		Momentum distribution of a harmonic oscillator (including the unprocessed estimator results).
+		Dashed curves are exact harmonic oscillator results.
+	}
+	\label{fig:momentum-dist}
+\end{figure}

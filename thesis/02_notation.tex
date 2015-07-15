@@ -1,0 +1,73 @@
+\chapter{Notation}
+
+In this work, symbols for scalars are italic ($x$), while symbols for vectors are bold ($\vec{x}$).
+A matrix denoted by $\mat{X}$ has matrix elements $x_{ij}$.
+Unless otherwise specified, vectors and matrices are zero-indexed (\ie{} the first element of $\vec{x}$ is $x_0$.).
+\Cref{tab:symbols} lists some of the more common symbols used.
+
+\begin{table}[h]
+	\renewcommand*\arraystretch{1.2}
+	\rowcolors{2}{}{_row}
+	\begin{center}
+	\begin{tabular}{ c l }
+		\toprule
+		Symbol & Definition \\
+		\midrule
+		$D$ & Number of spatial dimensions \\
+		$N$ & Number of particles \\
+		$P$ & Number of beads per particle \\
+		$\links$ & Number of links per particle \\
+		$F$ & Number of degrees of freedom \\
+		$M$ & Index of middle bead \\
+		$\vec{p}$ & Momentum vector \\
+		$\vec{q}$ & Coordinate vector \\
+		\bottomrule
+	\end{tabular}
+	\end{center}
+	\caption[
+		Definitions of common symbols
+	]{
+		Definitions of common symbols used within this document.
+	}
+	\label{tab:symbols}
+\end{table}
+
+To avoid ambiguity between indexing of particles and beads within a vector, we use the following notation whenever beads are involved:
+\begin{itemize}
+	\item $j$th bead of $i$th particle: $\vec{x}_i\bead{j} = \begin{pmatrix} x_{i,0}\bead{j} & x_{i,1}\bead{j} & \cdots & x_{i,D-1}\bead{j} \end{pmatrix}$;
+	\item $j$th bead of all particles: $\vec{x}\bead{j} = \begin{pmatrix} \vec{x}_0\bead{j} & \vec{x}_1\bead{j} & \cdots & \vec{x}_{N-1}\bead{j} \end{pmatrix}$;
+	\item all beads of $i$th particle: $\vec{x}_i = \begin{pmatrix} \vec{x}_i\bead{0} & \vec{x}_i\bead{1} & \cdots & \vec{x}_i\bead{P-1} \end{pmatrix}$; and
+	\item all beads of all particles: $\vec{x} = \begin{pmatrix} \vec{x}_0 & \vec{x}_1 & \cdots & \vec{x}_{N-1} \end{pmatrix} = \begin{pmatrix} \vec{x}\bead{0} & \vec{x}\bead{1} & \cdots & \vec{x}\bead{P-1} \end{pmatrix}$.
+\end{itemize}
+The bead notation is also borrowed for indexing normal modes, but there is no contention as the two are mutually exclusive.
+Additionally, the following labels are used to narrow the meaning of the above symbols:
+\begin{itemize}
+	\item partition A: $\vec{x}_A$; and
+	\item replica $\lambda$: $\vec{x}\sys{\lambda}$.
+\end{itemize}
+When these are in use, $\vec{x}$ may refer to all the degrees of freedom across all the replicas if this is obvious from context.
+
+Unless otherwise specified, all integrals in this work without explicit limits of integration are definite integrals whose domain of integration is the entire space on which the variable in question is defined.
+For example, if $\vec{q}$ is a three-dimensional position, then we implicitly have
+\begin{align}
+	\int\! \dif \vec{q} \, f(\vec{q})
+	&= \int\limits_\text{all space}\! \dif \vec{q} \, f(\vec{q})
+	= \int_{-\infty}^\infty\! \dif x \int_{-\infty}^\infty\! \dif y \int_{-\infty}^\infty\! \dif z \, f(x, y, z).
+\end{align}
+
+On occasion color is used in mathematical expressions to draw the eye to particularly important or subtle details, such as in
+\begin{align}
+	2 + 2 \mathbin{\red{\ne}} 5.
+\end{align}
+This has no bearing on the meaning of the expressions.
+Regretfully, color is used in many of the plots and \emph{is} important to their interpretation.
+Apologies to those with colorblindness or a monochrome copy of this work.
+
+The graphical notation for expressions like $\symbdist{11/stubs}$ is described in detail in \vref{sec:graphical}.
+
+Values of some quantities may be given in kelvin or reciprocal kelvin, as in $\omega = \SI{1}{\kelvin}$ or $\beta = \SI{1}{\per\kelvin}$.
+This is to be understood as a shorthand omitting the $\kB$ and $\hbar$ necessary to have the appropriate dimension for the given quantity.
+
+The imaginary unit is written as $i$, even though $i$ is sometimes used as a variable (typically an index).
+It is always evident from context when $i$ refers to the imaginary unit (as in $i / \hbar$) and when it refers to a variable (as in $q_i$).
+The real part of a complex number $x$ is given by $\Re{(x)}$ and the imaginary part by $\Im{(x)}$.

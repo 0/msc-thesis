@@ -1,0 +1,63 @@
+\section{Configuration space sectors}
+
+The integrals in \cref{eq:lepigs-integral-function} are over all space for each degree of freedom, so it may be tempting to call the space of all possible spatial configurations of the polymers the ``configuration space,'' but we will find that this is too restrictive for our goals.
+In conventional PIMC and PIMD, the configuration space is restricted to such configurations (typically referred to as \emph{diagonal} or $Z$), which are sufficient for physical quantities that are diagonal in the position representation~\cite{boninsegni2006worm}.
+Inspired by the worm algorithm, we will embrace the notion of an extended configuration space, which is separated into disjoint \emph{sectors}~\cite{prokof1998worm,boninsegni2006worm}.
+The aforementioned $Z$ configurations reside in the $Z$-sector.
+
+A sector contains all the spatial configurations of a particular set of classical polymers, which is defined by the number of beads in the classical system as well as the way in which they are connected.
+For example, the addition of an additional polymer (or even of a single bead) implies the discrete transition to another sector.\footnote{
+	The gradual addition of a full polymer by the addition of a single bead at a time may be viewed as a continuous sort of process, but it must involve discrete jumps between sectors.
+}
+This sort of action is necessary for the sampling of a grand-canonical ensemble (for example to obtain chemical potentials)~\cite{herdman2014quantum}, but will not be pursued in the present work.
+We will focus instead on the removal of elements from the sampling distribution.
+For example, consider the $Z$-sector distribution from \cref{eq:lepigs-integral-function}:
+\begin{align}
+	\pi(\vec{q})
+	&= \psiT(\vec{q}\bead{0})
+		\left[ \prod_{j=0}^{P-2} \expb{
+			-\frac{m}{2 \hbar^2 \tau} \abs{\vec{q}\bead{j} - \vec{q}\bead{j+1}}^2
+			- \frac{\tau}{2} \left( V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right)
+		} \right]
+		\psiT(\vec{q}\bead{P-1}).
+			\label{eq:ugly-distribution1}
+\end{align}
+We may choose to remove the link between beads $M-1$ and $M$ (where $M = \links / 2$ is the index of the middle bead), which would lead to the following distribution in a different sector:
+\begin{align}
+	\pi(\vec{q})
+	&= \psiT(\vec{q}\bead{0})
+		\left[ \prod_{j=0}^{M-2} \expb{
+			-\frac{m}{2 \hbar^2 \tau} \abs{\vec{q}\bead{j} - \vec{q}\bead{j+1}}^2
+			- \frac{\tau}{2} \left( V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right)
+		} \right] \notag \\
+	&\qquad\qquad\times
+		\left[ \prod_{j=M}^{P-2} \expb{
+			-\frac{m}{2 \hbar^2 \tau} \abs{\vec{q}\bead{j} - \vec{q}\bead{j+1}}^2
+			- \frac{\tau}{2} \left( V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right)
+		} \right]
+		\psiT(\vec{q}\bead{P-1}).
+			\label{eq:ugly-distribution2}
+\end{align}
+Note that this removal involves both the ``kinetic'' spring potential between the beads and the corresponding halves of the quantum potential.
+We may perform a more surgical removal and only take out the spring, leading to another distribution in another sector:
+\begin{align}
+	\pi(\vec{q})
+	&= \psiT(\vec{q}\bead{0})
+		\left[ \prod_{j=0}^{M-2} \expb{
+			-\frac{m}{2 \hbar^2 \tau} \abs{\vec{q}\bead{j} - \vec{q}\bead{j+1}}^2
+			- \frac{\tau}{2} \left( V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right)
+		} \right] \notag \\
+	&\qquad\qquad\times
+		\expb{-\frac{\tau}{2} \left( V(\vec{q}\bead{M-1}) + V(\vec{q}\bead{M}) \right)} \notag \\
+	&\qquad\qquad\times
+		\left[ \prod_{j=M}^{P-2} \expb{
+			-\frac{m}{2 \hbar^2 \tau} \abs{\vec{q}\bead{j} - \vec{q}\bead{j+1}}^2
+			- \frac{\tau}{2} \left( V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right)
+		} \right]
+		\psiT(\vec{q}\bead{P-1}).
+			\label{eq:ugly-distribution3}
+\end{align}
+
+An entire simulation may be done in a single sector ($Z$ or otherwise), in which case the equations of motion may need to be tweaked, but it is still a straightforward simulation of \emph{some} classical canonical ensemble.
+The more interesting case is when the sector is changed during the course of a simulation.
+This possibility is not considered in the present work, but it is necessary in order to implement the worm algorithm~\cite{boninsegni2006worm}, sampling of the grand-canonical ensemble~\cite{herdman2014quantum}, and efficient sampling for particle entanglement~\cite{herdman2014path}.

@@ -1,0 +1,354 @@
+\section{Model system}
+
+As our benchmark system for calculating the Rényi entropy, we use what is arguably the simplest non-trivial system for which particle entanglement can be defined: two harmonically-coupled harmonic oscillators.
+This system is described in detail (including analytic solutions) in \vref{chap:oscillators}.
+We consider the one-dimensional variant of the problem, with the Hamiltonian
+\begin{align}
+	\hat{H}
+	&= \frac{\hat{p}_A^2}{2 m} + \frac{\hat{p}_B^2}{2 m}
+		+ \frac{1}{2} m \omega_0^2 (\hat{q}_A^2 + \hat{q}_B^2)
+		+ \frac{1}{2} m \omegaint^2 (\hat{q}_A - \hat{q}_B)^2.
+\end{align}
+We choose the parameters $m = m_\mathrm{e}$ (mass of an electron) and $\omega_0 = \SI{1}{\kelvin}$; we vary the coupling strength $\omegaint$ in order to vary the entanglement of the system.
+These parameters are chosen specifically so that we can replicate the results of ref.~\cite{herdman2014path} using a molecular dynamics approach (instead of using Monte Carlo).
+This system lends itself to a natural particle partitioning: one partition containing solely particle $A$ and the other $B$.
+
+We must optimize the usual parameters for this system: $\beta$, $\tau$, $\dt$, and $\gamma\bead{0}$.
+In order to be able to use a smaller value for $\beta$ (and therefore fewer beads, leading to shorter simulation times), we use a trial function that is very similar to the exact ground state.
+Specifically, we use \vref{eq:oscillators-wf-1d}, but we scale the mass down to $m / 2$, making it closer to a uniform trial function.
+This trial function is also used for the energy convergence study in \vref{sec:oscillators-energy-convergence}.
+Unless otherwise specified, the parameter values from \cref{tab:model-parameters} are used for this model system.
+
+\begin{table}
+	\rowcolors{2}{}{_row}
+	\begin{center}
+	\begin{tabular}{ c | S S[table-format=1.3] S[table-format=3] S[table-format=1.2] c }
+		\toprule
+		$\omegaint / \omega_0$ & {$\beta / \si{\per\kelvin}$} & {$\tau / \si{\per\kelvin}$} & {$P$} & {$\dt / \si{\pico\second}$} & $\gamma\bead{0} / \si{\per\pico\second}$ \\
+		\midrule
+		0 & 3.0 & 0.25 & 13 & 0.5 & 0.1 \\
+		1 & 3.5 & 0.125 & 29 & 0.5 & 0.1 \\
+		2 & 4.0 & 0.1 & 41 & 0.25 & 0.1 \\
+		4 & 4.5 & 0.05 & 91 & 0.2 & 0.1 \\
+		8 & 5.0 & 0.025 & 201 & 0.1 & 0.1 \\
+		\bottomrule
+	\end{tabular}
+	\end{center}
+	\caption[
+		Selected parameters for coupled harmonic oscillators
+	]{
+		Selected parameters for the model system of coupled harmonic oscillators.
+	}
+	\label{tab:model-parameters}
+\end{table}
+
+
+\subsection{Primitive estimator}
+
+Because we expect the two estimators introduced in \cref{sec:estimators} to behave differently, we perform separate convergence studies.
+We first look at the primitive estimator, defined in \vref{eq:renyi-estimator-primitive}, which requires us to use the regular sampling distribution.
+This estimator is a ratio of two quantities, both of which become exponentially small with decreasing $\tau$.
+This makes it challenging to sample well and is at odds with the need to decrease $\tau$ to remove the error due to the Trotter factorization.
+Consequently, the results are not good, but are provided for comparison with the minimal estimator.
+
+We start our optimization with the friction.
+Since the goal when optimizing friction is to increase the efficiency of sampling, this should be reflected by a smaller standard error of the mean.
+To estimate the error, we use the binning analysis described in ref.~\cite{ambegaokar2010estimating} for frictions spanning several orders of magnitude.
+To get a feel for the effects of friction on the error, we look at \cref{fig:primitive-frictions-binning}.
+Both plots give the illusion that the simulations are long enough for the error to converge.
+However, even though the two plots were generated using simulations with the same parameters, they are drastically different.
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/primitive_frictions_binning_a}
+		\caption{}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/primitive_frictions_binning_b}
+		\caption{}
+	\end{subfigure}
+	\caption[
+		Error convergence for primitive estimator
+	]{
+		Convergence of error with binning level for different frictions using the primitive estimator.
+		$\omegaint = \SI{4}{\kelvin}$, $\num{1e6}$ steps.
+		The two plots show results from different simulations using identical parameters.
+	}
+	\label{fig:primitive-frictions-binning}
+\end{figure}
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/primitive_frictions_beta_tau}
+		\caption{
+			Minimization of error with friction for different values of $\beta$ and $\links$.
+			$\omegaint = \SI{4}{\kelvin}$.
+		}
+		\label{fig:primitive-frictions-beta-tau}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/primitive_frictions_omega_int}
+		\caption{
+			Minimization of error with friction for different values of $\omegaint$.
+		}
+		\label{fig:primitive-frictions-omega-int}
+	\end{subfigure}
+	\caption[
+		Friction optimization for primitive estimator
+	]{
+		Friction optimization for the primitive estimator with different parameter sets.
+		$\num{1e6}$ steps.
+		Some of the large magnitude values have been cut off to emphasize the smaller values.
+	}
+	\label{fig:primitive-frictions-parameters}
+\end{figure}
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/primitive_histogram}
+		\caption{
+			Distribution of all traces in a $\num{1e6}$ step simulation.
+			Note the outlier to the extreme right, causing the loss of detail on the left.
+		}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/primitive_histogram_pruned}
+		\caption{
+			Distribution of only those traces in a $\num{1e6}$ step simulation that fell below a cutoff value.
+		}
+	\end{subfigure}
+	\caption[
+		Distribution of traces for primitive estimator
+	]{
+		Distribution of traces for the primitive estimator.
+		The logarithmic scale on the $y$-axis is necessary to make anything other than the first few bins visible.
+	}
+	\label{fig:primitive-histogram}
+\end{figure}
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/primitive_entropy_beta}
+		\caption{
+			Convergence of the entropy with $\beta$.
+		}
+		\label{fig:primitive-entropy-beta}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/primitive_entropy_tau}
+		\caption{
+			Convergence of the entropy with $\tau$.
+		}
+		\label{fig:primitive-entropy-tau}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/primitive_entropy_dt}
+		\caption{
+			Convergence of the entropy with $\dt$.
+		}
+		\label{fig:primitive-entropy-dt}
+	\end{subfigure}
+	\caption[
+		Convergence of entropy with primitive estimator
+	]{
+		Unsuccessful convergence of the second Rényi entropy of the coupled oscillators with $\beta$, $\tau$, and $\dt$ using the primitive estimator.
+		$\num{1e6}$ steps.
+		\explainplotentropy{}
+	}
+\end{figure}
+
+We might hope for a more useful landscape if we look from a different perspective, as in \cref{fig:primitive-frictions-parameters}, but almost no insights are to be had from these plots either.
+We may make one minor observation: in \cref{fig:primitive-frictions-beta-tau}, we see that the curves for large $\tau$ (few beads, not yet converged) are better behaved than the others.
+Those curves are not useful, but they do foreshadow the poor behaviour we expect to see when we try to converge the entropy by decreasing $\tau$.
+This is confirmed in \cref{fig:primitive-frictions-omega-int}, where the curve corresponding to the system with no coupling is the only one that looks reasonable, and it happens to be the one with the largest $\tau$ value.
+
+Undeterred, we choose an arbitrary friction of $\SI{0.1}{\per\pico\second}$ and press on.
+At this point, it would be nice to see an example of how the values we sample are distributed.
+This is shown in \cref{fig:primitive-histogram}, and the distribution doesn't look good: there are sporadic large values, which are difficult to sample.
+
+The curious reader may very well want to know what happens if we use this estimator to estimate the second Rényi entropy.
+As expected, the results are not particularly impressive.
+There is not much to be gained by examining \cref{fig:primitive-entropy-beta,fig:primitive-entropy-dt}, but \cref{fig:primitive-entropy-tau} holds some explanations for us.
+We can see that there is no hope of converging with $\beta$ or $\dt$, because we cannot choose a $\tau$ that is sufficiently small.
+When we try to do so, we tend to underestimate the trace, leading us to overestimate the entropy.
+Having seen the distribution, we should not be surprised by the small error bars on points that are too high: in those cases, we underestimate the trace by not sampling enough of the large outliers, so we don't even realize that we've underestimated it.
+
+The reader should not be discouraged at this point, as the primitive estimator at small $\tau$ is expected to behave poorly.
+It is difficult to expect anything reasonable from a distribution such as that in \cref{fig:primitive-histogram}, where the spread of values spans many orders of magnitude.
+
+
+\subsection{Minimal estimator}
+
+For the minimal estimator, we perform the same analyses as above.
+We again start by optimizing the friction.
+Judging from \cref{fig:minimal-frictions-binning}, we have enough steps in the simulation for the error to converge.
+Looking at \cref{fig:minimal-frictions-parameters}, we see reasonable behaviour whether we have large or small $\tau$.
+More importantly, there is a clear minimum in the error at $\gamma\bead{0} = \SI{0.1}{\per\pico\second}$ for all coupling strengths, which is rather convenient.
+
+Having settled on a centroid friction, we look at the distribution of values for the numerator and denominator components in \cref{fig:minimal-histogram} and we see pleasant shapes that only extend as far as unity.
+This means that we avoid the issue of arbitrarily large outliers that we saw with the primitive estimator.
+Thus, we are able to make the well-behaved convergence plots in \cref{fig:minimal-entropy}.
+
+As shown in \cref{fig:minimal-entropy-zoomed}, by increasing the number of steps (and therefore the time required to run the simulation), we are able to reduce the error bars to the same magnitude as the residual systematic error.
+The largest relative error is about $\SI{0.3}{\percent}$.
+
+Finally, now that we know that the minimal estimator works well for the second Rényi entropy, we apply it to a range of coupling strengths.
+The results are shown in \cref{fig:minimal-entropy-all}.
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/minimal_frictions_binning_num}
+		\caption{
+			Error in the numerator component.
+		}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/minimal_frictions_binning_denom}
+		\caption{
+			Error in the denominator component.
+		}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/minimal_frictions_binning_quot}
+		\caption{
+			Error in the quotient.
+		}
+	\end{subfigure}
+	\caption[
+		Error convergence for minimal estimator
+	]{
+		Convergence of error with binning level for different frictions using the minimal estimator.
+		$\omegaint = \SI{4}{\kelvin}$, $\num{1e6}$ steps.
+	}
+	\label{fig:minimal-frictions-binning}
+\end{figure}
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/minimal_frictions_beta_tau}
+		\caption{
+			Minimization of error with friction for different values of $\beta$ and $\links$.
+			$\omegaint = \SI{4}{\kelvin}$.
+		}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/minimal_frictions_omega_int}
+		\caption{
+			Minimization of error with friction for different values of $\omegaint$.
+		}
+	\end{subfigure}
+	\caption[
+		Friction optimization for minimal estimator
+	]{
+		Friction optimization for the minimal estimator with different parameter sets.
+		$\num{1e6}$ steps.
+	}
+	\label{fig:minimal-frictions-parameters}
+\end{figure}
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/minimal_histogram_num}
+		\caption{
+			Distribution of the numerator estimator in a $\num{1e6}$ step simulation.
+		}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/minimal_histogram_denom}
+		\caption{
+			Distribution of the denominator estimator in a $\num{1e6}$ step simulation.
+		}
+	\end{subfigure}
+	\caption[
+		Distribution of components for minimal estimator
+	]{
+		Distribution of numerator and denominator components for the minimal estimator.
+		The logarithmic scale on the $y$-axis is necessary to make anything other than the first few bins visible.
+	}
+	\label{fig:minimal-histogram}
+\end{figure}
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/minimal_entropy_beta}
+		\caption{
+			Convergence of the entropy with $\beta$.
+		}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/minimal_entropy_tau}
+		\caption{
+			Convergence of the entropy with $\tau$.
+		}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/minimal_entropy_dt}
+		\caption{
+			Convergence of the entropy with $\dt$.
+		}
+	\end{subfigure}
+	\caption[
+		Convergence of entropy with minimal estimator
+	]{
+		Successful convergence of the second Rényi entropy of the coupled oscillators with $\beta$, $\tau$, and $\dt$ using the minimal estimator.
+		$\num{1e6}$ steps.
+		\explainplotentropy{}
+	}
+		\label{fig:minimal-entropy}
+\end{figure}
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/minimal_entropy_zoomed}
+		\caption{
+			Reasonably converged entanglement entropy.
+			$\omegaint = \SI{4}{\kelvin}$.
+		}
+		\label{fig:minimal-entropy-zoomed}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{12/minimal_entropy_all}
+		\caption{
+			Entanglement entropy for various coupling strengths.
+			The error bars look peculiar because they are smaller than the symbols.
+		}
+		\label{fig:minimal-entropy-all}
+	\end{subfigure}
+	\caption[
+		Results for minimal estimator
+	]{
+		Detailed results for the minimal estimator.
+		$\num{1e7}$ steps.
+		\explainplotentropy{}
+	}
+\end{figure}

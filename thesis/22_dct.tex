@@ -1,0 +1,136 @@
+\chapter{Discrete cosine transform}
+
+\label{chap:dct}
+
+
+\section{DCT normalization in FFTW}
+
+FFTW~\cite{frigo2005design}\footnote{
+	\url{http://fftw.org/}
+} is a very powerful library for performing transforms in the discrete Fourier transform family, such as the \nomencl{FFT}{Fast Fourier Transform} (a fast algorithm for the \nomencl{DFT}{Discrete Fourier Transform}) and the DCT.
+However, one nuance which must be kept in mind when using FFTW is that the transforms are not normalized in a way that makes them unitary.
+
+According to the FFTW documentation\footnote{
+	FFTW Reference $\to$ What FFTW Really Computes $\to$ 1d Real-even DFTs (DCTs)
+}, the matrix elements of the forward DCT (DCT-II, \texttt{REDFT10}) are
+\begin{align}
+	t^\textrm{f}_{kn}
+	&= 2 \cos{\left[ \frac{\pi}{N} k \left( n + \frac{1}{2} \right) \right]}
+\end{align}
+and of the reverse DCT (DCT-III, \texttt{REDFT01}) are
+\begin{align}
+	t^\textrm{r}_{nk}
+	&= C_k \cos{\left[ \frac{\pi}{N} k \left( n + \frac{1}{2} \right) \right]}
+\end{align}
+with
+\begin{align}
+	C_k
+	&= \begin{cases}
+			1 & k = 0 \\
+			2 & \text{otherwise}
+		\end{cases}.
+\end{align}
+We would like our transforms to be orthogonal.
+Thus, \emph{after} a forward transform we must be careful to scale the first element by $\sqrt{\frac{1}{4 N}}$ and the others by $\sqrt{\frac{1}{2 N}}$.
+On the other hand, \emph{before} the reverse transform, we need to scale the first element by $\sqrt{\frac{1}{N}}$ and the others by $\sqrt{\frac{1}{2 N}}$.
+
+
+\section{DCT via FFT}
+
+In some situations, it may be convenient to perform an FFT (fast DFT), but not nearly as convenient to perform a fast DCT.
+For example, one may be using NumPy~\cite{van2011numpy}, which provides the \texttt{numpy.fft} package for FFTs, but no facility for DCTs.
+It turns out to be possible to MacGyver a length $2 N$ DFT on specially-prepared input to simulate a fast length $N$ DCT.
+
+We let
+\begin{subequations}
+\begin{align}
+	\bar{\omega}_N
+	&= e^{-2 \pi i / N} \\
+	\omega_N
+	&= \bar{\omega}_N\conj
+	= e^{2 \pi i / N}.
+\end{align}
+\end{subequations}
+The forward length $2 N$ DFT on input $\vec{y}$ is defined (for $k = 0, 1, \ldots, 2 N - 1$) as
+\begin{align}
+	Y_k
+	&= \frac{1}{\sqrt{2 N}} \sum_{n=0}^{2 N - 1} y_n \bar{\omega}_{2 N}^{k n}
+\end{align}
+and the forward length $N$ DCT on input $\vec{x}$ is defined (for $k = 0, 1, \ldots, N - 1$) as
+\begin{align}
+	X_k
+	&= \frac{C_k}{\sqrt{N}} \sum_{n=0}^{N - 1} x_n \cos{\left[ \frac{\pi}{N} k \left( n + \frac{1}{2} \right) \right]},
+		\label{eq:dct}
+\end{align}
+where
+\begin{align}
+	C_k
+	&= \begin{cases}
+			1 & \text{if } k = 0 \\
+			\sqrt{2} & \text{otherwise}
+		\end{cases}.
+\end{align}
+We may write the former as
+\begin{subequations}
+\begin{align}
+	Y_k
+	&= \frac{1}{\sqrt{2 N}} \left[
+			\sum_{n=0}^{N - 1} y_n \bar{\omega}_{2 N}^{k n}
+			+ \sum_{n=N}^{2 N - 1} y_n \bar{\omega}_{2 N}^{k n}
+		\right] \\
+	&= \frac{1}{\sqrt{2 N}} \left[
+			\sum_{n=0}^{N - 1} y_n \bar{\omega}_{2 N}^{k n}
+			+ \sum_{n=0}^{N - 1} y_{(2 N - 1 - n)} \bar{\omega}_{2 N}^{k (2 N - 1 - n)}
+		\right] \\
+	&= \frac{\omega_{2 N}^{k/2}}{\sqrt{2 N}} \left[
+			\sum_{n=0}^{N - 1} y_n \bar{\omega}_{2 N}^{k (n + 1/2)}
+			+ \sum_{n=0}^{N - 1} y_{2 N - (n + 1)} \omega_{2 N}^{k (n + 1/2)}
+		\right].
+\end{align}
+\end{subequations}
+If we set up $\vec{y}$ in such a way that
+\begin{align}
+	y_n
+	&= \begin{cases}
+			x_n & \text{if } 0 \le n < N \\
+			x_{2 N - 1 - n} & \text{if } N \le n < 2 N \\
+		\end{cases},
+\end{align}
+then
+\begin{subequations}
+\begin{align}
+	Y_k
+	&= \omega_{2 N}^{k/2} \frac{1}{\sqrt{2 N}} \sum_{n=0}^{N - 1} x_n (\bar{\omega}_{2 N}^{k (n + 1/2)} + \omega_{2 N}^{k (n + 1/2)}) \\
+	&= \omega_{2 N}^{k/2} \frac{1}{\sqrt{2 N}} \sum_{n=0}^{N - 1} x_n (e^{-\pi i k (n + 1/2) / N} + e^{\pi i k (n + 1/2) / N}) \\
+	&= \omega_{2 N}^{k/2} \sqrt{\frac{2}{N}} \sum_{n=0}^{N - 1} x_n \cos{\left[ \frac{\pi}{N} k \left( n + \frac{1}{2} \right) \right]},
+\end{align}
+\end{subequations}
+which (for $k = 0, 1, \ldots, N - 1$) is the same as \cref{eq:dct} up to a constant:
+\begin{align}
+	X_k
+	&= C_k' e^{-\frac{\pi i k}{2 N}} Y_k,
+\end{align}
+where
+\begin{align}
+	C_k'
+	&= \begin{cases}
+			\frac{1}{\sqrt{2}} & \text{if } k = 0 \\
+			1 & \text{otherwise}
+		\end{cases}.
+\end{align}
+If one is using NumPy's \texttt{numpy.fft} package, the \texttt{rfft} function is handy, since it only computes the first half of the transform, which is all that is necessary here.
+
+To go in the other direction and perform an inverse DCT, we simply have to perform all the actions in the reverse order.
+When using NumPy's \texttt{irfft} function, one must be careful to set up the last element of the input array correctly:
+\begin{subequations}
+\begin{align}
+	Y_N
+	&= \frac{1}{\sqrt{2 N}} \sum_{n=0}^{2 N - 1} y_n \bar{\omega}_{2 N}^{N n} \\
+	&= \frac{1}{\sqrt{2 N}} \sum_{n=0}^{2 N - 1} y_n e^{-\pi i n} \\
+	&= \frac{1}{\sqrt{2 N}} \sum_{n=0}^{N - 1} x_n (e^{-\pi i n} + e^{-\pi i (2 N - 1 - n)}) \\
+	&= \frac{1}{\sqrt{2 N}} \sum_{n=0}^{N - 1} x_n (e^{-\pi i n} - e^{\pi i n}) \\
+	&= \frac{1}{\sqrt{2 N}} \sum_{n=0}^{N - 1} x_n ((-1)^n - (-1)^n) \\
+	&= 0.
+\end{align}
+\end{subequations}
+This is not difficult to do.

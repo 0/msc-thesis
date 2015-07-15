@@ -1,0 +1,1092 @@
+\chapter{Solutions to exercises}
+
+\label{chap:solutions}
+
+\begin{DefAnswer}{ex:pigs-limit}
+	Since
+	\begin{subequations}
+	\begin{align}
+		e^{-\beta \hat{H}} \ket{\psiT}
+		&= \sum_{n=0}^\infty e^{-\beta E_n} \ket{n} \braket{n | \psiT} \\
+		&= e^{-\beta E_0} \left[ \ket{0} \braket{0 | \psiT} + \sum_{n=1}^\infty e^{-\beta (E_n - E_0)} \ket{n} \braket{n | \psiT} \right],
+	\end{align}
+	\end{subequations}
+	all the terms in the sum after the $n = 0$ term will be exponentially suppressed with increasing $\beta$.
+	As long as the factor $\braket{0 | \psiT}$ does not vanish, the ground state will be projected out of the trial function:
+	\begin{align}
+		\lim_{\beta \to \infty} e^{-\beta \hat{H}} \ket{\psiT}
+		&\propto \ket{0}.
+	\end{align}
+\end{DefAnswer}
+
+\begin{DefAnswer}{ex:pigs-isomorphism}
+	We assume a Cartesian, $N$-particle Hamiltonian of the form
+	\begin{align}
+		\hat{H}
+		&= \hat{K} + \hat{V}
+		= \left[ \sum_{n=0}^{N-1} \hat{K}_n \right] + \hat{V}
+		= \left[ \sum_{n=0}^{N-1} \frac{\abs{\hat{\vec{p}}_n}^2}{2 m_n} \right] + \hat{V},
+	\end{align}
+	where the potential operator is sufficiently well-behaved that we may write
+	\begin{align}
+		\hat{H}
+		&= \left[ \sum_{n=0}^{N-1} \frac{\abs{\hat{\vec{p}}_n}^2}{2 m_n} \right]
+			+ V(\hat{\vec{q}}_0, \hat{\vec{q}}_1, \ldots, \hat{\vec{q}}_{N-1}).
+	\end{align}
+	We begin with the approximate pseudo partition function
+	\begin{align}
+		Z_\beta
+		&= \Tr{\hat{\rho}_\beta}
+		= \braket{\psiT | e^{-\beta \hat{H}} | \psiT}.
+	\end{align}
+	Recalling that the resolution of the identity in any continuous basis is
+	\begin{align}
+		\hat{1}
+		&= \int\! \dif \vec{x} \, \ketbraself{\vec{x}},
+	\end{align}
+	we can introduce introduce $\tau$, $P$, and $\links$ such that $\beta = (P-1) \tau = \links \tau$\footnote{
+		As per the existing convention, $P$ is the number of \emph{beads}.
+		At finite temperature, paths would be closed loops thanks to the additional trace operation, so the number of beads would be equal to the number of links.
+		In the ground state, paths turn out to be open chains capped by a trial function, so there must be one fewer link than there are beads.
+		As a consequence, the value $P - 1$ crops up frequently, but saying $P - 1$ everywhere is tedious, so instead we use $\links$.
+	} and (without making any approximations) expand the Boltzmann operator as follows:
+	\begin{subequations}
+	\begin{align}
+		Z_\beta
+		&= \braket{\psiT | e^{-\beta \hat{H}} | \psiT} \\
+		&= \braket{\psiT | \left[ \prod_{j=0}^{\links - 1} e^{-\tau \hat{H}} \right] | \psiT} \\
+		&= \bra{\psiT}
+			\left[
+				\prod_{j=0}^{\links - 1}
+					\left( \int\! \dif \vec{q}\bead{j} \ketbraself{\vec{q}\bead{j}} \right)
+					e^{-\tau \hat{H}}
+			\right]
+			\left( \int\! \dif \vec{q}\bead{P-1} \ketbraself{\vec{q}\bead{P-1}} \right)
+			\ket{\psiT} \\
+		&= \idotsint\! \left[ \prod_{j=0}^{P-1} \dif \vec{q}\bead{j} \right]
+			\braket{\psiT | \vec{q}\bead{0}}
+			\left[ \prod_{j=0}^{\links - 1}
+				\braket{\vec{q}\bead{j} | e^{-\tau \hat{H}} | \vec{q}\bead{j+1}}
+			\right]
+			\braket{\vec{q}\bead{P-1} | \psiT} \\
+		&= \int\! \dif \vec{q} \,
+			\braket{\psiT | \vec{q}\bead{0}}
+			\braket{\vec{q}\bead{P-1} | \psiT}
+			\prod_{j=0}^{\links - 1}
+				\braket{\vec{q}\bead{j} | e^{-\tau \hat{H}} | \vec{q}\bead{j+1}}.
+	\end{align}
+	\end{subequations}
+	The integrand resembles a path of $P$ positions connected by $\links$ ``links'' of a nature that is still to be determined.
+	Some authors prefer the ``Green's function'' notation
+	\begin{align}
+		G(\vec{q}\bead{j}, \vec{q}\bead{j+1}; \tau)
+	\end{align}
+	for the links~\cite{sarsa2000pigs}, but we choose to work with the Dirac notation.
+
+	We require (without loss of generality) that $\braket{\vec{q} | \psiT} = \psiT(\vec{q})$ be a nodeless, positive, real function.
+	This is a perfectly reasonable demand to make, since we expect our ground state wavefunction to also be a nodeless, positive, real function.
+	The fact that it's real implies that
+	\begin{align}
+		\braket{\vec{q} | \psiT} = \braket{\psiT | \vec{q}}.
+	\end{align}
+	That it's also nodeless and positive means that
+	\begin{align}
+		\psiT(\vec{q}) = e^{\ln{\psiT(\vec{q})}},
+	\end{align}
+	so, following ref.~\cite{schmidt2014inclusion}, we can define a fictitious potential
+	\begin{align}
+		\VT(\vec{q}) = -\frac{1}{\tau} \ln{\psiT(\vec{q})}
+	\end{align}
+	arising due to the presence of the trial function:
+	\begin{align}
+		\psiT(\vec{q})
+		&= e^{-\tau \VT(\vec{q})}.
+	\end{align}
+	Thus, we obtain the expression
+	\begin{align}
+		Z_\beta
+		&= \int\! \dif \vec{q} \,
+			e^{-\tau \left[ \VT(\vec{q}\bead{0}) + \VT(\vec{q}\bead{P-1}) \right]}
+			\prod_{j=0}^{\links - 1}
+				\braket{\vec{q}\bead{j} | e^{-\tau \hat{H}} | \vec{q}\bead{j+1}}.
+	\end{align}
+
+	We would like to act with our high-temperature Boltzmann operator $e^{-\tau \hat{H}}$ on the position ket, but to do so would require us to diagonalize the Hamiltonian.
+	If we could do that, this entire work would be moot!
+	We could try to make use of the fact that $\hat{H} = \hat{K} + \hat{V}$, but unfortunately since $\hat{K}$ and $\hat{V}$ in general don't commute, we have the inconvenient inequality
+	\begin{align}
+		e^{-\tau \hat{H}}
+		= e^{-\tau \hat{K} - \tau \hat{V}}
+		&\ne e^{-\tau \hat{K}} e^{-\tau \hat{V}}.
+	\end{align}
+	However, if we are willing to live with an additional systematic error, we can apply the symmetric Trotter factorization~\cite{schmidt1995high}
+	\begin{align}
+		e^{-\tau \hat{H}}
+		&= e^{-\frac{\tau}{2} \hat{V}} e^{-\tau \hat{K}} e^{-\frac{\tau}{2} \hat{V}} + \bigo{\tau^3}
+	\end{align}
+	to each factor in the product, to get
+	\begin{subequations}
+	\begin{align}
+		\braket{\vec{q}\bead{j} | e^{-\tau \hat{H}} | \vec{q}\bead{j+1}}
+		&\approx \braket{
+			\vec{q}\bead{j} |
+			e^{-\frac{\tau}{2} \hat{V}} e^{-\tau \hat{K}} e^{-\frac{\tau}{2} \hat{V}} |
+			\vec{q}\bead{j+1}
+		} \\
+		&= e^{-\frac{\tau}{2} \left[ V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right]}
+			\braket{
+				\vec{q}\bead{j} |
+				\expb{-\frac{\tau}{2} \sum_{n=0}^{N-1} \frac{\abs{\hat{\vec{p}}_n}^2}{m_n}} |
+				\vec{q}\bead{j+1}
+			}.
+	\end{align}
+	\end{subequations}
+	Since the potential operator is diagonal in the position representation, we were able to simply act with the potential part of the exponential.
+	The kinetic part is not as obvious, but we can still treat it exactly.
+	Using \cref{eq:pq-inner,eq:gaussian-integral-amu} on \cpageref{eq:pq-inner,eq:gaussian-integral-amu} we find that the kinetic matrix elements are
+	\begin{subequations}
+	\begin{align}
+		\braket{
+			\vec{q}\bead{j} |
+			\expb{-\frac{\tau}{2} \sum_{n=0}^{N-1} \frac{\abs{\hat{\vec{p}}_n}^2}{m_n}} |
+			\vec{q}\bead{j+1}
+		}
+		&= \int\! \dif \vec{p}
+				\braket{
+					\vec{q}\bead{j} |
+					\expb{-\frac{\tau}{2} \sum_{n=0}^{N-1} \frac{\abs{\hat{\vec{p}}_n}^2}{m_n}} |
+					\vec{p}
+				}
+				\braket{\vec{p} | \vec{q}\bead{j+1}} \\
+		&= \int\! \dif \vec{p}
+				\braket{\vec{q}\bead{j} | \vec{p}} \braket{\vec{p} | \vec{q}\bead{j+1}}
+				\expb{-\frac{\tau}{2} \sum_{n=0}^{N-1} \frac{\abs{\vec{p}_n}^2}{m_n}} \\
+		&= \left[ \frac{1}{2 \pi \hbar} \right]^{N D}
+			\int\! \dif \vec{p} \, \expb{
+					-\frac{\tau}{2} \left[ \sum_{n=0}^{N-1} \frac{\abs{\vec{p}_n}^2}{m_n} \right]
+					+ \frac{i}{\hbar} \left( \vec{q}\bead{j} - \vec{q}\bead{j+1} \right) \cdot \vec{p}
+				} \\
+		&= \left[ \frac{1}{2 \pi \hbar} \right]^{N D}
+			\prod_{n=0}^{N-1} \int\! \dif \vec{p}_n \, \expb{
+					-\frac{\tau}{2} \frac{\abs{\vec{p}_n}^2}{m_n}
+					+ \frac{i}{\hbar} \left( \vec{q}_n\bead{j} - \vec{q}_n\bead{j+1} \right) \cdot \vec{p}_n
+				} \\
+		&= \left[ \frac{1}{2 \pi \hbar} \right]^{N D}
+			\prod_{n=0}^{N-1} \prod_{d=0}^{D-1} \int\! \dif p_{n,d} \, \expb{
+					-\frac{\tau}{2} \frac{p_{n,d}^2}{m_n}
+					+ \frac{i}{\hbar} \left( q_{n,d}\bead{j} - q_{n,d}\bead{j+1} \right) p_{n,d}
+				} \\
+		&= \left[ \frac{1}{2 \pi \hbar} \right]^{N D}
+			\prod_{n=0}^{N-1} \prod_{d=0}^{D-1}
+				\left[ \frac{2 \pi m_n}{\tau} \right]^\frac{1}{2}
+				\expb{
+					-\frac{m_n}{2 \hbar^2 \tau} \left( q_{n,d}\bead{j} - q_{n,d}\bead{j+1} \right)^2
+				} \\
+		&= \prod_{n=0}^{N-1}
+				\left[ \frac{m_n}{2 \pi \hbar^2 \tau} \right]^\frac{D}{2}
+				\prod_{d=0}^{D-1}
+					\expb{
+						-\frac{m_n}{2 \hbar^2 \tau} \left( q_{n,d}\bead{j} - q_{n,d}\bead{j+1} \right)^2
+					} \\
+		&= \prod_{n=0}^{N-1}
+				\left[ \frac{m_n}{2 \pi \hbar^2 \tau} \right]^\frac{D}{2}
+				\expb{
+					-\frac{m_n}{2 \hbar^2 \tau} \abs{\vec{q}_n\bead{j} - \vec{q}_n\bead{j+1}}^2
+				}.
+	\end{align}
+	\end{subequations}
+
+	Before proceeding, we define\footnote{
+	Our $\omega_\links$ is identical in spirit to the $\omega_n$ of ref.~\cite{ceriotti2010efficient} and $\omega_{P-1}$ of ref.~\cite{constable2013langevin}.
+	}
+	\begin{align}
+		\omega_\links
+		&= \frac{\links}{\hbar \beta}
+		= \frac{1}{\hbar \tau}
+			\label{eq:omega-links}
+	\end{align}
+	and
+	\begin{align}
+		V_\links(\vec{q})
+		&= \frac{1}{\links} \left[
+				\frac{V(\vec{q}\bead{0})}{2}
+				+ \VT(\vec{q}\bead{0})
+				+ \left[ \sum_{j=1}^{P-2} V(\vec{q}\bead{j}) \right]
+				+ \frac{V(\vec{q}\bead{P-1})}{2}
+				+ \VT(\vec{q}\bead{P-1})
+			\right].
+	\end{align}
+	Now we can substitute everything back into the expression for the pseudo partition function (and use ``$=$'' rather than ``$\approx$'', boldly disregarding the systematic error due to the Trotter factorization):
+	\begin{subequations}
+	\begin{align}
+		Z_\beta
+		&= \int\! \dif \vec{q} \,
+			e^{-\tau \left[ \VT(\vec{q}\bead{0}) + \VT(\vec{q}\bead{P-1}) \right]}
+			\prod_{j=0}^{\links - 1}
+				e^{-\frac{\tau}{2} \left[ V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right]}
+				\prod_{n=0}^{N-1}
+					\left[ \frac{m_n}{2 \pi \hbar^2 \tau} \right]^\frac{D}{2}
+					\expb{
+						-\frac{m_n}{2 \hbar^2 \tau} \abs{\vec{q}_n\bead{j} - \vec{q}_n\bead{j+1}}^2
+					} \\
+		&= \left[ \prod_{n=0}^{N-1} \left[ \frac{m_n}{2 \pi \hbar^2 \tau} \right]^\frac{\links D}{2} \right]
+			\int\! \dif \vec{q} \,
+				\expb{
+					-\tau \left[ \VT(\vec{q}\bead{0}) + \VT(\vec{q}\bead{P-1}) \right]
+					- \frac{\tau}{2} \sum_{j=0}^{\links - 1} \left[ V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right]
+				} \notag \\
+		&\qquad\qquad\qquad\qquad\qquad\qquad\times
+				\expb{
+					-\sum_{n=0}^{N-1} \sum_{j=0}^{\links - 1}
+						\frac{m_n}{2 \hbar^2 \tau} \abs{\vec{q}_n\bead{j} - \vec{q}_n\bead{j+1}}^2
+				} \\
+		&= \left[ \prod_{n=0}^{N-1} \left[ \frac{m_n}{2 \pi \hbar^2 \tau} \right]^\frac{\links D}{2} \right]
+			\int\! \dif \vec{q} \,
+				\expb{
+					-\beta V_\links(\vec{q})
+					- \beta \sum_{n=0}^{N-1} \sum_{j=0}^{\links - 1}
+						\frac{1}{2} \frac{m_n}{\links} \omega_\links^2 \abs{\vec{q}_n\bead{j} - \vec{q}_n\bead{j+1}}^2
+				}.
+	\end{align}
+\end{subequations}
+	Since we are only interested in average properties, the constant factor is irrelevant (it will disappear when we normalize), so we only need to claim that
+	\begin{align}
+		Z_\beta
+		&\propto
+			\int\! \dif \vec{q} \,
+				\expb{
+					-\beta V_\links(\vec{q})
+					- \beta \sum_{n=0}^{N-1} \sum_{j=0}^{\links - 1}
+						\frac{1}{2} \frac{m_n}{\links} \omega_\links^2 \abs{\vec{q}_n\bead{j} - \vec{q}_n\bead{j+1}}^2
+				}.
+	\end{align}
+	The only approximation we have made so far to $Z_\beta$ is the Trotter factorization, and we now have what looks like a classical potential composed of: the real system potential; the potential from the trial function; the ``kinetic'' potential in the form of harmonic springs with force constant $m_n \omega_\links^2 / \links$.
+	Note that the springs connect the beads of a single particle in sequence, forming a structure similar to an open-chain polymer.
+
+	Our goal is to relate the quantum system to a classical one, so we need to make $Z_\beta$ look like a classical partition function:
+	\begin{align}
+		Z
+		&\propto \iint\! \dif \vec{p} \dif \vec{q} \, e^{-\beta H(\vec{p}, \vec{q})}.
+	\end{align}
+	To this end, we introduce an integral over fictitious momenta $\fict{\vec{p}}$:
+	\begin{align}
+		\int\! \dif \fict{\vec{p}} \, \expb{-\beta \sum_{n=0}^{N-1} \frac{\abs{\fict{\vec{p}}_n}^2}{2 \fict{m}_n}}.
+	\end{align}
+	The value of this integral depends on the fictitious masses $\fict{m}_n$, but since we are only interested in proportionality, these masses are arbitrary.
+	If we define
+	\begin{subequations} \label{eq:classical-equations}
+	\begin{align}
+		\Vspring(\vec{q})
+		&= \sum_{n=0}^{N-1} \sum_{j=0}^{\links - 1}
+			\frac{1}{2} \frac{m_n}{\links} \omega_\links^2
+			\abs{\vec{q}_n\bead{j} - \vec{q}_n\bead{j+1}}^2
+				\label{eq:classical-potential-spring} \\
+		\Veff(\vec{q})
+		&= V_\links(\vec{q}) + \Vspring(\vec{q})
+				\label{eq:classical-potential} \\
+		\Hcl(\fict{\vec{p}}, \vec{q})
+		&= \left[ \sum_{n=0}^{N-1} \frac{\abs{\fict{\vec{p}}_n}^2}{2 \fict{m}_n} \right] + \Veff(\vec{q}),
+				\label{eq:classical-hamiltonian}
+	\end{align}
+	\end{subequations}
+	this leads us directly to
+	\begin{align}
+		Z_\beta
+		&\propto \iint\! \dif \fict{\vec{p}} \dif \vec{q} \, e^{-\beta \Hcl(\fict{\vec{p}}, \vec{q})}.
+			\label{eq:classical-Z}
+	\end{align}
+	Thus, we have obtained a classical system of open-chain polymers at reciprocal temperature $\beta$ which is isomorphic to the original quantum system in the sense that its partition function is an approximation to the quantum pseudo partition function.
+
+	This is useful, because it allows us to indirectly determine average properties for the quantum system.
+	For example, consider some property
+	\begin{align}
+		\hat{A} \ket{\vec{q}}
+		&= A(\vec{q}) \ket{\vec{q}}
+	\end{align}
+	that is diagonal in the position representation.
+	The quantum expectation of this property with respect to the state $\hat{\rho}_\beta$ is
+	\begin{align}
+		\mean{\hat{A}}_{\hat{\rho}_\beta}
+		&= \frac{\Tr{\hat{\rho}_\beta \hat{A}}}{\Tr{\hat{\rho}_\beta}}.
+	\end{align}
+	As demonstrated above, the denominator is $Z_\beta$, and if we repeat the above analysis with the operator $\hat{A}$ present in the expansion, we will see that the numerator is proportional to
+	\begin{align}
+		\iint\! \dif \fict{\vec{p}} \dif \vec{q} \, e^{-\beta \Hcl(\fict{\vec{p}}, \vec{q})} A(\vec{q}\bead{M}),
+	\end{align}
+	where $M = \links / 2$ is the index of the middle bead.
+	Hence, for operators that are diagonal in the position representation, the quantum average is the same as the classical phase space average for the appropriate system:
+	\begin{align}
+		\mean{\hat{A}}_{\hat{\rho}_\beta}
+		&= \mean{A}_{Z_\beta}.
+	\end{align}
+	As shown elsewhere in this work, this idea can be extended to off-diagonal operators as well, making this method a rather powerful one.
+\end{DefAnswer}
+
+\begin{DefAnswer}{ex:pigs-normal-mode}
+	Note that we can write the spring potential from \cref{eq:classical-potential-spring} in quadratic form as
+	\begin{subequations}
+	\begin{align}
+		\Vspring(\vec{q})
+		&= \sum_{n=0}^{N-1} \sum_{j=0}^{\links - 1}
+			\frac{1}{2} \fict{m}_n \omega_\links^2 \abs{\vec{q}_n\bead{j} - \vec{q}_n\bead{j+1}}^2 \\
+		&= \sum_{n=0}^{N-1} \sum_{j=0}^{\links - 1} \sum_{d=0}^{D-1}
+			\frac{1}{2} \fict{m}_n \omega_\links^2 \left( q_{n,d}\bead{j} - q_{n,d}\bead{j+1} \right)^2 \\
+		&= \omega_\links^2 \sum_{n=0}^{N-1} \fict{m}_n \sum_{d=0}^{D-1} \left(
+				\sum_{j=0}^{\links - 1}
+					\frac{1}{2} \left( (q_{n,d}\bead{j})^2 - 2 q_{n,d}\bead{j} q_{n,d}\bead{j+1} + (q_{n,d}\bead{j+1})^2 \right)
+			\right) \\
+		&= \omega_\links^2 \sum_{n=0}^{N-1} \fict{m}_n \sum_{d=0}^{D-1} \left(
+				\sum_{j=0}^{\links - 1} \frac{1}{2} \left( (q_{n,d}\bead{j})^2 + (q_{n,d}\bead{j+1})^2 \right)
+			\right) - \left(
+				\sum_{j=0}^{\links - 1} q_{n,d}\bead{j} q_{n,d}\bead{j+1}
+			\right) \\
+		&= \omega_\links^2 \sum_{n=0}^{N-1} \fict{m}_n \sum_{d=0}^{D-1} \frac{1}{2} \vec{q}_{n,d}\trans \mat{A} \vec{q}_{n,d},
+			\label{eq:pigs-spring-cartesian}
+	\end{align}
+	\end{subequations}
+	where the elements of $\mat{A}$ are
+	\begin{align}
+		a_{ij}
+		&= \begin{cases}
+				1 & i = j \in \{ 0, P-1 \} \\
+				2 & i = j \not\in \{ 0, P-1 \} \\
+				-1 & \abs{i - j} = 1 \\
+				0 & \text{otherwise}
+			\end{cases},
+				\label{eq:nm-matrix}
+	\end{align}
+	and $\mat{A}$ itself is a $(P \times P)$ tridiagonal matrix that looks like
+	\begin{align}
+		\mat{A}
+		&= \begin{pmatrix}
+				\phantom{-}1 & -1 & \phantom{-}0 & \cdots & \phantom{-}0 & \phantom{-}0 \\
+				-1 & \phantom{-}2 & -1 & \cdots & \phantom{-}0 & \phantom{-}0 \\
+				\phantom{-}0 & -1 & \phantom{-}2 & \cdots & \phantom{-}0 & \phantom{-}0 \\
+				\vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+				\phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \cdots & \phantom{-}2 & -1 \\
+				\phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \cdots & -1 & \phantom{-}1 \\
+			\end{pmatrix}.
+	\end{align}
+	If we diagonalize $\mat{A}$ as
+	\begin{align}
+		\mat{A}
+		= \mat{S}\trans \mat{\Lambda} \mat{S}
+		&\iff
+		\mat{\Lambda}
+		= \mat{S} \mat{A} \mat{S}\trans,
+			\label{eq:nm-diagonalization}
+	\end{align}
+	where $\mat{\Lambda}$ is diagonal and $\mat{S}$ is orthogonal, then we'll get a new set of coordinates $\nm{\vec{q}}$ corresponding to the normal modes with frequencies that are the diagonal elements of $\mat{\Lambda}$:
+	\begin{subequations}
+	\begin{align}
+		\vec{q}_{n,d}\trans \mat{A} \vec{q}_{n,d}
+		&= \vec{q}_{n,d}\trans (\mat{S}\trans \mat{\Lambda} \mat{S}) \vec{q}_{n,d} \\
+		&= (\vec{q}_{n,d}\trans \mat{S}\trans) \mat{\Lambda} (\mat{S} \vec{q}_{n,d}) \\
+		&= (\mat{S} \vec{q}_{n,d})\trans \mat{\Lambda} (\mat{S} \vec{q}_{n,d}) \\
+		&= \nm{\vec{q}}_{n,d}\trans \mat{\Lambda} \nm{\vec{q}}_{n,d}.
+	\end{align}
+	\end{subequations}
+
+	The existing references for LePIGS (refs.~\cite[63-66]{constable2012path} and \cite{constable2013langevin}) state how to perform the transformation, but do not describe its derivation.
+	Since the derivation is fairly straightforward, it is presented here.
+	The characteristic equation of $\mat{A}$ is
+	\begin{align}
+		\det{\left( \mat{A} - \lambda \mat{1} \right)}
+		&= 0.
+	\end{align}
+	Since the matrix in question is tridiagonal, we can use the method in ref.~\cite{el2004inverse} to find the determinant.
+	We introduce the recurrence relation
+	\begin{subequations} \label{eq:pigs-recurrence}
+	\begin{align}
+		f_0
+		&= 1 \\
+		f_1
+		&= 1 - \lambda \\
+		f_n
+		&= (2 - \lambda) f_{n-1} - f_{n-2},
+	\end{align}
+	\end{subequations}
+	where
+	\begin{align}
+		\det{\left( \mat{A} - \lambda \mat{1} \right)}
+		&= (1 - \lambda) f_{P-1} - f_{P-2}.
+	\end{align}
+	By \cref{eq:recurrence-relation}, this recurrence relation has the general solution
+	\begin{align}
+		f_n
+		&= \begin{cases}
+				1 & \text{if } \lambda = 0 \\
+				(1 + 2 n) (-1)^n & \text{if } \lambda = 4 \\
+				\frac{1}{2^{n+1}}
+					\left[ \left( 1 - \frac{\lambda}{\sqrt{\lambda^2 - 4 \lambda}} \right)
+								\left( 2 - \lambda + \sqrt{\lambda^2 - 4 \lambda} \right)^n
+							+ \left( 1 + \frac{\lambda}{\sqrt{\lambda^2 - 4 \lambda}} \right)
+								\left( 2 - \lambda - \sqrt{\lambda^2 - 4 \lambda} \right)^n
+						\right]
+					& \text{otherwise}
+			\end{cases}.
+	\end{align}
+	To find the eigenvalues $\lambda$ of $\mat{A}$, we need to solve the characteristic equation given above, which can be phrased as
+	\begin{align}
+		(1 - \lambda) f_{P-1}
+		&= f_{P-2}.
+	\end{align}
+	Clearly, $\lambda = 0$ is always an eigenvalue of $\mat{A}$, while $\lambda = 4$ never is.
+	For the others, we need to do some work.
+	We'll need the fact that
+	\begin{align}
+		\left( 2 - \lambda \pm \sqrt{\lambda^2 - 4 \lambda} \right)^2
+		&= 2 \left[ \lambda^2 - \left( 4 \pm \sqrt{\lambda^2 - 4 \lambda} \right) \lambda + 2 \left( 1 \pm \sqrt{\lambda^2 - 4 \lambda} \right) \right].
+	\end{align}
+	Some amount of tedious (but trivial) algebra later, we arrive at
+	\begin{align}
+		\left( 2 - \lambda + \sqrt{\lambda^2 - 4 \lambda} \right)^P
+		&= \left( 2 - \lambda - \sqrt{\lambda^2 - 4 \lambda} \right)^P.
+			\label{eq:pigs-eigenvalues-powers}
+	\end{align}
+	If the square root is real ($\lambda < 0$ or $\lambda > 4$), we get nothing interesting.
+	On the other hand, if $0 < \lambda < 4$, then
+	\begin{align}
+		\sqrt{\lambda^2 - 4 \lambda}
+		&= i \sqrt{4 \lambda - \lambda^2},
+	\end{align}
+	so we can write \cref{eq:pigs-eigenvalues-powers} in unit polar form (the modulus being $2^P$ on both sides) as
+	\begin{align}
+		e^{i P \theta}
+		&= e^{-i P \theta},
+			\label{eq:pigs-eigenvalues-polar}
+	\end{align}
+	where $\theta$ is the complex argument of $2 - \lambda + i \sqrt{4 \lambda - \lambda^2}$.
+	By a simple geometrical argument in the complex plane, we must require that $P \theta$ be an integer multiple $\pi$, so $\theta$ is an integer multiple of $\pi / P$.
+	The solutions $e^{i \theta}$ of \cref{eq:pigs-eigenvalues-polar} are therefore the $(2 P)$th roots of unity (for $k = 0, 1, \ldots, 2 P - 1$)
+	\begin{align}
+		e^{i \theta}
+		&= \expb{\frac{\pi i k}{P}}.
+	\end{align}
+	In order to satisfy (from the Cartesian form)
+	\begin{subequations}
+	\begin{align}
+		\cos{\left[ \frac{\pi k}{P} \right]}
+		&= 1 - \frac{\lambda}{2} \\
+		\sin{\left[ \frac{\pi k}{P} \right]}
+		&= \frac{1}{2} \sqrt{4 \lambda - \lambda^2},
+	\end{align}
+	\end{subequations}
+	we must restrict $\lambda$ to
+	\begin{align}
+		2 - 2 \cos{\left[ \frac{\pi k}{P} \right]}
+		&= 4 \sin^2{\left[ \frac{\pi k}{2 P} \right]}.
+	\end{align}
+	Since
+	\begin{align}
+		\sin^2{\left[ \frac{\pi (2 P - k)}{2 P} \right]}
+		&= \sin^2{\left[ \pi - \frac{\pi k}{2 P} \right]}
+		= \sin^2{\left[ \frac{\pi k}{2 P} \right]},
+	\end{align}
+	we only get distinct eigenvalues for $k$ up to $P$.
+	Additionally, for $k = P$, we find the non-eigenvalue $\lambda = 4$, so we must exclude this possibility.
+	Thus, the eigenvalues of $\mat{A}$ are (for $k = 0, 1, \ldots, P - 1$)
+	\begin{align}
+		\lambda_k
+		&= 4 \sin^2{\left[ \frac{\pi k}{2 P} \right]}.
+	\end{align}
+	This covers only the first quarter of the oscillation of a sine, so the eigenvalues are all between 0 and 4 (and monotonically increasing with $k$).
+
+	Now that we've found the eigenvalues, we need to find the transformation matrix $\mat{S}$.
+	From the way we defined $\mat{S}$ and $\mat{\Lambda}$ in \cref{eq:nm-diagonalization}, we have
+	\begin{align}
+		\mat{A} \vec{s}_k
+		&= \lambda_k \vec{s}_k,
+	\end{align}
+	so $\vec{s}_k$ (the rows of $\mat{S}$) are the eigenvectors of $\mat{A}$.
+	If we choose an eigenvalue $\lambda$ and the corresponding eigenvector $\vec{v}$, we can write this as
+	\begin{align}
+		(\mat{A} - \lambda \mat{1}) \vec{v}
+		&= \vec{0},
+	\end{align}
+	which in explicit form (for $i = 0, 1, \ldots, P - 1$) is
+	\begin{align}
+		\sigma_i
+		&= \sum_{j=0}^{P-1} (a_{ij} - \lambda \delta_{ij}) v_j
+		= 0.
+	\end{align}
+	Thanks to the tridiagonal structure of $\mat{A}$, none of these sums have more than three terms:
+	\begin{align}
+		\sigma_i
+		&= \begin{cases}
+				(1 - \lambda) v_0 - v_1 & \text{if } i = 0 \\
+				(2 - \lambda) v_i - v_{i-1} - v_{i+1} & \text{if } 1 \le i \le P - 2 \\
+				(1 - \lambda) v_{P-1} - v_{P-2} & \text{if } i = P - 1
+			\end{cases}.
+	\end{align}
+	Since we can renormalize the eigenvectors later, we arbitrarily choose $v_0 = 1$, to find
+	\begin{align}
+		v_i
+		&= \begin{cases}
+				1 & \text{if } i = 0 \\
+				1 - \lambda & \text{if } i = 1 \\
+				(2 - \lambda) v_{i-1} - v_{i-2} & \text{if } 2 \le i \le P - 1 \\
+			\end{cases}
+	\end{align}
+	with the extra constraint that $(1 - \lambda) v_{P-1} = v_{P-2}$.
+	This is exactly the same as the recurrence relation in \cref{eq:pigs-recurrence}, so we can use the terms of that relation directly as the elements of the eigenvectors!
+	We know that
+	\begin{subequations}
+	\begin{align}
+		1 \mp \frac{\lambda_k}{\sqrt{\lambda_k^2 - 4 \lambda_k}}
+		&= 1 \mp \frac{\sin{\left[ \frac{\pi k}{2 P} \right]}}{\sqrt{-\cos^2{\left[ \frac{\pi k}{2 P} \right]}}}
+		= 1 \pm i \tan{\left[ \frac{\pi k}{2 P} \right]}
+		= \frac{e^{\pm \frac{\pi i k}{2 P}}}{\cos{\left[ \frac{\pi k}{2 P} \right]}} \\
+		\frac{1}{2^n} \left( 2 - \lambda_k \pm \sqrt{\lambda_k^2 - 4 \lambda_k} \right)^n
+		&= e^{\frac{\pm \pi i k n}{P}},
+	\end{align}
+	\end{subequations}
+	so
+	\begin{align}
+		s_{kn}
+		&\propto \begin{cases}
+				1 & \text{if } k = 0 \\
+				\frac{1}{2} \left[
+					\frac{e^{\frac{\pi i k}{2 P}}}{\cos{\left[ \frac{\pi k}{2 P} \right]}} e^{\frac{\pi i k n}{P}}
+						+ \frac{e^{-\frac{\pi i k}{2 P}}}{\cos{\left[ \frac{\pi k}{2 P} \right]}} e^{\frac{-\pi i k n}{P}}
+				\right] & \text{otherwise}
+			\end{cases}.
+	\end{align}
+	We are justified in dropping the cosines in the denominators, since they are constant \emph{within a row} (\ie{} eigenvector) and we will renormalize those explicitly.
+	If we introduce the normalization constants $C_k$, we may simplify the above to just
+	\begin{align}
+		s_{kn}
+		&= C_k \cos{\left[ \frac{\pi}{P} k \left( n + \frac{1}{2} \right) \right]}.
+			\label{eq:pigs-nm-transform}
+	\end{align}
+	For the normalization, we demand that
+	\begin{align}
+		\sum_{n=0}^{P-1} s_{kn}^2
+		&= C_k^2 \sum_{n=0}^{P-1} \cos^2{\left[ \frac{\pi}{P} k \left( n + \frac{1}{2} \right) \right]}
+		= 1
+	\end{align}
+	By \vref{eq:cosine-sum}, this becomes
+	\begin{align}
+		C_k
+		&= \begin{cases}
+				\sqrt{\frac{1}{P}} & \text{if } k = 0 \\
+				\sqrt{\frac{2}{P}} & \text{otherwise}
+			\end{cases}.
+	\end{align}
+
+	Thus, we have rederived the open path normal mode transformation and found it to be the same Discrete Cosine Transform as in ref.~\cite{constable2012path}.\footnote{
+		There are some technical details relating to the DCT discussed in \vref{chap:dct}.
+	}
+	The spring potential from \cref{eq:pigs-spring-cartesian} may be written in the new coordinates as
+	\begin{subequations}
+	\begin{align}
+		\Vspring(\nm{\vec{q}})
+		&= \omega_\links^2 \sum_{n=0}^{N-1} \fict{m}_n \sum_{d=0}^{D-1} \frac{1}{2} \nm{\vec{q}}_{n,d}\trans \mat{\Lambda} \nm{\vec{q}}_{n,d} \\
+		&= \sum_{n=0}^{N-1} \sum_{k=0}^{P-1} \sum_{d=0}^{D-1} \frac{1}{2} \fict{m}_n \omega_\links^2 \lambda_k (\nm{q}_{n,d}\bead{k})^2 \\
+		&= \sum_{n,k,d} \frac{1}{2} \fict{m}_n \omega_k^2 (\nm{q}_{n,d}\bead{k})^2,
+	\end{align}
+	\end{subequations}
+	where we have introduced the mode-specific frequencies
+	\begin{align}
+		\omega_k
+		&= 2 \omega_\links \sin{\left[ \frac{\pi k}{2 P} \right]}
+		= \frac{2}{\hbar \tau} \sin{\left[ \frac{\pi k}{2 P} \right]}.
+	\end{align}
+	In these coordinates, we have obtained $N P D$ independent harmonic oscillators with masses $\fict{m}_n$ and frequencies $\omega_k$.
+
+	It remains necessary to find the canonical momenta for these new coordinates.
+	Since there are not any quantum momenta with which to confuse them, we will use the label $p$ (rather than $\fict{p}$) for the fictitious momenta.
+	In terms of the Lagrangian $\mathcal{L}$, the canonical momenta are~\cite[35]{evans2008statistical}
+	\begin{align}
+		\nm{p}_{n,d}\bead{k}
+		&= \dpd{\mathcal{L}}{{\dot{\nm{q}}_{n,d}\bead{k}}}
+		= \sum_{j=0}^{P-1} \frac{\partial \mathcal{L}}{\partial \dot{q}_{n,d}\bead{j}} \frac{\partial \dot{q}_{n,d}\bead{j}}{\partial \dot{\nm{q}}_{n,d}\bead{k}}
+		= \sum_{j=0}^{P-1} p_{n,d}\bead{j} \frac{\partial \dot{q}_{n,d}\bead{j}}{\partial \dot{\nm{q}}_{n,d}\bead{k}}.
+	\end{align}
+	Since
+	\begin{align}
+		q_{n,d}\bead{j}(\nm{\vec{q}})
+		&= (\mat{S}\trans \nm{\vec{q}})\bead{j}
+	\end{align}
+	and $\mat{S}$ is independent of time, we have that
+	\begin{align}
+		\dot{q}_{n,d}\bead{j}(\dot{\nm{\vec{q}}})
+		&= (\mat{S}\trans \dot{\nm{\vec{q}}})\bead{j}
+		= \sum_{k=0}^{P-1} s_{kj} \dot{\nm{q}}_{n,d}\bead{k}
+	\end{align}
+	and
+	\begin{align}
+		\frac{\partial \dot{q}_{n,d}\bead{j}}{\partial \dot{\nm{q}}_{n,d}\bead{k}}
+		&= s_{kj}.
+	\end{align}
+	Therefore,
+	\begin{align}
+		\nm{p}_{n,d}\bead{k}
+		&= \sum_{j=0}^{P-1} s_{kj} p_{n,d}\bead{j}
+		= (\mat{S} \vec{p}_{n,d})\bead{k}.
+	\end{align}
+	That is, to obtain the canonical momenta, we apply the same transformation as for the coordinates.
+\end{DefAnswer}
+
+\begin{DefAnswer}{ex:lepigs-algorithm}
+	We wish to simulate the classical Hamiltonian given in \vref{eq:classical-hamiltonian} at reciprocal temperature $\beta$ using a Langevin thermostat.
+	We choose the fictitious masses to be
+	\begin{align}
+		\fict{m}_n
+		&= \frac{m_n}{\links}.
+	\end{align}
+	Since for the time being we are not particularly interested in particles, beads, or dimensions, we will index things with a generic subscript $f \in \{ 0, 1, \ldots, F - 1 \}$, signifying the $f$th degree of freedom, greatly reducing visual clutter.
+	To find the simulation algorithm, we will follow closely the approach of refs.~\cite{bussi2007accurate,ceriotti2010efficient}.
+
+	For the framework of the algorithm, we want to use the Trotter expansion of the real-time propagator presented in ref.~\cite{tuckerman1992reversible}, so we will need to figure out what this propagator is.\footnote{
+		Some background on the subject is provided in ref.~\cite[44-50]{evans2008statistical} and ref.~\cite[31-35]{zwanzig2001nonequilibrium}.
+	}
+	Because it is more convenient for all parts of the algorithm other than application of the potential $V_\links$, we will do everything in the normal mode coordinates given by the transformation $\mat{S}$ in \vref{eq:pigs-nm-transform}.
+	Since we are using Langevin dynamics, our equations of motion are~\cite{kubo1966fluctuation}
+	\begin{subequations} \label{eq:langevin-eom}
+	\begin{align}
+		\dot{\nm{p}}_f(t)
+		&= \nm{F}_f(\nm{\vec{q}}(t)) - \gamma_f \nm{p}_f(t) + R_f(t)
+			\label{eq:langevin-eom-p} \\
+		\dot{\nm{q}}_f(t)
+		&= \frac{\nm{p}_f(t)}{m_f}
+	\end{align}
+	\end{subequations}
+	where $\vec{\gamma}$ are \emph{frictions} and $\vec{R}(t)$ are \emph{random forces} (independent for each degree of freedom).
+	In our notation, $\nm{F}_f$ is the force applied to a normal mode degree of freedom by the total effective potential:
+	\begin{align}
+		\nm{\vec{F}}(\nm{\vec{q}})
+		&= -\frac{\partial \Veff}{\partial \nm{\vec{q}}}.
+	\end{align}
+
+	It may seem strange that we wanted to introduce temperature, but there is no mention of temperature in these equations.
+	However, we have not yet explained what the random force needs to be!
+	By the fluctuation-dissipation theorem, each element of the random force vector must obey~\cite[5-6]{zwanzig2001nonequilibrium}
+	\begin{subequations}
+	\begin{align}
+		\mean{R_f(t)}
+		&= 0 \\
+		\mean{R_f(t) R_f(t')}
+		&= \frac{2 m_f \gamma_f}{\beta} \ddf{t - t'}.
+	\end{align}
+	\end{subequations}
+	It is crucial to note that $\beta = 1/\kB T$ here is exactly that temperature which we are trying to simulate, and it is only indirectly related to concepts like path length and imaginary propagation time; this distinction becomes important when the classical polymers in the simulation may have different lengths.
+	The autocorrelation of a standard normal random number (``Gaussian number'') $\xi_f(t)$ is~\cite{ceriotti2010efficient}
+	\begin{align}
+		\mean{\xi_f(t) \xi_f(t')}
+		&= \ddf{t - t'},
+	\end{align}
+	from which we deduce that
+	\begin{align}
+		R_f(t)
+		&= \sqrt{\frac{2 m_f \gamma_f}{\beta}} \xi_f(t).
+	\end{align}
+
+	To find the time evolution operator, we need the Fokker--Planck equation corresponding to the Langevin equations in \cref{eq:langevin-eom}.
+	If we were dealing with Hamiltonian dynamics, this would just be the Liouville equation~\cite[32]{zwanzig2001nonequilibrium}
+	\begin{align}
+		\dpd{}{t} f
+		&= -\hat{L} f
+	\end{align}
+	for the probability distribution function $f$, with the Liouvillian
+	\begin{align}
+		\hat{L}
+		&= -\dpd{}{t}
+		= \sum_f \dpd{H}{\nm{p}_f} \dpd{}{\nm{q}_f} - \dpd{H}{\nm{q}_f} \dpd{}{\nm{p}_f}.
+	\end{align}
+	However, \cref{eq:langevin-eom-p} is a stochastic differential equation, so things are not as pleasant as in the case of Hamiltonian dynamics.
+	We will use eqs.~(3.110), (3.118), (3.119), (4.96), and (4.97) from ref.~\cite[54-55,83]{risken1984fokker}.
+	Because the force field will in general couple the degrees of freedom, we put them all together and consider a system of $2 F$ Langevin equations.
+	We introduce the shorthand $\nm{\vec{\Gamma}}$ to mean the combined vector of momenta $\nm{\vec{p}}$ and positions $\nm{\vec{q}}$.
+	The $h$ and $g$ functions of ref.~\cite{risken1984fokker} are then
+	\begin{subequations}
+	\begin{align}
+		h_{\nm{p},f}(\nm{\vec{\Gamma}})
+		&= \nm{F}_f(\nm{\vec{q}}) - \gamma_f \nm{p}_f &
+		h_{\nm{q},f}(\nm{\vec{\Gamma}})
+		&= \frac{\nm{p}_f}{m_f} \\
+		g_{\nm{p},ff'}(\nm{\vec{\Gamma}})
+		&= \delta_{ff'} \sqrt{\frac{m_f \gamma_f}{\beta}} &
+		g_{\nm{q},ff'}(\nm{\vec{\Gamma}})
+		&= 0.
+	\end{align}
+	\end{subequations}
+	Note that in our case there is no explicit time dependence.
+	The Kramers--Moyal coefficients are
+	\begin{subequations}
+	\begin{align}
+		D_{\nm{p},f}(\nm{\vec{\Gamma}})
+		&= \nm{F}_f(\nm{\vec{q}}) - \gamma_f \nm{p}_f &
+		D_{\nm{q},f}(\nm{\vec{\Gamma}})
+		&= \frac{\nm{p}_f}{m_f} \\
+		D_{\nm{p},ff'}(\nm{\vec{\Gamma}})
+		&= \delta_{ff'} \frac{m_f \gamma_f}{\beta} &
+		D_{\nm{q},ff'}(\nm{\vec{\Gamma}})
+		&= 0,
+	\end{align}
+	\end{subequations}
+	with all the higher coefficients zero.
+	From this we can construct the (backward) Fokker--Planck operator\footnote{
+	Ref.~\cite[83]{risken1984fokker} refers to this operator as $\boldsymbol{L}_\mathrm{FP}\adj$, while ref.~\cite[42-43]{zwanzig2001nonequilibrium} calls it $\mathcal{D}\adj$.
+	}
+	\begin{subequations}
+	\begin{align}
+		\hat{L}
+		&= \sum_f
+			D_{\nm{p},f}(\nm{\vec{\Gamma}}) \dpd{}{\nm{p}_f}
+			+ D_{\nm{q},f}(\nm{\vec{\Gamma}}) \dpd{}{\nm{q}_f}
+			+ D_{\nm{p},ff'}(\nm{\vec{\Gamma}}) \md{}{2}{\nm{p}_f}{}{\nm{p}_{f'}}{} \\
+		&= \sum_f
+			\nm{F}_f(\nm{\vec{q}}) \dpd{}{\nm{p}_f} - \gamma_f \nm{p}_f \dpd{}{\nm{p}_f}
+			+ \frac{\nm{p}_f}{m_f} \dpd{}{\nm{q}_f}
+			+ \frac{m_f \gamma_f}{\beta} \dpd[2]{}{\nm{p}_f} \\
+		&= \sum_f
+			\nm{F}_f(\nm{\vec{q}}) \dpd{}{\nm{p}_f}
+			+ \frac{\nm{p}_f}{m_f} \dpd{}{\nm{q}_f}
+			- \gamma_f \left( \nm{p}_f \dpd{}{\nm{p}_f} - \frac{m_f}{\beta} \dpd[2]{}{\nm{p}_f} \right),
+				\label{eq:fokker-planck-operator}
+	\end{align}
+	\end{subequations}
+	which gives us our real-time propagator $e^{\hat{L} t}$~\cite[42-43]{zwanzig2001nonequilibrium}.\footnote{
+		Our expression for a single degree of freedom in \cref{eq:fokker-planck-operator} differs slightly from eq.~(4) of ref.~\cite{bussi2007accurate}, because we have chosen a different convention for the operator (using its adjoint instead).
+	}
+
+	We may now apply the Trotter factorization to this propagator.
+	We will break the total time $t$ into $S$ time steps of length $\dt$: $t = S \dt$.
+	Instead of the splitting recommended in ref.~\cite{bussi2007accurate}, we will group the ``kinetic'' spring potential (see \cref{eq:classical-potential-spring}) with the free particle motion and use the splitting given in ref.~\cite{ceriotti2010efficient}.
+	The effective potential in \cref{eq:classical-potential} is already in the form we desire, so it should be simple to split the force.
+	However, the force we are splitting is in the transformed coordinates, so we need to be careful.
+	We define
+	\begin{subequations}
+	\begin{align}
+		\vec{F}_K(\vec{q})
+		&= -\dpd{\Vspring}{\vec{q}} \\
+		\vec{F}_V(\vec{q})
+		&= -\dpd{V_\links}{\vec{q}}.
+	\end{align}
+	\end{subequations}
+	At this point we can no longer ignore the structure of the problem, and we return to the full subscripts for the degrees of freedom.
+	Naturally,
+	\begin{subequations}
+	\begin{align}
+		F_{n,d}\bead{j}(\vec{q})
+		&= -\frac{\partial \Veff}{\partial q_{n,d}\bead{j}}
+		= -\frac{\partial \Vspring}{\partial q_{n,d}\bead{j}} - \frac{\partial V_\links}{\partial q_{n,d}\bead{j}} \\
+		&= F_{K,n,d}\bead{j}(\vec{q}) + F_{V,n,d}\bead{j}(\vec{q}).
+	\end{align}
+	\end{subequations}
+	Less obviously,
+	\begin{subequations}
+	\begin{align}
+		\nm{F}_{n,d}\bead{k}(\nm{\vec{q}})
+		&= -\frac{\partial \Veff}{\partial \nm{q}_{n,d}\bead{k}}
+		= -\sum_{j=0}^{P-1} \frac{\partial \Veff}{\partial q_{n,d}\bead{j}} \frac{\partial q_{n,d}\bead{j}}{\partial \nm{q}_{n,d}\bead{k}}
+		= -\sum_{j=0}^{P-1} \left[ \frac{\partial \Vspring}{\partial q_{n,d}\bead{j}} + \frac{\partial V_\links}{\partial q_{n,d}\bead{j}} \right] \frac{\partial q_{n,d}\bead{j}}{\partial \nm{q}_{n,d}\bead{k}} \\
+		&= -\sum_{j=0}^{P-1} s_{kj} \left[ \frac{\partial \Vspring}{\partial q_{n,d}\bead{j}} + \frac{\partial V_\links}{\partial q_{n,d}\bead{j}} \right]
+				\label{eq:force-nm-transform} \\
+		&= \nm{F}_{K,n,d}\bead{k}(\nm{\vec{q}}) + \nm{F}_{V,n,d}\bead{k}(\nm{\vec{q}}).
+	\end{align}
+	\end{subequations}
+	Thus, we may write
+	\begin{subequations}
+	\begin{align}
+		\hat{L}_0
+		&= \sum_{n,k,d}
+				\frac{\nm{p}_{n,d}\bead{k}}{\fict{m}_n} \frac{\partial}{\partial \nm{q}_{n,d}\bead{k}}
+				+ \nm{F}_{K,n,d}\bead{k}(\nm{\vec{q}}) \frac{\partial}{\partial \nm{p}_{n,d}\bead{k}} \\
+		\hat{L}_V
+		&= \sum_{n,k,d}
+				\nm{F}_{V,n,d}\bead{k}(\nm{\vec{q}}) \frac{\partial}{\partial \nm{p}_{n,d}\bead{k}} \\
+		\hat{L}_\gamma
+		&= \sum_{n,k,d} \gamma_{n,d}\bead{k} \left(
+				\frac{\fict{m}_n}{\beta} \frac{\partial^2}{\partial (\nm{p}_{n,d}\bead{k})^2}
+				- \nm{p}_{n,d}\bead{k} \frac{\partial}{\partial \nm{p}_{n,d}\bead{k}}
+			\right),
+	\end{align}
+	\end{subequations}
+	(so that $\hat{L} = \hat{L}_0 + \hat{L}_V + \hat{L}_\gamma$), and this leads to (for a single time step)~\cite{tuckerman1992reversible,bussi2007accurate}
+	\begin{align}
+		e^{\hat{L} \dt}
+		&= e^{\hat{L}_\gamma \frac{\dt}{2}}
+				e^{\hat{L}_V \frac{\dt}{2}}
+				e^{\hat{L}_0 \dt}
+				e^{\hat{L}_V \frac{\dt}{2}}
+				e^{\hat{L}_\gamma \frac{\dt}{2}}
+			+ \bigo{\dt^3}.
+	\end{align}
+	The last piece we need is the result of each propagator on a state $\vec{\Gamma}(t)$.
+	Let us proceed from the inside out.
+
+	The propagator $e^{\hat{L}_0 \dt}$ describes the motion of a collection of independent harmonic oscillators with the equations of motion
+	\begin{subequations}
+	\begin{align}
+		\dot{\nm{p}}_{n,d}\bead{k}(t)
+		&= -\fict{m}_n \omega_k^2 \nm{q}_{n,d}\bead{k}(t) \\
+		\dot{\nm{q}}_{n,d}\bead{k}(t)
+		&= \frac{\nm{p}_{n,d}\bead{k}(t)}{\fict{m}_n}.
+	\end{align}
+	\end{subequations}
+	The trajectory that is the solution to these differential equations is~\cite[31]{zwanzig2001nonequilibrium}
+	\begin{subequations} \label{eq:harmonic-oscillator-trajectory-exact}
+	\begin{align}
+		\nm{p}_{n,d}\bead{k}(t\final)
+		&= \cos{(\omega_k \dt)} \nm{p}_{n,d}\bead{k}(t\initial) - \fict{m}_n \omega_k \sin{(\omega_k \dt)} \nm{q}_{n,d}\bead{k}(t\initial) \\
+		\nm{q}_{n,d}\bead{k}(t\final)
+		&= \frac{1}{\fict{m}_n \omega_k} \sin{(\omega_k \dt)} \nm{p}_{n,d}\bead{k}(t\initial) + \cos{(\omega_k \dt)} \nm{q}_{n,d}\bead{k}(t\initial),
+	\end{align}
+	\end{subequations}
+	which may be written more compactly as
+	\begin{align}
+		\begin{pmatrix}
+			\nm{p}_{n,d}\bead{k}(t\final) \\[2 mm]
+			\nm{q}_{n,d}\bead{k}(t\final)
+		\end{pmatrix}
+		&= \begin{pmatrix}
+				\cos{\omega_k \dt} & -\fict{m}_n \omega_k \sin{\omega_k \dt} \\[2 mm]
+				\frac{1}{\fict{m}_n \omega_k} \sin{\omega_k \dt} & \cos{\omega_k \dt}
+			\end{pmatrix}
+			\begin{pmatrix}
+				\nm{p}_{n,d}\bead{k}(t\initial) \\[2 mm]
+				\nm{q}_{n,d}\bead{k}(t\initial)
+			\end{pmatrix}.
+	\end{align}
+	We need to be careful about the centroid mode, since $\omega_0 = 0$ and we'd rather not divide by that.
+	Applying l'Hôpital's rule, we get the sinc limit:
+	\begin{align}
+		\lim_{\omega_k \to 0} \frac{\sin{\omega_k \dt}}{\omega_k \dt}
+		&= \lim_{\omega_k \to 0} \cos{\omega_k \dt}
+		= 1,
+	\end{align}
+	so the centroid is updated by
+	\begin{align}
+		\begin{pmatrix}
+			\nm{p}_{n,d}\bead{0}(t\final) \\[2 mm]
+			\nm{q}_{n,d}\bead{0}(t\final)
+		\end{pmatrix}
+		&= \begin{pmatrix}
+				1 & 0 \\[2 mm]
+				\frac{\dt}{\fict{m}_n} & 1
+			\end{pmatrix}
+			\begin{pmatrix}
+				\nm{p}_{n,d}\bead{0}(t\initial) \\[2 mm]
+				\nm{q}_{n,d}\bead{0}(t\initial)
+			\end{pmatrix}.
+	\end{align}
+	If we make use of the function
+	\begin{align}
+		\sinc{\omega_k \dt}
+		&= \begin{cases}
+				1 & \text{if } \omega_k \dt = 0 \\
+				\frac{\sin{\omega_k \dt}}{\omega_k \dt} & \text{otherwise}
+			\end{cases},
+	\end{align}
+	we can write the general case as
+	\begin{align}
+		\begin{pmatrix}
+			\nm{p}_{n,d}\bead{k}(t\final) \\[2 mm]
+			\nm{q}_{n,d}\bead{k}(t\final)
+		\end{pmatrix}
+		&= \begin{pmatrix}
+				\cos{\omega_k \dt} & -\fict{m}_n \omega_k \sin{\omega_k \dt} \\[2 mm]
+				\frac{\dt}{\fict{m}_n} \sinc{\omega_k \dt} & \cos{\omega_k \dt}
+			\end{pmatrix}
+			\begin{pmatrix}
+				\nm{p}_{n,d}\bead{k}(t\initial) \\[2 mm]
+				\nm{q}_{n,d}\bead{k}(t\initial)
+			\end{pmatrix}.
+	\end{align}
+
+	The propagator $e^{\hat{L}_V \frac{\dt}{2}}$ is extremely simple, and its effect is most easily determined using \cref{eq:exp-deriv}.
+	Without making any additional approximations, the propagator may be written as
+	\begin{align}
+		\expb{\hat{L}_V \frac{\dt}{2}}
+		&= \expb{\frac{\dt}{2} \sum_{n,k,d} \nm{F}_{V,n,d}\bead{k} \frac{\partial}{\partial \nm{p}_{n,d}\bead{k}}}
+		= \expb{\frac{\dt}{2} \nm{\vec{F}}_{V} \cdot \frac{\partial}{\partial \nm{\vec{p}}}}.
+	\end{align}
+	Thus,
+	\begin{align}
+		(\nm{\vec{p}}(t\final), \nm{\vec{q}}(t\final))
+		&= e^{\hat{L}_V \frac{\dt}{2}} (\nm{\vec{p}}(t\initial), \nm{\vec{q}}(t\initial))
+		= \left( \nm{\vec{p}}(t\initial) + \frac{\dt}{2} \nm{\vec{F}}_V, \nm{\vec{q}}(t\initial) \right).
+	\end{align}
+	The only difficulty with this result is that in practice $\vec{F}_V$ will most likely be expressed in Cartesian coordinates.
+	However, this difficulty is easy to handle, since
+	\begin{align}
+		\nm{\vec{p}}_{n,d} + \frac{\dt}{2} \nm{\vec{F}}_{V,n,d}
+		&= \mat{S} \vec{p}_{n,d} + \frac{\dt}{2} \mat{S} \vec{F}_{V,n,d}
+		= \mat{S} \left( \mat{S}\trans \nm{\vec{p}}_{n,d} + \frac{\dt}{2} \vec{F}_{V,n,d} \right)
+	\end{align}
+	means that we can update $\vec{p}$ in Cartesian coordinates using our regular expression for the force.
+
+	Finally, we must attack the thermostat propagator $e^{\hat{L}_\gamma \frac{\dt}{2}}$.
+	Quite conveniently, the terms of $\hat{L}_\gamma$ for the different degrees of freedom commute, so we only need to solve for the generic one-dimensional case:
+	\begin{align}
+		\expb{\frac{\dt}{2} \gamma \left( \frac{m}{\beta} \dpd[2]{}{\nm{p}} - \nm{p} \dpd{}{\nm{p}} \right)}.
+	\end{align}
+	This is an Ornstein--Uhlenbeck process, for which there is an exact ``updating formula''~\cite[551]{gillespie1992markov}:
+	\begin{align}
+		\nm{p}(t\final)
+		&= e^{-\gamma \frac{\dt}{2}} \nm{p}(t\initial) + \sqrt{\frac{m}{\beta} (1 - e^{-\gamma \dt})} \xi(t\initial),
+	\end{align}
+	where $\xi(t)$ is again a Gaussian number.
+	This result can be found by solving for the transition probability, which is a Gaussian distribution, and then applying the linear transformation theorem for a Gaussian distribution~\cite[27-28]{gillespie1992markov}.
+	It is the same result as obtained in ref.~\cite{bussi2007accurate}, and to be consistent we will define the same coefficients
+	\begin{subequations}
+	\begin{align}
+		c_1
+		&= e^{-\gamma \frac{\dt}{2}} \\
+		c_2
+		&= \sqrt{\frac{m}{\beta} (1 - c_1^2)}.
+	\end{align}
+	\end{subequations}
+	It is then straightforward to extend this to all the degrees of freedom:
+	\begin{subequations}
+	\begin{align}
+		c_{1,n,d}\bead{k}
+		&= e^{-\gamma_{n,d}\bead{k} \frac{\dt}{2}} \\
+		c_{2,n,d}\bead{k}
+		&= \sqrt{\frac{\fict{m}_n}{\beta} (1 - (c_{1,n,d}\bead{k})^2)} \\
+		\nm{p}_{n,d}\bead{k}(t\final)
+		&= c_{1,n,d}\bead{k} \nm{p}_{n,d}\bead{k}(t\initial) + c_{2,n,d}\bead{k} \xi_{n,d}\bead{k}(t\initial).
+	\end{align}
+	\end{subequations}
+
+	We finally have a procedure for taking one time step in a LePIGS simulation.
+	All the individual steps are exact, and the only error we introduce is due to the Trotter factorization with a finite time step $\dt$.
+	The complete procedure for a single time step $\dt$ is as follows:
+	\begin{enumerate}
+		\item $\nm{p}_{n,d}\bead{k} \gets c_{1,n,d}\bead{k} \nm{p}_{n,d}\bead{k} + c_{2,n,d}\bead{k} \xi_{n,d}\bead{k}$ \label{item:alg-step-thermo}
+		\item $p_{n,d}\bead{j} \gets p_{n,d}\bead{j} + \frac{\dt}{2} F_{V,n,d}\bead{j}(\vec{q})$ \label{item:alg-step-force}
+		\item $
+			\begin{pmatrix}
+				\nm{p}_{n,d}\bead{k} \\[2 mm]
+				\nm{q}_{n,d}\bead{k}
+			\end{pmatrix}
+			\gets \begin{pmatrix}
+					\cos{\omega_k \dt} & -\fict{m}_n \omega_k \sin{\omega_k \dt} \\[2 mm]
+					\frac{\dt}{\fict{m}_n} \sinc{\omega_k \dt} & \cos{\omega_k \dt}
+				\end{pmatrix}
+				\begin{pmatrix}
+					\nm{p}_{n,d}\bead{k} \\[2 mm]
+					\nm{q}_{n,d}\bead{k}
+				\end{pmatrix}
+			$
+		\item Repeat substep~\ref{item:alg-step-force}.
+		\item Repeat substep~\ref{item:alg-step-thermo}.
+	\end{enumerate}
+	The following are implied:
+	\begin{itemize}
+		\item Each substep is performed for all degrees of freedom before moving on to the next substep.
+			The order of updates within a substep is irrelevant.
+		\item The coordinates and momenta are converted between Cartesian and normal mode representations between substeps as necessary.
+		\item Each ``invocation'' of $\xi_{n,d}\bead{k}$ results in an independent number randomly drawn from a standard normal distribution.
+	\end{itemize}
+
+	Since our form of the equations of motion for a single thermostatted ``free particle'' degree of freedom is the same as of those in eq.~(32) of ref.~\cite{ceriotti2010efficient}, we are justified in using the same optimal frictions as those they give in eq.~(36).
+	Namely, for $k \ge 1$,
+	\begin{align}
+		\gamma_{n,d}\bead{k}
+		&= 2 \omega_k.
+	\end{align}
+	The centroid friction ($\gamma_{n,d}\bead{0}$) remains a free parameter of the simulation.
+\end{DefAnswer}
+
+\begin{DefAnswer}{ex:harmonic-oscillator-classical-trajectory}
+	For a harmonic oscillator with mass $m$, angular frequency $\omega$, and initial conditions $p$, $q$, the total energy is
+	\begin{align}
+		H
+		&= \frac{p^2}{2 m} + \frac{1}{2} m \omega^2 q^2.
+	\end{align}
+	The trajectory is given by \vref{eq:harmonic-oscillator-trajectory-exact}, but is reproduced here without the extra flair on the symbols:
+	\begin{subequations}
+	\begin{align}
+		p_t
+		&= \cos{(\omega t)} p - m \omega \sin{(\omega t)} q \\
+		q_t
+		&= \frac{1}{m \omega} \sin{(\omega t)} p + \cos{(\omega t)} q.
+	\end{align}
+	\end{subequations}
+
+	We note that
+	\begin{subequations}
+	\begin{align}
+		p_t q_t
+		&= \left( \cos{(\omega t)} p - m \omega \sin{(\omega t)} q \right)
+			\left( \frac{1}{m \omega} \sin{(\omega t)} p + \cos{(\omega t)} q \right) \\
+		&= \frac{1}{m \omega} \cos{(\omega t)} \sin{(\omega t)} p^2
+			+ 2 \cos^2{(\omega t)} p q
+			- m \omega \cos{(\omega t)} \sin{(\omega t)} q^2
+			- p q.
+	\end{align}
+	\end{subequations}
+	Therefore, the action is
+	\begin{subequations}
+	\begin{align}
+		S_t
+		&= \frac{1}{m} \int_0^t\! \dif \tau \, (p_\tau)^2 - t H \\
+		&= \frac{1}{m} \int_0^t\! \dif \tau \, (\cos{(\omega \tau)} p - m \omega \sin{(\omega \tau)} q)^2
+			- \frac{t}{2} \frac{p^2}{m} - \frac{t}{2} m \omega^2 q^2 \\
+		&= \frac{1}{m} \left(
+				p^2 \int_0^t\! \dif \tau \, \cos^2{(\omega \tau)}
+				- 2 m \omega p q \int_0^t\! \dif \tau \, \cos{(\omega \tau)} \sin{(\omega \tau)}
+				+ m^2 \omega^2 q^2 \int_0^t\! \dif \tau \,  \sin^2{(\omega \tau)}
+			\right) \notag \\
+		&\qquad
+			- \frac{1}{m} \left( \frac{t}{2} p^2 + \frac{t}{2} m^2 \omega^2 q^2 \right) \\
+		&= \frac{1}{m} \left(
+				p^2 \left[ \frac{t}{2} + \frac{\sin{(2 \omega t)}}{4 \omega} \right]
+				- m p q \sin^2{(\omega t)}
+				+ m^2 \omega^2 q^2 \left[ \frac{t}{2} - \frac{\sin{(2 \omega t)}}{4 \omega} \right]
+				- \frac{t}{2} p^2
+				- \frac{t}{2} m^2 \omega^2 q^2
+			\right) \\
+		&= \frac{p^2}{2 m} \frac{\sin{(2 \omega t)}}{2 \omega}
+			- p q \sin^2{(\omega t)}
+			- \frac{1}{2} m \omega^2 q^2 \frac{\sin{(2 \omega t)}}{2 \omega} \\
+		&= \frac{1}{2} \left(
+				\frac{1}{m \omega} \cos{(\omega t)} \sin{(\omega t)} p^2
+				+ 2 \cos^2{(\omega t)} p q
+				- m \omega \cos{(\omega t)} \sin{(\omega t)} q^2
+				- 2 p q
+			\right) \\
+		&= \frac{1}{2} (p_t q_t - p q).
+	\end{align}
+	\end{subequations}
+
+	For the HK prefactor, we need the elements of the monodromy matrix:
+	\begin{subequations}
+	\begin{align}
+		\dpd{p_t}{p}
+		&= \cos{(\omega t)}
+		&
+		\dpd{p_t}{q}
+		&= -m \omega \sin{(\omega t)} \\
+		\dpd{q_t}{p}
+		&= \frac{1}{m \omega} \sin{(\omega t)}
+		&
+		\dpd{q_t}{q}
+		&= \cos{(\omega t)}.
+	\end{align}
+	\end{subequations}
+	Thus, the HK prefactor is
+	\begin{subequations}
+	\begin{align}
+		R_t
+		&= \sqrt{\frac{1}{2} \left(
+				\dpd{p\coh{p}{q}_t}{p}
+				+ \dpd{q\coh{p}{q}_t}{q}
+				+ \frac{i}{\hbar \gamma} \dpd{p\coh{p}{q}_t}{q}
+				- i \hbar \gamma \dpd{q\coh{p}{q}_t}{p}
+			\right)} \\
+		&= \sqrt{
+				\cos{(\omega t)}
+				- \frac{i}{2} \left( \frac{m \omega}{\hbar \gamma} + \frac{\hbar \gamma}{m \omega} \right) \sin{(\omega t)}
+			}.
+	\end{align}
+	\end{subequations}
+	Note that in the case $\gamma = m \omega / \hbar$, the coherent states are on resonance with the oscillator and
+	\begin{align}
+		R_t
+		&= \sqrt{\cos{(\omega t)} - i \sin{(\omega t)}}.
+	\end{align}
+\end{DefAnswer}

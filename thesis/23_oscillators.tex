@@ -1,0 +1,243 @@
+\chapter{Coupled harmonic oscillators}
+\chaptermark{Oscillators}
+
+\label{chap:oscillators}
+
+
+The system consists of two identical particles of mass $m$, each in a harmonic trap of angular frequency $\omega_0$, and interacting with a harmonic restraint (with zero separation distance) of angular frequency $\omegaint$.
+In Cartesian coordinates, the Hamiltonian for this system may be expressed as
+\begin{align}
+	\hat{H}
+	&= \frac{\abs{\hat{\vec{p}}_A}^2}{2 m} + \frac{\abs{\hat{\vec{p}}_B}^2}{2 m}
+		+ \frac{1}{2} m \omega_0^2 (\hat{\vec{q}}_A^2 + \hat{\vec{q}}_B^2)
+		+ \frac{1}{2} m \omegaint^2 (\hat{\vec{q}}_A - \hat{\vec{q}}_B)^2.
+\end{align}
+Because this does not add any significant difficulty (since the interactions are all harmonic), we consider the more general $D$-dimensional case here, so that each of the momentum and positions vectors contains $D$ scalar elements.
+With this in mind, we may immediately simplify the problem into $D$ 1-dimensional problems:
+\begin{align}
+	\hat{H}
+	&= \sum_{d=0}^{D-1}
+			\frac{\hat{p}_{A,d}^2}{2 m} + \frac{\hat{p}_{B,d}^2}{2 m}
+			+ \frac{1}{2} m \omega_0^2 (\hat{q}_{A,d}^2 + \hat{q}_{B,d}^2)
+			+ \frac{1}{2} m \omegaint^2 (\hat{q}_{A,d} - \hat{q}_{B,d})^2.
+\end{align}
+
+
+\section{Exact ground state wavefunction}
+
+For the moment, let us consider only a single dimension, the Hamiltonian for which is
+\begin{align}
+	\hat{H}_1
+	&= \frac{\hat{p}_A^2}{2 m} + \frac{\hat{p}_B^2}{2 m}
+		+ \frac{1}{2} m \omega_0^2 (\hat{q}_A^2 + \hat{q}_B^2)
+		+ \frac{1}{2} m \omegaint^2 (\hat{q}_A - \hat{q}_B)^2.
+\end{align}
+We will use the standard approach for this situation and transform to center of mass and relative distance coordinates
+\begin{align}
+	R
+	&= \frac{q_A + q_B}{2}
+	&
+	r
+	&= q_A - q_B
+		\label{eq:oscillators-Rr}
+\end{align}
+with total and reduced masses
+\begin{align}
+	M
+	&= 2 m
+	&
+	\mu
+	&= \frac{m}{2}.
+\end{align}
+This transformation has unit Jacobian determinant and the inverse transformation is
+\begin{align}
+	q_A
+	&= R + \frac{r}{2}
+	&
+	q_B
+	&= R - \frac{r}{2}.
+\end{align}
+The corresponding forward transformation for the momenta may be obtained via the position representation of the momentum operator:
+\begin{subequations}
+\begin{align}
+	\hat{p}_R
+	&= -i \hbar \dpd{}{R}
+	= -i \hbar \left( \dpd{q_A}{R} \dpd{}{q_A} + \dpd{q_B}{R} \dpd{}{q_B} \right)
+	= -i \hbar \left( \dpd{}{q_A} + \dpd{}{q_B} \right)
+	= \hat{p}_A + \hat{p}_B \\
+	\hat{p}_r
+	&= -i \hbar \dpd{}{r}
+	= -i \hbar \left( \dpd{q_A}{r} \dpd{}{q_A} + \dpd{q_B}{r} \dpd{}{q_B} \right)
+	= -i \frac{\hbar}{2} \left( \dpd{}{q_A} - \dpd{}{q_B} \right)
+	= \frac{\hat{p}_A - \hat{p}_B}{2},
+\end{align}
+\end{subequations}
+and the inverse is therefore
+\begin{align}
+	\hat{p}_A
+	&= \hat{p}_r + \frac{\hat{p}_R}{2}
+	&
+	\hat{p}_B
+	&= \hat{p}_r - \frac{\hat{p}_R}{2}.
+\end{align}
+We may now introduce
+\begin{align}
+	\omega_R
+	&= \omega_0
+	&
+	\omega_r
+	&= \sqrt{\omega_0^2 + 2 \omegaint^2}
+\end{align}
+and write
+\begin{subequations}
+\begin{align}
+	\hat{H}_1
+	&= \frac{(2 \hat{p}_r + \hat{p}_R)^2}{8 m}
+		+ \frac{(2 \hat{p}_r - \hat{p}_R)^2}{8 m}
+		+ \frac{1}{8} m \omega_0^2 ((2 \hat{R} + \hat{r})^2 + (2 \hat{R} - \hat{r})^2)
+		+ \frac{1}{2} m \omegaint^2 \hat{r}^2 \\
+	&= \frac{\hat{p}_R^2}{4 m} + \frac{2 \hat{p}_r^2}{2 m}
+		+ \frac{1}{2} 2 m \omega_0^2 \hat{R}^2
+		+ \frac{1}{2} \frac{m}{2} \omega_0^2 \hat{r}^2
+		+ \frac{1}{2} \frac{m}{2} 2 \omegaint^2 \hat{r}^2 \\
+	&= \left[ \frac{\hat{p}_R^2}{2 M} + \frac{1}{2} M \omega_R^2 \hat{R}^2 \right]
+		+ \left[ \frac{\hat{p}_r^2}{2 \mu} + \frac{1}{2} \mu \omega_r^2 \hat{r}^2 \right],
+\end{align}
+\end{subequations}
+which is the Hamiltonian for two independent harmonic oscillators with masses $M$ and $\mu$ and angular frequencies $\omega_R$ and $\omega_r$.
+Since for a separable Hamiltonian, the total wavefunctions are products of the partial wavefunctions, and we know the harmonic oscillator ground state wavefunction from \vref{eq:ho-position-wf}, we can write the ground state wavefunction of $\hat{H}_1$:
+\begin{subequations}
+\begin{align}
+	\psi_1(R, r)
+	&= \left( \frac{M \mu \omega_R \omega_r}{\pi^2 \hbar^2} \right)^\frac{1}{4}
+		\expb{-\frac{M \omega_R}{2 \hbar} R^2 - \frac{\mu \omega_r}{2 \hbar} r^2} \\
+	&= \left( \frac{m^2 \omega_R \omega_r}{\pi^2 \hbar^2} \right)^\frac{1}{4}
+		\expb{-\frac{4 m \omega_R R^2 + m \omega_r r^2}{4 \hbar}}.
+\end{align}
+\end{subequations}
+In terms of the original coordinates, and with the introduction of
+\begin{align}
+	\omega^\pm
+	&= \omega_R \pm \omega_r,
+\end{align}
+this is
+\begin{subequations} \label{eq:oscillators-wf-1d}
+\begin{align}
+	\psi_1(q_A, q_B)
+	&= \left( \frac{m^2 \omega_R \omega_r}{\pi^2 \hbar^2} \right)^\frac{1}{4}
+		\expb{-\frac{m}{4 \hbar} \left( \omega_R (q_A + q_B)^2 + \omega_r (q_A - q_B)^2 \right)} \\
+	&= \left( \frac{m^2 \omega_R \omega_r}{\pi^2 \hbar^2} \right)^\frac{1}{4}
+		\expb{-\frac{m}{4 \hbar} \left( \omega^+ (q_A^2 + q_B^2) + 2 \omega^- q_A q_B \right)}.
+\end{align}
+\end{subequations}
+We may finally extend this solution back to the $D$-dimensional case:
+\begin{align}
+	\Psi_0(\vec{q}_A, \vec{q}_B)
+	&= \left( \frac{m^2 \omega_R \omega_r}{\pi^2 \hbar^2} \right)^\frac{D}{4}
+		\expb{-\frac{m}{4 \hbar} \left(
+			\omega^+ \left( \abs{\vec{q}_A}^2 + \abs{\vec{q}_B}^2 \right)
+			+ 2 \omega^- \vec{q}_A \cdot \vec{q}_B
+		\right)}.
+\end{align}
+
+Since the ground state energy of a harmonic oscillator with angular frequency $\omega$ is $\hbar \omega / 2$~\cite[438]{messiah1999quantum}, and the total energy of a separable Hamiltonian is the sum of those of its parts, the total ground state energy for the coupled harmonic oscillators in $D$ dimensions is
+\begin{align}
+	E_0
+	&= \frac{D \hbar}{2} (\omega_R + \omega_r).
+		\label{eq:oscillators-energy-exact}
+\end{align}
+
+
+\section{Exact Rényi entropy}
+
+Now that we have the ground state wavefunction, let's find the exact expression for the second Rényi entropy $S_2$ in the ground state of the coupled harmonic oscillator system with the natural bipartitioning.
+From \vref{eq:trace}, we know that
+\begin{align}
+	\Tr{\hat{\rho}_A^2}
+	&= \iiiint\! \dif \vec{q}_A \dif \vec{q}_A' \dif \vec{q}_B \dif \vec{q}_B' \,
+			\Psi_0(\vec{q}_A, \vec{q}_B) \Psi_0(\vec{q}_A', \vec{q}_B)
+			\Psi_0(\vec{q}_A', \vec{q}_B') \Psi_0(\vec{q}_A, \vec{q}_B').
+\end{align}
+This $4 D$-dimensional integral can be written as the product of $D$ identical four-dimensional Gaussian integrals, so we shall first perform one of these (using \vref{eq:gaussian-integral-kamu,eq:gaussian-integral-coupled}):
+\begin{subequations}
+\begin{align}
+	& \iiiint\! \dif q_A \dif q_A' \dif q_B \dif q_B' \,
+			\psi_1(q_A, q_B) \psi_1(q_A', q_B) \psi_1(q_A', q_B') \psi_1(q_A, q_B') \\
+	&= \frac{m^2 \omega_R \omega_r}{\pi^2 \hbar^2}
+		\iint\! \dif q_A \dif q_A' \,
+			\expb{-\frac{m}{2 \hbar} \omega^+ (q_A^2 + q_A'^2)} \notag \\
+	&\qquad\qquad\qquad\qquad\times
+			\int\! \dif q_B \,
+				\expb{-\frac{m}{2 \hbar} \left(
+					\omega^+ q_B^2 + \omega^- (q_A + q_A') q_B
+				\right)} \notag \\
+	&\qquad\qquad\qquad\qquad\times
+			\int\! \dif q_B' \,
+				\expb{-\frac{m}{2 \hbar} \left(
+					\omega^+ q_B'^2 + \omega^- (q_A + q_A') q_B'
+				\right)} \\
+	&= \frac{2 m \omega_R \omega_r}{\pi \hbar \omega^+}
+		\iint\! \dif q_A \dif q_A' \,
+			\expb{-\frac{m}{4 \hbar \omega^+} \left( 2 (\omega^+)^2 (q_A^2 + q_A'^2) - (\omega^-)^2 (q_A + q_A')^2 \right)} \\
+	&= \frac{8 \omega_R \omega_r}{\sqrt{(2 (\omega^+)^2 - (\omega^-)^2)^2 - (\omega^-)^4)}} \\
+	&= \sqrt{\frac{4 \omega_R \omega_r}{(\omega_R + \omega_r)^2}}.
+\end{align}
+\end{subequations}
+Putting the $D$ pieces back together, we get
+\begin{align}
+	\Tr{\hat{\rho}_A^2}
+	&= \left( \frac{4 \omega_R \omega_r}{(\omega_R + \omega_r)^2} \right)^\frac{D}{2}.
+\end{align}
+From this, we find
+\begin{align}
+	S_2
+	&= -\log{\left( \Tr{\hat{\rho}_A^2} \right)}
+	= \frac{D}{2} \log{\frac{(\omega_R + \omega_r)^2}{4 \omega_R \omega_r}}
+	= \frac{D}{2} \log{\left( 1 + \frac{1}{4} \left( \sqrt{\frac{\omega_R}{\omega_r}} - \sqrt{\frac{\omega_r}{\omega_R}} \right)^2 \right)}.
+\end{align}
+
+
+\section{Energy convergence studies}
+
+\label{sec:oscillators-energy-convergence}
+
+To verify that the force field and trial function are implemented correctly, we run convergence studies for the energy, which we can compare with \cref{eq:oscillators-energy-exact}.
+The results are shown in \cref{fig:oscillators-energy}.
+Additionally, these studies confirm that, at least as far as the energy is concerned, the values for the parameters in \vref{tab:model-parameters} are sufficient for convergence.
+The fact that the curves in \cref{fig:oscillators-energy-tau} continue to rise as $\tau$ is decreased past the marked points indicates that we would need a shorter $\dt$ if we wanted to run simulations with more beads.
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{23/oscillators_energy_beta}
+		\caption{
+			Convergence of the energy with $\beta$.
+			$\num{1e6}$ steps.
+		}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{23/oscillators_energy_tau}
+		\caption{
+			Convergence of the energy with $\tau$.
+			$\num{1e6}$ steps.
+		}
+		\label{fig:oscillators-energy-tau}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{23/oscillators_energy_dt}
+		\caption{
+			Convergence of the energy with $\dt$.
+			$\num{1e6}$ steps.
+		}
+	\end{subfigure}
+	\caption[
+		Convergence of energy for coupled oscillators
+	]{
+		Successful convergence of the energy of the coupled oscillators with $\beta$, $\tau$, and $\dt$.
+		\explainplotentropy{}
+	}
+	\label{fig:oscillators-energy}
+\end{figure}

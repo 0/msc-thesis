@@ -1,0 +1,137 @@
+\chapter{Rényi entropy for particle entanglement}
+\chaptermark{Rényi entropy}
+
+\label{chap:renyi}
+
+Entropy is a well-known fundamental concept in both thermodynamics and information theory.
+In the former, it appears as the Gibbs entropy,~\cite[48]{mcquarrie1976statistical}
+\begin{align}
+	S_\mathrm{G}
+	&= -\kB \sum_n p_n \log{p_n},
+\end{align}
+and in the latter as Shannon entropy,~\cite{shannon1948mathematical}
+\begin{align}
+	S_\mathrm{S}
+	&= -\sum_n p_n \log{p_n}.
+\end{align}
+In both cases, the sum is over all possible states, and $p_n$ is the probability of being in a given state, whether it is a microstate of the system or an output symbol on a channel.
+Found in quantum mechanics as a connection between the two is the von Neumann entropy,~\cite[253]{wilde2013quantum}
+\begin{align}
+	S_\mathrm{vN}
+	&= -\Tr{\hat{\rho} \log{\hat{\rho}}}.
+\end{align}
+In a basis which diagonalizes $\hat{\rho}$, we find
+\begin{align}
+	S_\mathrm{vN}
+	&= -\sum_n \rho_n \log{\rho_n},
+\end{align}
+which is exactly analogous to the above entropies, since the interpretation of the diagonal elements of the density matrix is the probability of being in the corresponding basis states~\cite[102]{wilde2013quantum}.
+The von Neumann entropy provides a measure of the \emph{purity} of a state: how \emph{pure} or \emph{mixed} the state is.
+This makes intuitive sense: it assigns a number to the uncertainty about which pure state one actually holds if one only has a mixed state description of it~\cite[254]{wilde2013quantum}.
+Any pure state naturally has zero entropy, while maximally-mixed states have the largest possible entropy for systems of that Hilbert space dimension~\cite[255]{wilde2013quantum}.
+
+Some quantum states may be written as tensor products of other states:
+\begin{subequations} \label{eq:product-state}
+\begin{align}
+	\ket{\psi_{AB}}
+	&= \ket{\psi_A} \otimes \ket{\psi_B} \\
+	\hat{\rho}_{AB}
+	&= \hat{\rho}_A \otimes \hat{\rho}_B.
+\end{align}
+\end{subequations}
+Here $A$ and $B$ describe some disjoint sets of degrees of freedom of the system, and it is possible to perform the trace over one set to produce exactly the state for the subsystem containing the remaining degrees of freedom:
+\begin{align}
+	\Tr_B{\hat{\rho}_{AB}}
+	&= \Tr_B{(\hat{\rho}_A \otimes \hat{\rho}_B)}
+	= \Tr_B{\hat{\rho}_A} \otimes \Tr_B{\hat{\rho}_B}
+	= \hat{\rho}_A.
+\end{align}
+Such states are known as \emph{product states}, and their Schmidt decompositions involve exactly one term~\cite[94]{wilde2013quantum}.
+Importantly, not all states have this property.
+States which are not product states are called \emph{entangled}, and their Schmidt decompositions have at least two terms, meaning that they cannot be written in the form of \cref{eq:product-state}.
+Unlike for product states, for entangled states,
+\begin{align}
+	\hat{\rho}_{AB}
+	\ne \Tr_B{(\hat{\rho}_{AB})} \otimes \Tr_A{(\hat{\rho}_{AB})}.
+\end{align}
+
+The best-known entangled states are the four Bell states involving eigenstates $\ket{0}$ and $\ket{1}$ of a two-level system~\cite[88]{wilde2013quantum}.
+One of the Bell states is provided here as a simple example:\footnote{
+	We omit the ``$\otimes$'' symbol when the tensor product operation is implied by adjacent kets.
+}
+\begin{align}
+	\ket{\Psi^-}
+	&= \halfsqrt \left( \ket{0}_A \ket{1}_B - \ket{1}_A \ket{0}_B \right)
+	= \halfsqrt \left( \ket{01} - \ket{10} \right).
+\end{align}
+This state has the density matrix (in the $\{ \ket{00}, \ket{01}, \ket{10}, \ket{11} \}$ basis)
+\begin{align}
+	\rho_{AB}
+	&= \frac{1}{2} \begin{pmatrix}
+			0 & 0 & 0 & 0 \\
+			0 & 1 & -1 & 0 \\
+			0 & -1 & 1 & 0 \\
+			0 & 0 & 0 & 0
+		\end{pmatrix}.
+\end{align}
+In this example, taking the trace over $B$ results in the \emph{reduced state}
+\begin{align}
+	\hat{\rho}_A
+	&= \Tr_B{\hat{\rho}_{AB}}
+	= \frac{1}{2} \left( \ketbraself{0} + \ketbraself{1} \right),
+		\label{eq:bell-reduced}
+\end{align}
+which is the maximally mixed two-level state.
+That is, we learn absolutely nothing about the part of the state in $A$ if we ignore the information we have about the part of the state in $B$.
+Additionally, even though we started with a pure state, which can be written as a sum of kets, the result is a mixed state, which cannot.
+
+Since the von Neumann entropy can be used as a measure of the ``mixedness'' of a state, we can use the von Neumann entropy of the reduced state as a measure of the entanglement of the original state~\cite{schumacher1995quantum,vedral1997quantifying}.
+For example, since the von Neumann entropy of pure states is zero, and the partial trace of a pure product state results in a pure state, the von Neumann entanglement entropy of any pure product state is zero.
+On the other hand, the von Neumann entropy of the state in \cref{eq:bell-reduced} is
+\begin{align}
+	S_\mathrm{vN}(\hat{\rho}_A)
+	&= -\left( \frac{1}{2} \log{\frac{1}{2}} + \frac{1}{2} \log{\frac{1}{2}} \right)
+	= \log{2},
+\end{align}
+which is the maximum possible von Neumann entropy for a two-level state~\cite[255]{wilde2013quantum}.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.6\textwidth]{12/particle_partition}
+	\caption[
+		Example particle partition
+	]{
+		Example particle partition used to investigate the particle entanglement between $A$ and $B$.
+	}
+	\label{fig:particle-partition}
+\end{figure}
+
+While the above discussion is focused on a pair of two-level systems, the ideas are general and apply to any system with at least two degrees of freedom.
+In the case of an $N$-body system, we may partition the set of $N$ particles into disjoint subsets of $N_A$ and $N_B$ particles, as in \cref{fig:particle-partition}.
+We refer to this as a \emph{particle partition} and the quantity in question will be \emph{particle entanglement}; other possibilities, such as partitioning space, will not be considered in the present work.
+If our description of the system is in Cartesian coordinates $\vec{q}$, we may split these into $\vec{q}_A$ and $\vec{q}_B$, where the former contains the coordinates for the particles in $A$ and the latter for the particles in $B$.
+Our density matrix\footnote{
+	It is not strictly a matrix, since we are in the continuous position basis, but we can't be blamed for listening to Dirac in ref.~\cite[69-70]{dirac1981principles}!
+} can then be written as $\rho(\vec{q}_A, \vec{q}_B ; \vec{q}_A', \vec{q}_B')$ and we may perform the partial trace as
+\begin{align}
+	\rho_A(\vec{q}_A ; \vec{q}_A')
+	&= \int\! \dif \vec{q}_B \, \rho(\vec{q}_A, \vec{q}_B ; \vec{q}_A', \vec{q}_B).
+\end{align}
+
+Thus, we have (at least in principle) a prescription for finding the von Neumann entropy for particle entanglement of any $N$-body system.
+We just need to have access to the density matrix of the state of interest, but quantum mechanics rarely yields to such demands.
+Thus, we must search for another method of measuring the entanglement of a state.
+Conveniently, there is a generalization of the Shannon and von Neumann entropies, named the \emph{Rényi entropy}~\cite{herdman2014path,renyi1961measures}:
+\begin{align}
+	S_\alpha
+	&= \frac{1}{1 - \alpha} \log{\left( \Tr{\hat{\rho}_A^\alpha} \right)}
+\end{align}
+for $\alpha \ge 0$.
+It is a generalization in the sense that $S_\alpha \to S_\mathrm{vN}$ as $\alpha \to 1$.
+It was originally obtained by Rényi by relaxing the subadditivty requirement of Shannon~\cite{shannon1948mathematical,renyi1961measures}.
+As we will see shortly, this measure of entropy can be used with existing methods of quantum statistical mechanics (as described in \cref{chap:introduction}) to get around the need to obtain $\hat{\rho}$ explicitly.
+
+
+\input{12_1_estimators}
+\input{12_2_implementation}
+\input{12_3_model}

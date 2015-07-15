@@ -1,0 +1,204 @@
+\section{Stochastic integration}
+
+\collab{Neil Raymond}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{13/path_explanation}
+	\caption[
+		Graphical notation for survival amplitude
+	]{
+		Details of the graphical notation used for the survival amplitude.
+		Dashed box indicates the region of interest.
+	}
+	\label{fig:survival-path-explanation}
+\end{figure}
+
+Most interesting problems will be too large for us to find their survival amplitudes by direct integration, so we are forced to use a stochastic method.
+The main issue is that there is no obvious sampling distribution for the momenta.
+One cannot, after all, uniformly sample from $\intcc{-\infty, \infty}$!
+In order to remedy this problem, we introduce a Gaussian weight into the integrand.
+
+Our goal is still to obtain the value of the integrals in \vref{eq:survival-hk}, but this time without constructing grids.
+Once we add the Gaussian weight, we instead obtain the expression
+\begin{align}
+	S_0\hkg(t)
+	&= \frac{1}{2 \pi \hbar} \iiiint\! \dif p \dif q\LLup \dif q \dif q\RRup \,
+			R\coh{p}{q}_t \braket{0 | q\LLup} \braket{q\RRup | 0}
+			\expb{
+				-\frac{p^2}{2 \sigma_p^2}
+				- \frac{\gamma}{2} \left( (q\LLup - q\coh{p}{q}_t)^2 + (q\RRup - q)^2 \right)
+			} \notag \\
+	&\qquad\qquad\qquad\times
+			\expb{\frac{i}{\hbar} \left( S\coh{p}{q}_t + p\coh{p}{q}_t (q\LLup - q\coh{p}{q}_t) - p (q\RRup - q) \right)}.
+\end{align}
+This introduces another parameter, $\sigma_p$, but that is not as bad as it might seem at first: the trade-off is that we no longer have all the grid parameters to tune.
+Additionally, we will choose $\gamma$ so that we are able to sample all three position coordinates from the same PIGS simulation.
+
+Recall that we may evaluate integrals of the form
+\begin{align}
+	\frac{
+			\int\! \dif \vec{q} \, \pi(\vec{q}) \mathcal{S}(\vec{q})
+		}{
+			\int\! \dif \vec{q} \, \pi(\vec{q})
+		}
+\end{align}
+by sampling from $\pi(\vec{q})$ and evaluating $\mathcal{S}(\vec{q})$ at the sampled coordinates.
+Consider the distribution
+\begin{align}
+	\pi_q(q\LL, q\MM, q\RR)
+	&= \braket{0 | q\LL} \expb{-\frac{m}{2 \hbar^2 \tau} \left( (q\LL - q\MM)^2 + (q\MM - q\RR)^2 \right)} \braket{q\RR | 0},
+		\label{eq:hk-dist-q}
+\end{align}
+which we have written in a suggestive form (with $L = M - 1$ and $R = M + 1$).
+What it suggests is the path drawn in \cref{fig:survival-path-explanation}, which is a complete path in the sense that its beads are all connected, but it lacks the interactions from the two links of interest.\footnote{
+	One subtlety here is that we must expand each of the wavefunctions $\braket{q | 0}$ into fragments of length $(\beta - \tau) / 2$ instead of the usual $\beta / 2$, because the piece in the middle is of ``length'' $2 \tau$ and we still require the full path to be $\beta$ long.
+}
+Consider also the distribution
+\begin{align}
+	\pi_p(p)
+	&= \expb{-\frac{p^2}{2 \sigma_p^2}},
+\end{align}
+which we combine with the previous one to make the product distribution
+\begin{subequations}
+\begin{align}
+	\pi(p, q\LL, q\MM, q\RR)
+	&= \pi_p(p) \pi_q(q\LL, q\MM, q\RR) \\
+	&= \expb{-\frac{p^2}{2 \sigma_p^2}}
+		\braket{0 | q\LL} \expb{-\frac{m}{2 \hbar^2 \tau} \left( (q\LL - q\MM)^2 + (q\MM - q\RR)^2 \right)} \braket{q\RR | 0}.
+\end{align}
+\end{subequations}
+Because they are obtained from a LePIGS simulation, the wavefunctions $\braket{q | 0}$ will not be normalized.
+However, due to the deformation, we are not interested in the normalization, so we may disregard this and write just
+\begin{align}
+	S_0\hkg(t)
+	&\propto \iiiint\! \dif p \dif q\LL \dif q\MM \dif q\RR \,
+			\pi(p, q\LL, q\MM, q\RR) R\coh{p}{q\MM}_t
+			\expb{-\frac{m}{2 \hbar^2 \tau} \left( (q\LL - q\coh{p}{q\MM}_t)^2 - (q\LL - q\MM)^2 \right)} \notag \\
+	&\qquad\qquad\times
+			\expb{\frac{i}{\hbar} \left( S\coh{p}{q\MM}_t + p\coh{p}{q\MM}_t (q\LL - q\coh{p}{q\MM}_t) - p (q\RR - q\MM) \right)}.
+\end{align}
+We have explicitly chosen $\gamma = m / \hbar^2 \tau$, and as a result our estimator is
+\begin{align}
+	\mathcal{S}_\mathrm{P}(p, q\LL, q\MM, q\RR, t)
+	&= R\coh{p}{q\MM}_t \expb{-\frac{m}{2 \hbar^2 \tau} \left( (q\LL - q\coh{p}{q\MM}_t)^2 - (q\LL - q\MM)^2 \right)} \notag \\
+	&\qquad\qquad\times
+		\expb{\frac{i}{\hbar} \left( S\coh{p}{q\MM}_t + p\coh{p}{q\MM}_t (q\LL - q\coh{p}{q\MM}_t) - p (q\RR - q\MM) \right)}.
+\end{align}
+Since this is the obvious estimator to use, we will refer to it as the \emph{primitive estimator of the survival amplitude}, with the position distribution
+\begin{align}
+	\pi_\mathrm{P}(q\LL, q\MM, q\RR)
+	&= \symbdistwide{13/dist_primitive}.
+\end{align}
+
+We notice that even though we have preemptively removed the extraneous potentials from the distribution, we still have a spring contribution that we remove in the estimator.
+If we excise it, we are left with the position distribution
+\begin{align}
+	\pi_\mathrm{M}(q\LL, q\MM, q\RR)
+	&= \symbdistwide{13/dist_minimal}
+\end{align}
+and the corresponding \emph{minimal estimator of the survival amplitude}
+\begin{align}
+	\mathcal{S}_\mathrm{M}(p, q\LL, q\MM, q\RR, t)
+	&= R\coh{p}{q\MM}_t \expb{-\frac{m}{2 \hbar^2 \tau} \left( (q\LL - q\coh{p}{q\MM}_t)^2 \right)} \notag \\
+	&\qquad\times
+		\expb{\frac{i}{\hbar} \left( S\coh{p}{q\MM}_t + p\coh{p}{q\MM}_t (q\LL - q\coh{p}{q\MM}_t) - p (q\RR - q\MM) \right)}.
+\end{align}
+We hope that the reader is not biased toward or against any estimator names due to the results of \cref{chap:renyi}.
+
+
+\subsection{Harmonic oscillator}
+
+Before we try this stochastic approach with the harmonic oscillator system from \cref{sec:semiclassical-numerical-ho}, we see (using the numerical method used previously) what happens when we deform the integral with the Gaussian weight and then explicitly renormalize the survival amplitude.
+Unless otherwise specified, the parameter values from \cref{tab:model-sas-harmonic-oscillator-stochastic} are used for this model system.
+The results shown in \cref{fig:harmonic-oscillator-survival-smoothing-norm} are very good over a wide range of $\sigma_p$.\footnote{
+	In fact, for the narrowest momentum distribution, we end up using only a single momentum: zero.
+	Yet the harmonic oscillator is fine with this.
+}
+Thus, we may expect that performing the same deformed integral using the stochastic method would result in a smooth survival amplitude.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{13/harmonic_oscillator_sas_smoothing_norm}
+	\caption[
+		Harmonic oscillator survival amplitude with added Gaussian weight
+	]{
+		Harmonic oscillator ground state survival amplitude with added Gaussian weight and renormalization.
+		Dashed curves indicate the exact answer.
+	}
+	\label{fig:harmonic-oscillator-survival-smoothing-norm}
+\end{figure}
+
+On the contrary, we find the disappointing result in \cref{fig:harmonic-oscillator-survival-primitive}.
+The overall frequency appears to be correct, but the shapes of both the real and imaginary components are distorted, and the error bars are incredibly large at some points.
+We may suspect that this is due to a poor choice of parameters in the LePIGS simulation.
+
+\begin{table}
+	\begin{center}
+	\begin{tabular}{ c c c c c c c }
+		\toprule
+		{$\beta / \si{\per\kelvin}$} & {$\tau / \si{\per\kelvin}$} & {$P$} & {$\dt / \si{\pico\second}$} & $\gamma\bead{0} / \si{\per\pico\second}$ & {$\dt\alt / \si{\pico\second}$} & {$\sigma_p / \si{\gram\nano\meter\per\pico\second\per\mole}$} \\
+		\midrule
+		8 & 0.125 & 65 & 1 & 0.1 & 1 & 1 \\
+		\bottomrule
+	\end{tabular}
+	\end{center}
+	\caption[
+		Selected parameters for harmonic oscillator (stochastic)
+	]{
+		Selected parameters for the harmonic oscillator model system using the stochastic method.
+	}
+	\label{tab:model-sas-harmonic-oscillator-stochastic}
+\end{table}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{13/harmonic_oscillator_sas_stochastic_primitive}
+	\caption[
+		Harmonic oscillator survival amplitude using primitive estimator
+	]{
+		Harmonic oscillator ground state survival amplitude with stochastic sampling using the primitive estimator.
+		Average of 16 survival amplitudes from $\num{1e6}$ samples each.
+		Dashed curves indicate the exact answer.
+	}
+	\label{fig:harmonic-oscillator-survival-primitive}
+\end{figure}
+
+However, for the harmonic oscillator system, we may sample from $\pi_q(q_L, q_M, q_R)$ in \cref{eq:hk-dist-q} directly, since it is Gaussian:
+\begin{align}
+	\pi_q(q\LL, q\MM, q\RR)
+	&\propto \expb{-\frac{m \omega}{2 \hbar} (q\LL^2 + q\RR^2) - \frac{m}{2 \hbar^2 \tau} \left( (q\LL - q\MM)^2 + (q\MM - q\RR)^2 \right)}.
+\end{align}
+This allows us to bypass PIGS altogether and see what the survival amplitude should look like given a finite number of samples.
+As we see in \cref{fig:harmonic-oscillator-survival-primitive-exact}, the situation was hopeless to start with.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{13/harmonic_oscillator_sas_stochastic_primitive_exact}
+	\caption[
+		Harmonic oscillator survival amplitude using primitive estimator (exact sampling)
+	]{
+		Harmonic oscillator ground state survival amplitude with exact stochastic sampling using the primitive estimator.
+		Average of 16 survival amplitudes from $\num{1e6}$ samples each.
+		Dashed curves indicate the exact answer.
+	}
+	\label{fig:harmonic-oscillator-survival-primitive-exact}
+\end{figure}
+
+The minimal estimator fares much better, as shown in \cref{fig:harmonic-oscillator-survival-minimal}.
+All the error bars are fairly small and the mean values are mostly along smooth curves.
+Again, we get much better results if we break paths in the simulation and sample from a different sector.
+Perhaps surprising in this particular case is the fact that $\pi_\mathrm{M}(q_L, q_M, q_R)$ is composed of two independent pieces!
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{13/harmonic_oscillator_sas_stochastic_minimal}
+	\caption[
+		Harmonic oscillator survival amplitude using minimal estimator
+	]{
+		Harmonic oscillator ground state survival amplitude with stochastic sampling using the minimal estimator.
+		Average of 16 survival amplitudes from $\num{1e6}$ samples each.
+		Dashed curves indicate the exact answer.
+	}
+	\label{fig:harmonic-oscillator-survival-minimal}
+\end{figure}

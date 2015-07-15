@@ -1,0 +1,465 @@
+\section{Numerical integration}
+
+Since we are working in only one spatial dimension, the integrals in \cref{eq:survival-hk} may be performed on a grid.
+We begin with the assumption that we have four evenly-spaced grids whose elements are $p_i$, $q_j$, $q_k$, $q_\ell$ (corresponding to $p$, $q\LLup$, $q$, and $q\RRup$) and whose spacings are, respectively, $\DP$, $\DQ\alt$, $\DQ$, $\DQ\alt$.\footnote{
+	Since the wavefunction must be evaluated at $q_j$ and $q_\ell$, we require that these grids be identical to keep things simple.
+}
+These grids are symmetric about zero and extend in each direction to $p\mx$, $q\mx\alt$, $q\mx$, $q\mx\alt$.
+We may then approximate the integrals in \cref{eq:survival-hk} by sums:
+\begin{align}
+	S_0\hk(t)
+	&\approx \frac{\DP (\DQ\alt)^2 \DQ}{2 \pi \hbar} \sum_{i,j,k,\ell}
+			R\coh{p_i}{q_k}_t \braket{0 | q_j} \braket{q_\ell | 0}
+			\expb{-\frac{\gamma}{2} \left( (q_j - q\coh{p_i}{q_k}_t)^2 + (q_\ell - q_k)^2 \right)} \notag \\
+	&\qquad\qquad\qquad\qquad\qquad\times
+			\expb{\frac{i}{\hbar} \left( S\coh{p_i}{q_k}_t + p\coh{p_i}{q_k}_t (q_j - q\coh{p_i}{q_k}_t) - p_i (q_\ell - q_k) \right)}.
+\end{align}
+For brevity, we introduce
+\begin{subequations}
+\begin{align}
+	C
+	&= \frac{\DP (\DQ\alt)^2 \DQ}{2 \pi \hbar}
+	&
+	w^j
+	&= \braket{q_j | 0} \\
+	R\coh{i}{k}_t
+	&= R\coh{p_i}{q_k}_t
+	&
+	S\coh{i}{k}_t
+	&= S\coh{p_i}{q_k}_t \\
+	p\coh{i}{k}_t
+	&= p\coh{p_i}{q_k}_t
+	&
+	q\coh{i}{k}_t
+	&= q\coh{p_i}{q_k}_t,
+\end{align}
+\end{subequations}
+which lets us write
+\begin{align}
+	S_{0,t}\hk
+	&= C \sum_{i,j,k,\ell}
+			R\coh{i}{k}_t w^j w^\ell
+			\expb{
+				-\frac{\gamma}{2} \left( (q_j - q\coh{i}{k}_t)^2 + (q_\ell - q_k)^2 \right)
+				+ \frac{i}{\hbar} \left( S\coh{i}{k}_t + p\coh{i}{k}_t (q_j - q\coh{i}{k}_t) - p_i (q_\ell - q_k) \right)
+			}.
+				\label{eq:survival-hk-num}
+\end{align}
+We refer to the 4-tuple $T\coh{i}{k}_t = \left( p\coh{i}{k}_t, q\coh{i}{k}_t, R\coh{i}{k}_t, S\coh{i}{k}_t \right)$ as the \emph{classical trajectory} with initial conditions $p_i$, $q_i$.
+
+As mentioned earlier, we do not have as obvious a guideline for how to set up our momentum grid as we do for the position grids.
+Taking a hint from the Fourier-transform-like form of the $p$ contribution in \cref{eq:survival-hk-num}, we choose the $p_i$ grid to be the momentum space grid corresponding to a position grid, but it is not immediately clear which position grid to use.
+If we look only at the initial time, we see
+\begin{align}
+	S_{0,t=0}\hk
+	&= C \sum_{i,j,k,\ell}
+			w^j w^\ell
+			\expb{
+				-\frac{\gamma}{2} \left( (q_j - q_k)^2 + (q_\ell - q_k)^2 \right)
+				+ \frac{i}{\hbar} p_i (q_j - q_\ell)
+			},
+\end{align}
+which suggests that the position grid to use should be the $\{ q\mx\alt, \DQ\alt \}$ grid.\footnote{
+	Technically, the range of possible values for the difference of the grid elements is twice the range for the grid itself, but the spacing remains the same, and that is what we care about here.
+}
+This results in~\cite{fattal1996phase}
+\begin{align}
+	p\mx
+	= \frac{\pi \hbar}{\DQ\alt}.
+		\label{eq:hk-pmax}
+\end{align}
+We will see later what happens if we neglect this and go farther out in momentum space.
+
+Given the ground state wavefunction on the grid ($w$) and the classical trajectory at the appropriate time ($T\coh{i}{k}_t$), it is a straightforward matter to find $S_{0,t}\hk$.
+All the details are in the propagation of the classical trajectory.
+The phase space variables $p\coh{i}{k}_t$ and $q\coh{i}{k}_t$ may be found from the initial conditions\footnote{
+	While the initial conditions are confined to a grid, there is no such restriction placed on the time-propagated phase space variables.
+} using a symplectic integrator such as the well-known velocity Verlet algorithm or the lesser known (but higher order) integrator due to Ruth and Forest~\cite{forest90fourth}.
+The classical action $S\coh{i}{k}_t$ is not difficult to obtain once one has the momenta.
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{13/harmonic_oscillator_trajectory_pq}
+		\caption{
+			Convergence of phase space variables with time step.
+		}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{13/harmonic_oscillator_trajectory_S}
+		\caption{
+			Convergence of classical action with time step.
+		}
+	\end{subfigure}
+	\caption[
+		Example classical trajectories for harmonic oscillator
+	]{
+		Some example phase space diagrams and classical actions resulting from harmonic oscillator trajectories with different time steps.
+		\explainplotsas{}
+	}
+	\label{fig:harmonic-oscillator-trajectory-a}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{13/harmonic_oscillator_trajectory_R}
+	\caption[
+		Example HK prefactors for harmonic oscillator
+	]{
+		Some example HK prefactors resulting from harmonic oscillator trajectories with different time steps.
+		\explainplotsas{}
+	}
+	\label{fig:harmonic-oscillator-trajectory-b}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{13/harmonic_oscillator_trajectory_sqrt}
+	\caption[
+		HK prefactors with incorrect square root branch
+	]{
+		The same HK prefactors as in \cref{fig:harmonic-oscillator-trajectory-b}, but the ``exact'' answers shown by the dashed curves neglect to take into account the branch of the square root.
+		The result is a cusp in the real component and a discontinuity in the imaginary component at the point where the branches intersect, as well as the wrong overall sign after this point.
+	}
+	\label{fig:harmonic-oscillator-trajectory-sqrt}
+\end{figure}
+
+The HK prefactor, on the other hand, is a much more interesting quantity to calculate.
+Because it is defined as the square root of a complex number, we must exercise caution when deciding which branch of the square root to choose.
+However, that is not a tough problem to deal with so long as one is aware of it.
+The more pressing matter is the evaluation of the partial derivatives.
+If we write them in the form of a \emph{monodromy matrix}
+\begin{align}
+	\mat{M}_t
+	&= \begin{pmatrix}
+			\dpd{p_t}{p} & \dpd{p_t}{q} \\[3 mm]
+			\dpd{q_t}{p} & \dpd{q_t}{q}
+		\end{pmatrix}
+	= \begin{pmatrix}
+			m\coh{p}{p}_t & m\coh{p}{q}_t \\
+			m\coh{q}{p}_t & m\coh{q}{q}_t
+		\end{pmatrix}
+\end{align}
+(where we have dropped the trajectory indices $i$ and $k$ for the time being), we may express the time evolution of this matrix as~\cite{garashchuk2000simplified,gelabert2000log}
+\begin{align}
+	\dod{\mat{M}_t}{t}
+	&= \begin{pmatrix}
+			0 & -\nabla^2 V \\
+			\frac{1}{m} & 0
+		\end{pmatrix}
+		\mat{M}_t
+\end{align}
+with initial conditions
+\begin{align}
+	\mat{M}_{t=0}
+	&= \mat{1}.
+\end{align}
+From this, we obtain two pairs of coupled ordinary differential equations (for $x$ either $p$ or $q$):
+\begin{subequations}
+\begin{align}
+	\dot{m}\coh{p}{x}_t
+	&= -(\nabla^2 V)_t m\coh{q}{x}_t \\
+	\dot{m}\coh{q}{x}_t
+	&= \frac{1}{m} m\coh{p}{x}_t.
+\end{align}
+\end{subequations}
+These are very similar to Hamilton's equations of motion, but the ``force'' is unfortunately time-dependent.
+In order to propagate the HK prefactor through time, we may use an integrator such as the fourth-order Runge--Kutta integrator~\cite[710-713]{press1992numerical}.
+
+\begin{DefExercise}{Harmonic oscillator classical trajectory}{ex:harmonic-oscillator-classical-trajectory}
+	Find the analytical expressions for the classical action and HK prefactor for a harmonic oscillator with mass $m$, angular frequency $\omega$, and initial conditions $p$, $q$.
+\end{DefExercise}
+
+To summarize the above discussion and to provide verification of our implementation, we provide plots of trajectories (with different time steps $\dt\alt$) in phase space, along with the corresponding classical action and HK prefactor, for a harmonic oscillator (shown in \cref{fig:harmonic-oscillator-trajectory-a,fig:harmonic-oscillator-trajectory-b}).
+We use $m = m_\mathrm{e}$ (mass of an electron), $\omega = \SI{1}{\kelvin}$, $\gamma = \SI{0.0181}{\per\square\nano\meter}$, $p = \SI{-5e-3}{\gram\nano\meter\per\pico\second\per\mole}$, and $q = \SI{50}{nm}$.
+For reference, \cref{fig:harmonic-oscillator-trajectory-sqrt} shows the effect of neglecting to choose the correct branch for the square root in the HK prefactor.
+
+
+\subsection{Harmonic oscillator}
+
+\label{sec:semiclassical-numerical-ho}
+
+We are now prepared to find the survival amplitude for a one-dimensional system, so we start with the harmonic oscillator defined by \vref{eq:harmonic-oscillator-hamiltonian}.
+As elsewhere in the present work, we use $m = m_\mathrm{e}$ (mass of an electron) and $\omega = \SI{1}{\kelvin}$.
+This still leaves us with several parameters to choose: $\dt\alt$, $\gamma$, $q\mx$, $\DQ$, $q\mx\alt$, $\DQ\alt$.
+Unless otherwise specified, the parameter values from \cref{tab:model-sa0-harmonic-oscillator} are used for this model system.
+
+One may wish to choose $\dt\alt$ to be sufficiently small that the classical trajectories are stable, but no smaller.
+From \cref{fig:harmonic-oscillator-trajectory-a,fig:harmonic-oscillator-trajectory-b}, this appears to be about $\SI{5}{\pico\second}$.
+However, since we would like to have good temporal resolution, we typically choose a shorter time step.
+For this system, we may cheat and choose the optimal $\gamma$, one which matches that of the system itself: $\gamma = m \omega / \hbar$; however, we want to see the effect this parameter has on the results, so we also perturb it from this value.
+Finally, we also need to obtain the ground state wavefunction on the $\{ q\mx\alt, \DQ\alt \}$ grid; because we can, we use the exact wavefunction from \vref{eq:ho-position-wf}.
+
+\begin{table}
+	\begin{center}
+	\begin{tabular}{ c S[table-format=1.6] c c c c }
+		\toprule
+		{$\dt\alt / \si{\pico\second}$} & {$\gamma / \si{\per\square\nano\meter}$} & {$q\mx / \si{\nano\meter}$} & {$\DQ / \si{\nano\meter}$} & {$q\mx\alt / \si{\nano\meter}$} & {$\DQ\alt / \si{\nano\meter}$} \\
+		\midrule
+		1 & 0.001131 & 300 & 20 & 80 & 2 \\
+		\bottomrule
+	\end{tabular}
+	\end{center}
+	\caption[
+		Selected parameters for harmonic oscillator (numerical)
+	]{
+		Selected parameters for the harmonic oscillator model system using the numerical method.
+	}
+	\label{tab:model-sa0-harmonic-oscillator}
+\end{table}
+
+As the first step, we examine the real part of $S_{0,t=0}\hk$, which should be exactly $1$ as long as our integrals have converged.
+The convergence results for the position grids are shown in \cref{fig:harmonic-oscillator-survival-zero-q-a,fig:harmonic-oscillator-survival-zero-q-b}.
+The results for $q\mx\alt$ are surprising: the wavefunction still has non-negligible amplitude (over \SI{2.5}{\percent} of the maximum amplitude) when it is truncated.
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{13/harmonic_oscillator_sa0_qmax}
+		\caption{
+			Convergence of $t = 0$ survival amplitude with $q\mx$.
+		}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{13/harmonic_oscillator_sa0_dq}
+		\caption{
+			Convergence of $t = 0$ survival amplitude with $\DQ$.
+		}
+	\end{subfigure}
+	\caption[
+		Convergence of harmonic oscillator survival amplitude with position grids
+	]{
+		Convergence of $t = 0$ survival amplitude with the $\{ q\mx, \DQ \}$ grid for a harmonic oscillator.
+		\explainplotsazero{}
+	}
+	\label{fig:harmonic-oscillator-survival-zero-q-a}
+\end{figure}
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{13/harmonic_oscillator_sa0_qmax_alt}
+		\caption{
+			Convergence of $t = 0$ survival amplitude with $q\mx\alt$.
+		}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{13/harmonic_oscillator_sa0_dq_alt}
+		\caption{
+			Convergence of $t = 0$ survival amplitude with $\DQ\alt$.
+		}
+	\end{subfigure}
+	\caption[
+		Convergence of harmonic oscillator survival amplitude with position grids \cont
+	]{
+		Convergence of $t = 0$ survival amplitude with the $\{ q\mx\alt, \DQ\alt \}$ grid for a harmonic oscillator.
+		\explainplotsazero{}
+	}
+	\label{fig:harmonic-oscillator-survival-zero-q-b}
+\end{figure}
+
+As promised, we will now look at the results of increasing the $p$ grid past the proper $p\mx$.
+\Cref{fig:harmonic-oscillator-survival-zero-pmax} shows a staircase as a function of $p\mx'$ (the actual extent used for the $p$ grid) with jumps at even integer multiples of $p\mx$.
+To find the cause, in \cref{fig:harmonic-oscillator-survival-zero-p-aliasing} we plot the integrand which remains after the $q_j$ and $q_\ell$ integrals have been performed.
+It seems that if we exceed the equivalent to the Nyquist frequency in momentum space, we observe aliasing!
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{13/harmonic_oscillator_sa0_pmax}
+	\caption[
+		Divergence of harmonic oscillator survival amplitude with momentum grid
+	]{
+		Divergence of $t = 0$ survival amplitude with $p\mx'$ for a harmonic oscillator.
+		Dashed line indicates the exact answer; dotted line marks $p\mx' = p\mx$.
+	}
+	\label{fig:harmonic-oscillator-survival-zero-pmax}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\textwidth]{13/harmonic_oscillator_sa0_p_aliasing_a}
+		\caption{
+			Correct extent for momentum grid.
+			No aliases to be seen.
+		}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}{0.48\textwidth}
+		\includegraphics[width=\textwidth]{13/harmonic_oscillator_sa0_p_aliasing_b}
+		\caption{
+			Incorrect extent for momentum grid.
+			Two aliases are visible.
+		}
+	\end{subfigure}
+	\caption[
+		Aliasing of integrand in momentum space
+	]{
+		Aliasing of the partially integrated HK integrand in momentum space for a harmonic oscillator.
+		Intended solely as a sketch, so no values for $q_k$ or color bars are provided.
+	}
+	\label{fig:harmonic-oscillator-survival-zero-p-aliasing}
+\end{figure}
+
+As seen in \cref{fig:harmonic-oscillator-survival-good}, we are able to generate ground state survival amplitudes for the harmonic oscillator system.
+With the parameters we have chosen by the $t = 0$ analysis above, the survival amplitudes show no deviation from the expected result for several cycles for all the $\gamma$ we have used.
+For reference, we may also try $q\mx = \SI{100}{\nano\meter}$, and $q\mx\alt = \SI{50}{\nano\meter}$; the results in \cref{fig:harmonic-oscillator-survival-bad} have the correct overall frequency, but the shape is incorrect for some $\gamma$.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{13/harmonic_oscillator_sas_good}
+	\caption[
+		Harmonic oscillator survival amplitude with converged parameters
+	]{
+		Harmonic oscillator ground state survival amplitude with converged parameters.
+		\explainplotsas{}
+	}
+	\label{fig:harmonic-oscillator-survival-good}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{13/harmonic_oscillator_sas_bad}
+	\caption[
+		Harmonic oscillator survival amplitude with unconverged parameters
+	]{
+		Harmonic oscillator ground state survival amplitude with unconverged parameters.
+		\explainplotsas{}
+	}
+	\label{fig:harmonic-oscillator-survival-bad}
+\end{figure}
+
+
+\subsection{Double well}
+
+We now move on to a more challenging, anharmonic system: a particle of mass $m$ in a symmetric double well potential with the Hamiltonian
+\begin{align}
+	\hat{H}
+	&= \frac{\hat{p}^2}{2 m} - 2 \frac{d}{w^2} \hat{q}^2 + \frac{d}{w^4} \hat{q}^4,
+\end{align}
+where $d$ is the depth of the minima and $w$ is the distance from the $y$-axis to the minima.
+We use $m = m_\mathrm{e}$ (mass of an electron), $d = \SI{2}{\kelvin}$, and $w = \SI{50}{\nano\meter}$.
+In order to obtain the ground state wavefunction, we use a numerical PIGS matrix multiplication method with sufficiently converged $\beta$ and $\tau$.
+
+\begin{table}[h]
+	\begin{center}
+	\begin{tabular}{ c c c c c c }
+		\toprule
+		{$\dt\alt / \si{\pico\second}$} & {$\gamma / \si{\per\square\nano\meter}$} & {$q\mx / \si{\nano\meter}$} & {$\DQ / \si{\nano\meter}$} & {$q\mx\alt / \si{\nano\meter}$} & {$\DQ\alt / \si{\nano\meter}$} \\
+		\midrule
+		0.5 & 0.001 & 300 & 20 & 100 & 2 \\
+		\bottomrule
+	\end{tabular}
+	\end{center}
+	\caption[
+		Selected parameters for double well (numerical)
+	]{
+		Selected parameters for the double well model system using the numerical method.
+	}
+	\label{tab:model-sa0-double-well}
+\end{table}
+
+\begin{table}[h]
+	\begin{center}
+	\begin{tabular}{ c c c c c c }
+		\toprule
+		{$\dt\alt / \si{\pico\second}$} & {$\gamma / \si{\per\square\nano\meter}$} & {$q\mx / \si{\nano\meter}$} & {$\DQ / \si{\nano\meter}$} & {$q\mx\alt / \si{\nano\meter}$} & {$\DQ\alt / \si{\nano\meter}$} \\
+		\midrule
+		0.1 & 0.001 & 2000 & 2 & 2000 & 8 \\
+		\bottomrule
+	\end{tabular}
+	\end{center}
+	\caption[
+		Improved parameters for double well (numerical)
+	]{
+		Improved parameters for the double well model system using the numerical method.
+	}
+	\label{tab:model-sas-double-well}
+\end{table}
+
+The results of the convergence studies in \cref{fig:double-well-survival-zero-q-a,fig:double-well-survival-zero-q-b} are shown in \cref{tab:model-sa0-double-well}.
+If we try to use these values to generate ground state survival amplitudes, we see in \cref{fig:double-well-survival-bad} that we do a terrible job regardless of $\gamma$.
+In fact, the curves end where they do because the values diverge and the calculations are aborted.
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{13/double_well_sa0_qmax}
+		\caption{
+			Convergence of $t = 0$ survival amplitude with $q\mx$.
+		}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{13/double_well_sa0_dq}
+		\caption{
+			Convergence of $t = 0$ survival amplitude with $\DQ$.
+		}
+	\end{subfigure}
+	\caption[
+		Convergence of double well survival amplitude with position grids
+	]{
+		Convergence of $t = 0$ survival amplitude with the $\{ q\mx, \DQ \}$ grid for a double well.
+		\explainplotsazero{}
+	}
+	\label{fig:double-well-survival-zero-q-a}
+\end{figure}
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{13/double_well_sa0_qmax_alt}
+		\caption{
+			Convergence of $t = 0$ survival amplitude with $q\mx\alt$.
+		}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{13/double_well_sa0_dq_alt}
+		\caption{
+			Convergence of $t = 0$ survival amplitude with $\DQ\alt$.
+		}
+	\end{subfigure}
+	\caption[
+		Convergence of double well survival amplitude with position grids \cont
+	]{
+		Convergence of $t = 0$ survival amplitude with the $\{ q\mx\alt, \DQ\alt \}$ grid for a double well.
+		\explainplotsazero{}
+	}
+	\label{fig:double-well-survival-zero-q-b}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{13/double_well_sas_bad}
+	\caption[
+		Double well survival amplitude with poor parameters
+	]{
+		Double well ground state survival amplitude with poor parameters.
+		\explainplotsas{}
+	}
+	\label{fig:double-well-survival-bad}
+\end{figure}
+
+By changing some of the parameters, we are able to improve the shape of the curves and prolong the length of the calculations, as shown in \cref{fig:double-well-survival-better} using the parameters from \cref{tab:model-sas-double-well}.
+However, the results are still far from perfect.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{13/double_well_sas_better}
+	\caption[
+		Double well survival amplitude with improved parameters
+	]{
+		Double well ground state survival amplitude with improved parameters.
+		\explainplotsas{}
+	}
+	\label{fig:double-well-survival-better}
+\end{figure}

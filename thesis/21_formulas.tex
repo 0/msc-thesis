@@ -1,0 +1,414 @@
+\chapter{Useful formulas}
+
+
+\section{Momentum-position change of basis}
+
+In a single dimension, we have~\cite[55-56]{sakurai1985modern}
+\begin{subequations}
+\begin{align}
+	\ddf{p - p'}
+	&= \braket{p' | p}
+	= \int\! \dif q \braket{p' | q} \braket{q | p} \\
+	&= \frac{1}{\hbar} \ddf{\frac{1}{\hbar} (p - p')}
+	= \frac{1}{2 \pi \hbar} \int\! \dif q \, e^{\frac{i}{\hbar} (p - p') q}
+	= \frac{1}{2 \pi \hbar} \int\! \dif q \, e^{-\frac{i}{\hbar} p' q} e^{\frac{i}{\hbar} p q},
+\end{align}
+\end{subequations}
+from which we conclude that
+\begin{align}
+	\braket{p | q}
+	&= \frac{1}{\sqrt{2 \pi \hbar}} e^{-\frac{i}{\hbar} p q}.
+\end{align}
+
+Since~\cite[59]{sakurai1985modern}
+\begin{align}
+	\ddf{\vec{x}}
+	&= \prod_{i=0}^{F-1} \ddf{x_i},
+\end{align}
+for $F$-dimensional vectors $\vec{q}$ and $\vec{p}$ we instead have
+\begin{subequations}
+\begin{align}
+	\ddf{\vec{p} - \vec{p}'}
+	&= \braket{\vec{p}' | \vec{p}}
+	= \int\! \dif \vec{q} \braket{\vec{p}' | \vec{q}} \braket{\vec{q} | \vec{p}} \\
+	&= \frac{1}{\hbar^F} \ddf{\frac{1}{\hbar} (\vec{p} - \vec{p}')}
+	= \frac{1}{(2 \pi \hbar)^F} \int\! \dif \vec{q} \, e^{\frac{i}{\hbar} (\vec{p} - \vec{p}') \cdot \vec{q}}
+	= \frac{1}{(2 \pi \hbar)^F} \int\! \dif \vec{q} \, e^{-\frac{i}{\hbar} \vec{p}' \cdot \vec{q}} e^{\frac{i}{\hbar} \vec{p} \cdot \vec{q}},
+\end{align}
+\end{subequations}
+so the inner product is given by
+\begin{align}
+	\braket{\vec{p} | \vec{q}}
+	&= \left( \frac{1}{2 \pi \hbar} \right)^\frac{F}{2} e^{-\frac{i}{\hbar} \vec{q} \cdot \vec{p}}.
+		\label{eq:pq-inner}
+\end{align}
+
+
+\section{Gaussian integrals}
+
+Gaussian integrals are quite common, and the expression for the result with real parameters is well-known.
+Our goal here is to generalize the result to complex parameters, so we start from the very beginning.
+
+How do we know that
+\begin{align}
+	G(a)
+	&= \int\! \dif x \, e^{-a x^2}
+	= \sqrt{\frac{\pi}{a}}
+		\label{eq:gaussian-integral-a}
+\end{align}
+for all $a > 0$?
+The usual squaring trick with polar coordinates is supposedly due to Poisson\footnote{
+	\url{http://www.york.ac.uk/depts/maths/histstat/normal_history.pdf}
+}:
+\begin{subequations}
+\begin{align}
+	(G(a))^2
+	&= \left( \int\! \dif x \, e^{-a x^2} \right) \left( \int\! \dif y \, e^{-a y^2} \right) \\
+	&= \int_{-\infty}^\infty\! \dif x \int_{-\infty}^\infty\! \dif y \, e^{-a (x^2 + y^2)} \\
+	&= \int_0^{2 \pi}\! \dif \theta \int_0^\infty\! \dif r \, r e^{-a r^2} \\
+	&= 2 \pi \int_0^\infty\! \dif r \, r e^{-a r^2} \\
+	&= 2 \pi \left[ -\frac{1}{2 a} e^{-a r^2} \right]_{r=0}^\infty \\
+	&= 2 \pi \left[ 0 - \left( -\frac{1}{2 a} \right) \right]
+	= \frac{\pi}{a} \\
+	\therefore
+	G(a)
+	&= \sqrt{\frac{\pi}{a}}.
+\end{align}
+\end{subequations}
+We need $a$ to be positive so that $e^{-a r^2} \to 0$ as $r \to \infty$.
+It also helps with the division and square root.
+
+It's then trivial to generalize this to expressions of the form
+\begin{align}
+	\int\! \dif x \, e^{-a x^2 + b x}
+\end{align}
+by completing the square:
+\begin{subequations}
+\begin{align}
+	-a \left( x - \frac{b}{2 a} \right)^2 + \frac{b^2}{4 a}
+	&= -a \left( x^2 - 2 \frac{b}{2 a} x + \frac{b^2}{4 a^2} \right) + \frac{b^2}{4 a} \\
+	&= -a x^2 + b x,
+\end{align}
+\end{subequations}
+so
+\begin{subequations} \label{eq:gaussian-integral-ab}
+\begin{align}
+	\int\! \dif x \, e^{-a x^2 + b x}
+	&= \int\! \dif x \, e^{-a \left( x - \frac{b}{2 a} \right)^2 + \frac{b^2}{4 a}} \\
+	&= e^{\frac{b^2}{4 a}} \int\! \dif x \, e^{-a \left( x - \frac{b}{2 a} \right)^2} \\
+	&= \sqrt{\frac{\pi}{a}} e^{\frac{b^2}{4 a}}.
+\end{align}
+\end{subequations}
+Here we have used the fact that translation of $x$ by a constant has no impact on the value of an improper integral, since $x$ ranges over the entire real line:
+\begin{subequations} \label{eq:infinite-integral-translation}
+\begin{align}
+	\int_{-\infty}^\infty\! \dif x \, f(x)
+	&= \lim_{L_1 \to -\infty} \int_{L_1}^0\! \dif x \, f(x)
+		+ \lim_{L_2 \to \infty} \int_0^{L_2}\! \dif x \, f(x) \\
+	&= \lim_{L_1 \to -\infty} \int_{L_1 + \Delta x}^{\Delta x}\! \dif x \, f(x - \Delta x)
+		+ \lim_{L_2 \to \infty} \int_{\Delta x}^{L_2 + \Delta x}\! \dif x \, f(x - \Delta x) \\
+	&= \int_{-\infty}^\infty\! \dif x \, f(x - \Delta x).
+\end{align}
+\end{subequations}
+We still require that $a > 0$ for the same reason as before, but we impose no additional constraints on $b$ other than $b \in \mathbb{R}$.
+
+It turns out that the above result applies even when $b \in \mathbb{C}$, and to show this we will follow an argument similar to the one in ref.~\cite[132-135]{kwok2002applied}.
+According to the Cauchy--Goursat theorem~\cite[128]{kwok2002applied},
+\begin{align}
+	\oint_C\! \dif z \, f(z)
+	&= 0
+\end{align}
+for a simple closed contour $C$ when $f(z)$ is analytic on and inside $C$.
+Since $e^{-\lambda z^2}$ (with $\lambda, z \in \mathbb{C}$) is analytic everywhere~\cite[61]{kwok2002applied}, if we draw any curve $C$ in the complex plane that starts and ends at the same point and does not cross itself, we will have
+\begin{align}
+	\oint_C\! \dif z \, e^{-\lambda z^2}
+	&= 0.
+\end{align}
+We will choose $C$ to be in the counter-clockwise direction along the rectangle with vertices at $L_1$, $L_2$, $L_2 - i \beta$, and $L_1 - i \beta$, where $L_1, L_2, \beta \in \mathbb{R}$.
+We may therefore split our contour integral into simple line integrals as follows~\cite[122]{kwok2002applied}:
+\begin{align}
+	\oint_C\! \dif z \, e^{-\lambda z^2}
+	&= \int_{L_1}^{L_2}\! \dif x \, e^{-\lambda x^2}
+		+ \int_0^\beta\! \dif x \, e^{-\lambda (L_2 - i x)^2}
+		+ \int_{L_2}^{L_1}\! \dif x \, e^{-\lambda (x - i \beta)^2}
+		+ \int_\beta^0\! \dif x \, e^{-\lambda (L_1 - i x)^2}
+	= 0,
+\end{align}
+which implies that
+\begin{align}
+	\int_{L_1}^{L_2}\! \dif x \, e^{-\lambda x^2}
+		+ \int_0^\beta\! \dif x \, e^{-\lambda (L_2 - i x)^2}
+	&= \int_{L_1}^{L_2}\! \dif x \, e^{-\lambda (x - i \beta)^2}
+		+ \int_0^\beta\! \dif x \, e^{-\lambda (L_1 - i x)^2}.
+\end{align}
+We can apply the modulus inequality to the ``vertical'' segments to show that they vanish in the limits $L_1 \to -\infty$ and $L_2 \to \infty$~\cite[134]{kwok2002applied}.
+Thus, we have (reusing the result from \cref{eq:infinite-integral-translation})
+\begin{align}
+	\int_{-\infty}^\infty\! \dif x \, e^{-\lambda x^2}
+	&= \int_{-\infty}^\infty\! \dif x \, e^{-\lambda (x - i \beta)^2}
+	= \int_{-\infty}^\infty\! \dif x \, e^{-\lambda (x - \alpha - i \beta)^2}
+\end{align}
+for $\alpha, \beta \in \mathbb{R}$ and $\mu \in \mathbb{C}$.
+More concisely,
+\begin{align}
+	\int_{-\infty}^\infty\! \dif x \, e^{-\lambda x^2}
+	= \int_{-\infty}^\infty\! \dif x \, e^{-\lambda (x - \xi)^2}
+\end{align}
+for $\lambda, \xi \in \mathbb{C}$.
+These equalities, of course, rely on the convergence of the integral on the left-hand side.
+We know that if we restrict $\lambda$ to only positive real numbers, the integral \emph{does} converge and we can generalize \cref{eq:gaussian-integral-ab} to
+\begin{align}
+	\int\! \dif x \, e^{-a x^2 + \mu x}
+	&= \sqrt{\frac{\pi}{a}} e^{\frac{\mu^2}{4 a}}
+		\label{eq:gaussian-integral-amu}
+\end{align}
+for $a > 0$ and $\mu \in \mathbb{C}$.
+Unfortunately, if we try to apply the above argument to complex $\lambda$ with positive real part, we run into issues with choosing the branch of the square root.
+
+A convenient shortcut (for $a, k > 0$, $\mu \in \mathbb{C}$) is
+\begin{align}
+	\int\! \dif x \, e^{-k (a x^2 + \mu x)}
+	&= \sqrt{\frac{\pi}{k a}} e^{\frac{k \mu^2}{4 a}}.
+		\label{eq:gaussian-integral-kamu}
+\end{align}
+For symmetrical coupled integrals (with $a, k > 0$, $b \in \mathbb{R}$, $\abs{b} < 2 a$), we have
+\begin{align}
+	\iint\! \dif x \dif y \, e^{-k (a (x^2 + y^2) + b x y)}
+	&= \sqrt{\frac{\pi}{k a}}
+		\iint\! \dif x \, e^{-k \left( \frac{4 a^2 - b^2}{4 a} \right) x^2}
+	= \frac{2 \pi}{k \sqrt{4 a^2 - b^2}}.
+		\label{eq:gaussian-integral-coupled}
+\end{align}
+
+
+\section{Simple recurrence relation}
+
+Consider the homogeneous linear recurrence relation with constant coefficients
+\begin{subequations}
+\begin{align}
+	a_0
+	&= 1 \\
+	a_1
+	&= \beta \\
+	a_n
+	&= 2 \alpha a_{n-1} - a_{n-2}.
+\end{align}
+\end{subequations}
+We will use ref.~\cite[86-91]{slomson1991introduction} to find an explicit expression for $a_n$.
+We write the relation as
+\begin{align}
+	x^2 - 2 \alpha x + 1
+	&= 0,
+		\label{eq:recurrence-quadratic}
+\end{align}
+which is trivially solved for $x$:
+\begin{align}
+	x
+	&= \alpha \pm \sqrt{\alpha^2 - 1}.
+\end{align}
+The general solution is therefore
+\begin{align}
+	a_n
+	&= c_1 \left( \alpha + \sqrt{\alpha^2 - 1} \right)^n + c_2 \left( \alpha - \sqrt{\alpha^2 - 1} \right)^n,
+\end{align}
+and we can determine the constants $c_1$ and $c_2$ from our initial conditions:
+\begin{subequations}
+\begin{align}
+	1
+	&= c_1 + c_2 \\
+	\beta
+	&= c_1 \left( \alpha + \sqrt{\alpha^2 - 1} \right) + c_2 \left( \alpha - \sqrt{\alpha^2 - 1} \right)
+	= \alpha + (c_1 - c_2) \sqrt{\alpha^2 - 1},
+\end{align}
+\end{subequations}
+so
+\begin{align}
+	c_{1/2}
+	&= \frac{1}{2} \left( 1 \pm \frac{\beta - \alpha}{\sqrt{\alpha^2 - 1}} \right).
+\end{align}
+This is fine so long as $\alpha \ne \pm 1$.
+
+Let us now handle the case when \cref{eq:recurrence-quadratic} has only one degenerate root $x = \alpha = \pm 1$.
+In this case, the general solutions are
+\begin{align}
+	a_n
+	&= c_1^\pm (\pm 1)^n + c_2^\pm n (\pm 1)^n,
+\end{align}
+and
+\begin{subequations}
+\begin{align}
+	c_1^\pm
+	&= 1 \\
+	c_2^\pm
+	&= \pm \beta - 1.
+\end{align}
+\end{subequations}
+
+Hence, our final answer is
+\begin{align}
+	a_n
+	&= \begin{cases}
+			1 - (1 - \beta) n & \text{if } \alpha = 1 \\
+			(1 - (1 + \beta) n) (-1)^n & \text{if } \alpha = -1 \\
+			\frac{1}{2} \left[
+					\left( 1 + \frac{\beta - \alpha}{\sqrt{\alpha^2 - 1}} \right) \left( \alpha + \sqrt{\alpha^2 - 1} \right)^n
+					+ \left( 1 - \frac{\beta - \alpha}{\sqrt{\alpha^2 - 1}} \right) \left( \alpha - \sqrt{\alpha^2 - 1} \right)^n
+			\right] & \text{otherwise}
+		\end{cases}.
+			\label{eq:recurrence-relation}
+\end{align}
+
+
+\section{Roots of unity}
+
+The $N$th roots of unity ($N = 1, 2, \ldots$) are given by powers of
+\begin{align}
+	\omega_N
+	&= e^{\frac{2 \pi i}{N}}.
+\end{align}
+For any complex number $z \not\in \{ 0, 1 \}$ and any $N \ge 1$, we have
+\begin{align}
+	z^N + \sum_{k=0}^{N-1} z^k
+	&= 1 + \sum_{k=1}^{N} z^k
+	= 1 + z \sum_{k=1}^{N} z^{k-1}
+	= 1 + z \sum_{k=0}^{N-1} z^k,
+\end{align}
+so
+\begin{align}
+	z^N - 1
+	&= (z - 1) \sum_{k=0}^{N-1} z^k
+\end{align}
+and
+\begin{align}
+	\sum_{k=0}^{N-1} z^k
+	= \frac{z^N - 1}{z - 1}.
+\end{align}
+If $z = 1$, $\sum_{k=0}^{N-1} z^k = N$.
+
+For any $a$ such that $\omega_N^a \ne 1$ (\ie{} $a \not\equiv 0 \bmod{N}$),
+\begin{align}
+	\sum_{k=0}^{N-1} \omega_N^{a k}
+	&= \sum_{k=0}^{N-1} (\omega_N^a)^k
+	= \frac{(\omega_N^a)^N - 1}{\omega_N^a - 1}
+	= \frac{(\omega_N^N)^a - 1}{\omega_N^a - 1}
+	= 0.
+\end{align}
+If $\omega_N^a = 1$, the sum is $N$.
+If we restrict $a$ to $\{ -(N-1), \ldots, -1, 0, 1, \ldots, N-1 \}$, then we can write
+\begin{align}
+	\sum_{k=0}^{N-1} \omega_N^{a k}
+	&= \sum_{k=0}^{N-1} e^{\frac{2 \pi i a k}{N}}
+	= \begin{cases}
+			N & \text{if } a = 0 \\
+			0 & \text{otherwise}
+		\end{cases}.
+			\label{eq:roots-of-unity-sum}
+\end{align}
+
+
+\section{Cosine series}
+
+We would like to evaluate the series
+\begin{align}
+	S
+	&= \sum_{n=0}^{P-1} \cos^2{\left[ \frac{\pi}{P} k \left( n + \frac{1}{2} \right) \right]}.
+\end{align}
+We note that
+\begin{subequations}
+\begin{align}
+	\cos{x}
+	&= \frac{1}{2} (e^{-i x} + e^{i x}) \\
+	\cos^2{x}
+	&= \frac{1}{4} (e^{-i x} + e^{i x})^2
+	= \frac{1}{4} (2 + e^{-2 i x} + e^{2 i x}),
+\end{align}
+\end{subequations}
+so
+\begin{align}
+	4 S
+	&= 2 P + e^{-\frac{\pi i k n}{P}} \left[ \sum_{n=0}^{P-1} e^{-\frac{2 \pi i k n}{P}} \right]
+		+ e^{\frac{\pi i k n}{P}} \left[ \sum_{n=0}^{P-1} e^{\frac{2 \pi i k n}{P}} \right].
+\end{align}
+By \cref{eq:roots-of-unity-sum},
+\begin{align}
+	4 S
+	&= \begin{cases}
+			2 P + P + P & \text{if } k = 0 \\
+			2 P & \text{otherwise}
+		\end{cases},
+\end{align}
+so
+\begin{align}
+	\sum_{n=0}^{P-1} \cos^2{\left[ \frac{\pi}{P} k \left( n + \frac{1}{2} \right) \right]}
+	&= \begin{cases}
+			P & \text{if } k = 0 \\
+			\frac{P}{2} & \text{otherwise}
+		\end{cases}.
+			\label{eq:cosine-sum}
+\end{align}
+
+
+\section{Exponential derivative operator}
+
+It is stated but not proved in ref.~\cite{tuckerman1992reversible} that
+\begin{align}
+	e^{c \frac{\partial}{\partial x}} f(x)
+	&= f(x + c)
+\end{align}
+when $c$ is independent of $x$.
+To show that this is true, we start with the (operator) Taylor series~\cite[48]{sakurai1985modern}
+\begin{align}
+	e^{\hat{A}}
+	&= \sum_{n=0}^\infty \frac{1}{n!} \hat{A}^n
+\end{align}
+and substitute our operator of choice:
+\begin{align}
+	e^{c \frac{\partial}{\partial x}}
+	&= \sum_{n=0}^\infty \frac{1}{n!} \left( c \frac{\partial}{\partial x} \right)^n.
+\end{align}
+Since we demand that $c$ and $x$ are independent, $c$ and $\frac{\partial}{\partial x}$ commute, so
+\begin{align}
+	e^{c \frac{\partial}{\partial x}}
+	&= \sum_{n=0}^\infty \frac{1}{n!} c^n \frac{\partial^n}{\partial x^n}.
+\end{align}
+We can apply this to some function $f(x)$ to get
+\begin{align}
+	\left[ e^{c \frac{\partial}{\partial x}} f(x) \right] (x')
+	&= \sum_{n=0}^\infty \frac{1}{n!} c^n \left. \frac{\partial^n f}{\partial x^n} \right|_{x=x'}.
+		\label{eq:exp-deriv-apply}
+\end{align}
+
+On the other hand, the Taylor series expansion of $f(x)$ about $a$ is~\cite[754]{stewart2012calculus}
+\begin{align}
+	f(x)
+	&= \sum_{n=0}^\infty \frac{1}{n!} (x-a)^n \left. \frac{\partial^n f}{\partial x^n} \right|_{x=a},
+\end{align}
+so the expansion of $f(x' + c)$ about $x'$ is
+\begin{align}
+	f(x' + c)
+	&= \sum_{n=0}^\infty \frac{1}{n!} c^n \left. \frac{\partial^n f}{\partial x^n} \right|_{x=x'},
+\end{align}
+which is exactly the same as \cref{eq:exp-deriv-apply}.
+Thus, we claim that
+\begin{align}
+	\left[ e^{c \frac{\partial}{\partial x}} f(x) \right] (x')
+	&= f(x' + c),
+\end{align}
+or in more concise but less precise notation,
+\begin{align}
+	e^{c \frac{\partial}{\partial x}} f(x)
+	&= f(x + c).
+\end{align}
+
+In the case that we have a trivial function like $f(x) = x$, we of course find that
+\begin{align}
+	e^{c \frac{\partial}{\partial x}} x
+	&= x + c.
+\end{align}
+Additionally, if $\vec{c}$ and $\vec{x}$ are instead vectors (with all elements independent), then
+\begin{align}
+	e^{\vec{c} \cdot \frac{\partial}{\partial \vec{x}}} \vec{x}
+	&= \vec{x} + \vec{c},
+		\label{eq:exp-deriv}
+\end{align}
+since all the $\frac{\partial}{\partial x_i}$ operators commute and we can apply the operators to each element of the vector individually.

@@ -1,0 +1,139 @@
+\section{Graphical notation}
+
+\label{sec:graphical}
+
+Like every useful notation, Dirac's kets (and their dual bras) form a powerful abstraction over the underlying machinery.
+In the case of the kets, not only is there less clutter for common activities, like taking inner products of elements of the Hilbert space,
+\begin{align}
+	\braket{\phi | \psi}
+	&= \int\! \dif x \, \phi\conj(x) \psi(x),
+\end{align}
+but there are also conceptual advantages.
+Kets are not tied to any basis, allowing us to think in more abstract terms.
+They can also represent objects which cannot even exist in Hilbert space (such as the delta-function-normalized position basis states $\ket{q}$), and which would normally require the theory of distributions and a rigged Hilbert space to account for rigorously~\cite{de2005role}.
+
+However, even Dirac notation can become tedious and opaque if one accumulates sufficiently many bras and kets, as tends to happen with path integrals.
+If the bras, kets, and operators are further expanded, one obtains inscrutable expressions, such as those in \cref{eq:ugly-distribution1,eq:ugly-distribution2,eq:ugly-distribution3}.
+It is therefore beneficial to introduce a graphical notation for representing paths, especially when the goal is to manipulate and discuss the structure of the paths at the level of beads and springs.
+
+The elements in which we're interested are the beads themselves, the ``kinetic'' spring links between them, and the interaction terms due to the quantum potential.
+The beads, being point particles, are naturally represented as points in a schematic drawing.
+The springs connect beads and can be represented as wavy curves between the points.
+The basic ``unit'' of interaction is half of a single term, since each link contributes half of the interactions on either side.
+Additionally, interactions may either involve multiple particles or a single particle; the former are referred to as \emph{$N$-body} interactions and the latter are referred to as \emph{central} or \emph{trapping} interactions.
+
+\begin{figure}
+	\setlength{\figspacing}{10 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{11/paths_with_central}
+		\caption{
+			Two interacting quantum particles depicted as classical polymers (paths) composed of $P$ beads, showing the Trotter springs (blue, wavy) and potentials (red, dashed) connecting the beads.
+			The end beads experience only half of the regular potential, but they also feel a potential due to the trial function, which is not displayed here.
+			The letters along the left are the particle labels and the numbers along the top are the bead indices.
+			Most beads have been elided, as indicated by the $\cdots$, implying that their presence would add nothing of interest to the diagram.
+		}
+		\label{fig:paths-with-central}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{11/paths}
+		\caption{
+			The same situation as in \subref{fig:paths-with-central}, but with the central potentials omitted, resulting in a cleaner diagram.
+		}
+		\label{fig:paths}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{11/paths_no_link1}
+		\caption{
+			A similar situation to the one in \subref{fig:paths}, but without the link between beads $M-1$ and $M$.
+		}
+		\label{fig:paths-no-link1}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\includegraphics[width=\textwidth]{11/paths_no_link2}
+		\caption{
+			A similar situation to the one in \subref{fig:paths}, but without the kinetic springs between beads $M-1$ and $M$.
+		}
+		\label{fig:paths-no-link2}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\mbox{}
+	\hfill
+	\begin{subfigure}[b]{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.25\textwidth]{11/stubs}
+		\caption{
+			A more compact version of \subref{fig:paths}, focused on the link between $M-1$ and $M$.
+		}
+		\label{fig:stubs}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.25\textwidth]{11/stubs_no_link1}
+		\caption{
+			A more compact version of \subref{fig:paths-no-link1}, focused on the link between $M-1$ and $M$.
+		}
+		\label{fig:stubs-no-link1}
+	\end{subfigure}
+	\hfill
+	\mbox{}
+	\vspace{\figspacing}
+
+	\mbox{}
+	\hfill
+	\begin{subfigure}[b]{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.25\textwidth]{11/stubs_no_link2}
+		\caption{
+			A more compact version of \subref{fig:paths-no-link2}, focused on the link between $M-1$ and $M$.
+		}
+		\label{fig:stubs-no-link2}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.4\textwidth}
+		\centering
+		\includegraphics[width=0.25\textwidth]{11/missing_link}
+		\caption{
+			The missing link from \subref{fig:paths-no-link1} and \subref{fig:stubs-no-link1}, showing only beads $M-1$ and $M$.
+		}
+		\label{fig:missing-link}
+	\end{subfigure}
+	\hfill
+	\mbox{}
+	\caption[
+		Examples of path diagrams
+	]{
+		Examples of path diagrams, showing the distillation of the compact graphical notation.
+	}
+\end{figure}
+
+The easiest way to understand this notation is to see a concrete example.
+Let us consider a system of two particles $A$ and $B$, each of which experiences a central potential of some sort ($\hat{V}_A$ and $\hat{V}_B$).
+Additionally, they interact with a coupling potential ($\hat{V}_{AB}$).
+We shall encounter a model system like this very shortly.
+The distribution from \cref{eq:ugly-distribution1} for our simple system may be represented visually as in \cref{fig:paths-with-central}.
+The trial function is not displayed in the diagrams, as its presence (or absence) should be straightforward to describe in words.
+
+Since we are often not interested in the central interactions, they may be omitted from the diagram, as in \cref{fig:paths}.
+So far these diagrams have not been particularly eventful, but we can start to see how they may be useful if we represent the distributions from \cref{eq:ugly-distribution2,eq:ugly-distribution3}, which are shown in \cref{fig:paths-no-link1,fig:paths-no-link2}.
+Despite the elision of many irrelevant beads (namely those between $1$ and $M-1$ and those between $M+1$ and $P-2$), these diagrams still display information that is not relevant to what we are trying to show: how the paths are affected around beads $M-1$ and $M$.
+Of course, if we are careful to specify which beads we wish to focus on (in this case $M-1$ and $M$), we may disregard everything else, as in \cref{fig:stubs,fig:stubs-no-link1,fig:stubs-no-link2}.
+In these diagrams, the tails on the left and right signify that we wish to refer to the rest of the paths as well.
+Sometimes we want to refer only to a particular segment of the path, in which case these tails are omitted, as in \cref{fig:missing-link}.
+
+The reader may understandably be bored at this point, as there has not been anything so far resembling a ``graphical notation,'' merely diagrams presented in a figure on a separate page.
+That is far from convenient and only marginally useful!
+However, these diagrams can be inserted in an intuitive way into mathematical statements:
+\begin{subequations}
+\begin{align}
+	\symbdist{11/stubs_no_link1}
+	&= \hugefrac{\symbdist{11/stubs}}{\symb{11/missing_link}} \\
+	\symbdist{11/stubs}
+	&= \symbdist{11/stubs_no_link1} \times \symb{11/missing_link}.
+\end{align}
+\end{subequations}
+These two equations show the removal (and reinsertion) of a full link.
