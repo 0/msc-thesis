@@ -14,19 +14,19 @@ If your problem can be expressed as vectors and matrices, it is essentially alre
 
 FFTW~\cite{frigo2005design}\footnote{
 	\url{http://fftw.org/}
-} is a very powerful library for performing transforms in the discrete Fourier transform family, such as the \nomencl{FFT}{Fast Fourier Transform} (a fast algorithm for the \nomencl{DFT}{Discrete Fourier Transform}) and the DCT.
+} is a very powerful library for performing transforms in the discrete Fourier transform family, such as the \nomencl{FFT}{Fast Fourier Transform} (a fast algorithm for the \nomencl{DFT}{Discrete Fourier Transform}) and the \nomencl{DCT}{Discrete Cosine Transform}.
 However, one nuance which must be kept in mind when using FFTW is that the transforms are not normalized in a way that makes them unitary.
 
 According to the FFTW documentation\footnote{
 	FFTW Reference $\to$ What FFTW Really Computes $\to$ 1d Real-even DFTs (DCTs)
 }, the matrix elements of the forward DCT (DCT-II, \texttt{REDFT10}) are
 \begin{align}
-	t^\textrm{f}_{kn}
+	t^\textrm{f}_{k,n}
 	&= 2 \cos{\left[ \frac{\pi}{N} k \left( n + \frac{1}{2} \right) \right]}
 \end{align}
 and of the reverse DCT (DCT-III, \texttt{REDFT01}) are
 \begin{align}
-	t^\textrm{r}_{nk}
+	t^\textrm{r}_{n,k}
 	&= C_k \cos{\left[ \frac{\pi}{N} k \left( n + \frac{1}{2} \right) \right]}
 \end{align}
 with

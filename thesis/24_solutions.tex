@@ -353,7 +353,7 @@ WBaduk beginner problem BP00107
 	\end{subequations}
 	where the elements of $\mat{A}$ are
 	\begin{align}
-		a_{ij}
+		a_{i,j}
 		&= \begin{cases}
 				1 & i = j \in \{ 0, P-1 \} \\
 				2 & i = j \not\in \{ 0, P-1 \} \\
@@ -369,7 +369,7 @@ WBaduk beginner problem BP00107
 				\phantom{-}1 & -1 & \phantom{-}0 & \cdots & \phantom{-}0 & \phantom{-}0 \\
 				-1 & \phantom{-}2 & -1 & \cdots & \phantom{-}0 & \phantom{-}0 \\
 				\phantom{-}0 & -1 & \phantom{-}2 & \cdots & \phantom{-}0 & \phantom{-}0 \\
-				\vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
+				\phantom{-}\vdots & \phantom{-}\vdots & \phantom{-}\vdots & \ddots & \phantom{-}\vdots & \phantom{-}\vdots \\
 				\phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \cdots & \phantom{-}2 & -1 \\
 				\phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \cdots & -1 & \phantom{-}1 \\
 			\end{pmatrix}.
@@ -518,7 +518,7 @@ WBaduk beginner problem BP00107
 	which in explicit form (for $i = 0, 1, \ldots, P - 1$) is
 	\begin{align}
 		\sigma_i
-		&= \sum_{j=0}^{P-1} (a_{ij} - \lambda \delta_{ij}) v_j
+		&= \sum_{j=0}^{P-1} (a_{i,j} - \lambda \delta_{i,j}) v_j
 		= 0.
 	\end{align}
 	Thanks to the tridiagonal structure of $\mat{A}$, none of these sums have more than three terms:
@@ -554,7 +554,7 @@ WBaduk beginner problem BP00107
 	\end{subequations}
 	so
 	\begin{align}
-		s_{kn}
+		s_{k,n}
 		&\propto \begin{cases}
 				1 & \text{if } k = 0 \\
 				\frac{1}{2} \left[
@@ -566,13 +566,13 @@ WBaduk beginner problem BP00107
 	We are justified in dropping the cosines in the denominators, since they are constant \emph{within a row} (\ie{} eigenvector) and we will renormalize those explicitly.
 	If we introduce the normalization constants $C_k$, we may simplify the above to just
 	\begin{align}
-		s_{kn}
+		s_{k,n}
 		&= C_k \cos{\left[ \frac{\pi}{P} k \left( n + \frac{1}{2} \right) \right]}.
 			\label{eq:pigs-nm-transform}
 	\end{align}
 	For the normalization, we demand that
 	\begin{align}
-		\sum_{n=0}^{P-1} s_{kn}^2
+		\sum_{n=0}^{P-1} s_{k,n}^2
 		&= C_k^2 \sum_{n=0}^{P-1} \cos^2{\left[ \frac{\pi}{P} k \left( n + \frac{1}{2} \right) \right]}
 		= 1
 	\end{align}
@@ -623,17 +623,17 @@ WBaduk beginner problem BP00107
 	\begin{align}
 		\dot{q}_{n,d}\bead{j}(\dot{\nm{\vec{q}}})
 		&= (\mat{S}\trans \dot{\nm{\vec{q}}})\bead{j}
-		= \sum_{k=0}^{P-1} s_{kj} \dot{\nm{q}}_{n,d}\bead{k}
+		= \sum_{k=0}^{P-1} s_{k,j} \dot{\nm{q}}_{n,d}\bead{k}
 	\end{align}
 	and
 	\begin{align}
 		\frac{\partial \dot{q}_{n,d}\bead{j}}{\partial \dot{\nm{q}}_{n,d}\bead{k}}
-		&= s_{kj}.
+		&= s_{k,j}.
 	\end{align}
 	Therefore,
 	\begin{align}
 		\nm{p}_{n,d}\bead{k}
-		&= \sum_{j=0}^{P-1} s_{kj} p_{n,d}\bead{j}
+		&= \sum_{j=0}^{P-1} s_{k,j} p_{n,d}\bead{j}
 		= (\mat{S} \vec{p}_{n,d})\bead{k}.
 	\end{align}
 	That is, to obtain the canonical momenta, we apply the same transformation as for the coordinates.
@@ -717,7 +717,7 @@ WBaduk beginner problem BP00107
 		h_{\nm{q},f}(\nm{\vec{\Gamma}})
 		&= \frac{\nm{p}_f}{m_f} \\
 		g_{\nm{p},ff'}(\nm{\vec{\Gamma}})
-		&= \delta_{ff'} \sqrt{\frac{m_f \gamma_f}{\beta}} &
+		&= \delta_{f,f'} \sqrt{\frac{m_f \gamma_f}{\beta}} &
 		g_{\nm{q},ff'}(\nm{\vec{\Gamma}})
 		&= 0.
 	\end{align}
@@ -731,7 +731,7 @@ WBaduk beginner problem BP00107
 		D_{\nm{q},f}(\nm{\vec{\Gamma}})
 		&= \frac{\nm{p}_f}{m_f} \\
 		D_{\nm{p},ff'}(\nm{\vec{\Gamma}})
-		&= \delta_{ff'} \frac{m_f \gamma_f}{\beta} &
+		&= \delta_{f,f'} \frac{m_f \gamma_f}{\beta} &
 		D_{\nm{q},ff'}(\nm{\vec{\Gamma}})
 		&= 0,
 	\end{align}
@@ -793,7 +793,7 @@ WBaduk beginner problem BP00107
 		&= -\frac{\partial \Veff}{\partial \nm{q}_{n,d}\bead{k}}
 		= -\sum_{j=0}^{P-1} \frac{\partial \Veff}{\partial q_{n,d}\bead{j}} \frac{\partial q_{n,d}\bead{j}}{\partial \nm{q}_{n,d}\bead{k}}
 		= -\sum_{j=0}^{P-1} \left[ \frac{\partial \Vspring}{\partial q_{n,d}\bead{j}} + \frac{\partial V_\links}{\partial q_{n,d}\bead{j}} \right] \frac{\partial q_{n,d}\bead{j}}{\partial \nm{q}_{n,d}\bead{k}} \\
-		&= -\sum_{j=0}^{P-1} s_{kj} \left[ \frac{\partial \Vspring}{\partial q_{n,d}\bead{j}} + \frac{\partial V_\links}{\partial q_{n,d}\bead{j}} \right]
+		&= -\sum_{j=0}^{P-1} s_{k,j} \left[ \frac{\partial \Vspring}{\partial q_{n,d}\bead{j}} + \frac{\partial V_\links}{\partial q_{n,d}\bead{j}} \right]
 				\label{eq:force-nm-transform} \\
 		&= \nm{F}_{K,n,d}\bead{k}(\nm{\vec{q}}) + \nm{F}_{V,n,d}\bead{k}(\nm{\vec{q}}).
 	\end{align}
