@@ -25,12 +25,12 @@ Once we add the Gaussian weight, we instead obtain the expression
 	S_0\hkg(t)
 	&= \frac{1}{2 \pi \hbar} \iiiint\! \dif p \dif q\LLup \dif q \dif q\RRup \,
 			R\coh{p}{q}_t \braket{0 | q\LLup} \braket{q\RRup | 0}
+			\expb{-\frac{\gamma}{2} \left( (q\LLup - q\coh{p}{q}_t)^2 + (q\RRup - q)^2 \right)} \notag \\
+	&\qquad\qquad\qquad\times
 			\expb{
 				-\frac{p^2}{2 \sigma_p^2}
-				- \frac{\gamma}{2} \left( (q\LLup - q\coh{p}{q}_t)^2 + (q\RRup - q)^2 \right)
-			} \notag \\
-	&\qquad\qquad\qquad\times
-			\expb{\frac{i}{\hbar} \left( S\coh{p}{q}_t + p\coh{p}{q}_t (q\LLup - q\coh{p}{q}_t) - p (q\RRup - q) \right)}.
+				+ \frac{i}{\hbar} \left( S\coh{p}{q}_t + p\coh{p}{q}_t (q\LLup - q\coh{p}{q}_t) - p (q\RRup - q) \right)
+			}.
 \end{align}
 This introduces another parameter, $\sigma_p$, but that is not as bad as it might seem at first: the trade-off is that we no longer have all the grid parameters to tune.
 Additionally, we will choose $\gamma$ so that we are able to sample all three position coordinates from the same PIGS simulation.
@@ -73,7 +73,8 @@ However, due to the deformation, we are not interested in the normalization, so 
 \begin{align}
 	S_0\hkg(t)
 	&\propto \iiiint\! \dif p \dif q\LL \dif q\MM \dif q\RR \,
-			\pi(p, q\LL, q\MM, q\RR) R\coh{p}{q\MM}_t
+			\pi(p, q\LL, q\MM, q\RR) R\coh{p}{q\MM}_t \notag \\
+	&\qquad\qquad\times
 			\expb{-\frac{m}{2 \hbar^2 \tau} \left( (q\LL - q\coh{p}{q\MM}_t)^2 - (q\LL - q\MM)^2 \right)} \notag \\
 	&\qquad\qquad\times
 			\expb{\frac{i}{\hbar} \left( S\coh{p}{q\MM}_t + p\coh{p}{q\MM}_t (q\LL - q\coh{p}{q\MM}_t) - p (q\RR - q\MM) \right)}.

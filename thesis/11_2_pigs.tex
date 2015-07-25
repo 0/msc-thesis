@@ -116,26 +116,25 @@ Since MMTK is the tool of choice in the present work, in an effort to be consist
 
 Using LePIGS, we are able to stochastically evaluate integrals of the form
 \begin{align}
-	\mean{A}
-	&= \frac{
-			\int\! \dif \vec{q} \,
-				\psiT(\vec{q}\bead{0})
-				\left[ \prod_{j=0}^{P-2} \expb{
-					-\frac{m}{2 \hbar^2 \tau} \abs{\vec{q}\bead{j} - \vec{q}\bead{j+1}}^2
-					- \frac{\tau}{2} \left( V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right)
-				} \right]
-				\psiT(\vec{q}\bead{P-1})
-				A(\vec{q})
-		}{
-			\int\! \dif \vec{q} \,
-				\psiT(\vec{q}\bead{0})
-				\left[ \prod_{j=0}^{P-2} \expb{
-					-\frac{m}{2 \hbar^2 \tau} \abs{\vec{q}\bead{j} - \vec{q}\bead{j+1}}^2
-					- \frac{\tau}{2} \left( V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right)
-				} \right]
-				\psiT(\vec{q}\bead{P-1})
-		}
-			\label{eq:lepigs-integral-function-full}
+	\frac{
+		\int\! \dif \vec{q} \,
+			\psiT(\vec{q}\bead{0})
+			\left[ \prod_{j=0}^{P-2} \expb{
+				-\frac{m}{2 \hbar^2 \tau} \abs{\vec{q}\bead{j} - \vec{q}\bead{j+1}}^2
+				- \frac{\tau}{2} \left( V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right)
+			} \right]
+			\psiT(\vec{q}\bead{P-1})
+			A(\vec{q})
+	}{
+		\int\! \dif \vec{q} \,
+			\psiT(\vec{q}\bead{0})
+			\left[ \prod_{j=0}^{P-2} \expb{
+				-\frac{m}{2 \hbar^2 \tau} \abs{\vec{q}\bead{j} - \vec{q}\bead{j+1}}^2
+				- \frac{\tau}{2} \left( V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right)
+			} \right]
+			\psiT(\vec{q}\bead{P-1})
+	}
+		\label{eq:lepigs-integral-function-full}
 \end{align}
 for any function $A(\vec{q})$.
 For ground state expectation values of operators that are diagonal in the position representation, this function depends only on the position of the middle beads.

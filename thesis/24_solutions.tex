@@ -152,11 +152,11 @@ WBaduk beginner problem BP00107
 	Using \cref{eq:pq-inner,eq:gaussian-integral-amu} on \cpageref{eq:pq-inner,eq:gaussian-integral-amu} we find that the kinetic matrix elements are
 	\begin{subequations}
 	\begin{align}
-		\braket{
+		& \braket{
 			\vec{q}\bead{j} |
 			\expb{-\frac{\tau}{2} \sum_{n=0}^{N-1} \frac{\abs{\hat{\vec{p}}_n}^2}{m_n}} |
 			\vec{q}\bead{j+1}
-		}
+		} \notag \\
 		&= \int\! \dif \vec{p}
 				\braket{
 					\vec{q}\bead{j} |
@@ -227,7 +227,8 @@ WBaduk beginner problem BP00107
 	\begin{align}
 		Z_\beta
 		&= \int\! \dif \vec{q} \,
-			e^{-\tau \left[ \VT(\vec{q}\bead{0}) + \VT(\vec{q}\bead{P-1}) \right]}
+			e^{-\tau \left[ \VT(\vec{q}\bead{0}) + \VT(\vec{q}\bead{P-1}) \right]} \notag \\
+		&\qquad\qquad\times
 			\prod_{j=0}^{\links - 1}
 				e^{-\frac{\tau}{2} \left[ V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right]}
 				\prod_{n=0}^{N-1}
@@ -426,6 +427,10 @@ WBaduk beginner problem BP00107
 				\frac{1}{2^{n+1}}
 					\left[ \left( 1 - \frac{\lambda}{\sqrt{\lambda^2 - 4 \lambda}} \right)
 								\left( 2 - \lambda + \sqrt{\lambda^2 - 4 \lambda} \right)^n
+						\right.
+					& \\
+				\qquad\qquad
+						\left.
 							+ \left( 1 + \frac{\lambda}{\sqrt{\lambda^2 - 4 \lambda}} \right)
 								\left( 2 - \lambda - \sqrt{\lambda^2 - 4 \lambda} \right)^n
 						\right]
