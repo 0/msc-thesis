@@ -1,0 +1,86 @@
+\section{PILE with odd $P$}
+
+\label{sec:pile-odd}
+
+When the PILE was introduced in ref.~\cite{ceriotti2010efficient}, the transformation to normal modes was only given for even $P$ ($n$ in the notation of the paper).
+It is useful in practice to be able to apply the PILE in situations where $P$ is odd.
+Since eq.~(18) of ref.~\cite{ceriotti2010efficient} simply states the result, we perform the derivation from the beginning.
+
+The relevant difference between the PILE and LePIGS is that the former has closed paths.
+This means that we may start the derivation the same way, but instead of \vref{eq:nm-matrix-full} we use the very similar matrix
+\begin{align}
+	\mat{A}
+	&= \begin{pmatrix}
+			\phantom{-}2 & -1 & \phantom{-}0 & \cdots & \phantom{-}0 & -1 \\
+			-1 & \phantom{-}2 & -1 & \cdots & \phantom{-}0 & \phantom{-}0 \\
+			\phantom{-}0 & -1 & \phantom{-}2 & \cdots & \phantom{-}0 & \phantom{-}0 \\
+			\phantom{-}\vdots & \phantom{-}\vdots & \phantom{-}\vdots & \ddots & \phantom{-}\vdots & \phantom{-}\vdots \\
+			\phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \cdots & \phantom{-}2 & -1 \\
+			-1 & \phantom{-}0 & \phantom{-}0 & \cdots & -1 & \phantom{-}2 \\
+		\end{pmatrix}.
+\end{align}
+This is a circulant matrix, so we may directly write the eigenvalues and eigenvectors:~\cite{karner2003spectral}
+\begin{subequations}
+\begin{align}
+	\lambda_k
+	&= 2 - \left( e^{\frac{2 \pi i k}{P}} + e^{-\frac{2 \pi i k}{P}} \right)
+	= 2 - 2 \cos{\left[ \frac{2 \pi k}{P} \right]}
+	= 4 \sin^2{\left[ \frac{\pi k}{P} \right]} \\
+	s_{k,n}\conj
+	&= \sqrt{\frac{1}{P}} e^{\frac{2 \pi i n k}{P}}.
+\end{align}
+\end{subequations}
+Thus, the transformation matrix $\mat{S}$ is the $(P \times P)$ \nomencl{DFT}{Discrete Fourier Transform} matrix, which makes it easy to obtain the normal mode coordinates.
+
+This transformation matrix in general results in complex values, but we would prefer to keep things real.
+Unlike in the open path case, not all the eigenvalues are distinct.
+When $k \ne 0$ and $k \ne P/2$,
+\begin{align}
+	\lambda_k
+	&= 4 \sin^2{\left[ \frac{\pi k}{P} \right]}
+	= 4 \sin^2{\left[ \frac{\pi (P - k)}{P} \right]}
+	= \lambda_{P-k}.
+\end{align}
+We can use any linear combination of eigenvectors with the same eigenvalue, so we use (for $0 < k < P/2$):
+\begin{subequations}
+\begin{align}
+	s_{k,n}'
+	&= \sqrt{\frac{1}{2 P}} \left( e^{\frac{2 \pi i n k}{P}} + e^{\frac{2 \pi i n (P - k)}{P}} \right)
+	= \sqrt{\frac{1}{2 P}} \left( e^{\frac{2 \pi i n k}{P}} + e^{-\frac{2 \pi i n k}{P}} \right)
+	= \sqrt{\frac{2}{P}} \cos{\left[ \frac{2 \pi n k}{P} \right]} \\
+	s_{P-k,n}'
+	&= i \sqrt{\frac{1}{2 P}} \left( e^{\frac{2 \pi i n k}{P}} - e^{\frac{2 \pi i n (P - k)}{P}} \right)
+	= i \sqrt{\frac{1}{2 P}} \left( e^{\frac{2 \pi i n k}{P}} - e^{-\frac{2 \pi i n k}{P}} \right)
+	= -\sqrt{\frac{2}{P}} \sin{\left[ \frac{2 \pi n k}{P} \right]}.
+			\label{eq:pile-odd-sin-flip}
+\end{align}
+\end{subequations}
+Thus, for even $P$, the matrix elements are given by
+\begin{align}
+	s_{k,n}'
+	&= \begin{cases}
+			\sqrt{\frac{1}{P}} & \text{if } k = 0 \\
+			\sqrt{\frac{2}{P}} \cos{\left[ \frac{2 \pi n k}{P} \right]} & \text{if } 0 < k < \frac{P}{2} \\
+			\sqrt{\frac{1}{P}} (-1)^n & \text{if } k = \frac{P}{2} \\
+			\sqrt{\frac{2}{P}} \sin{\left[ \frac{2 \pi n k}{P} \right]} & \text{if } \frac{P}{2} < k < P
+		\end{cases},
+\end{align}
+which is exactly eq.~(18) of ref.~\cite{ceriotti2010efficient}.\footnote{
+	Except our matrix $\mat{S}'$ happens to be the transpose of their matrix $\mathbf{C}$.
+}
+The phase of the $\sin$ elements appears to be flipped relative to \cref{eq:pile-odd-sin-flip} because
+\begin{align}
+	\sin{\left[ \frac{2 \pi n (P - k)}{P} \right]}
+	&= \sin{\left[ 2 \pi n - \frac{2 \pi n k}{P} \right]}
+	= -\sin{\left[ \frac{2 \pi n k}{P} \right]}.
+\end{align}
+Finally, we recognize that when $P$ is odd, nothing in the derivation changes, but we no longer have to account for the $k = P/2$ case, so we may simply ignore it.
+This results in the matrix elements
+\begin{align}
+	s_{k,n}'
+	&= \begin{cases}
+			\sqrt{\frac{1}{P}} & \text{if } k = 0 \\
+			\sqrt{\frac{2}{P}} \cos{\left[ \frac{2 \pi n k}{P} \right]} & \text{if } 0 < k < \frac{P}{2} \\
+			\sqrt{\frac{2}{P}} \sin{\left[ \frac{2 \pi n k}{P} \right]} & \text{if } \frac{P}{2} < k < P
+		\end{cases}.
+\end{align}

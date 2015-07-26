@@ -1,0 +1,125 @@
+\chapter{Code listings}
+
+The following listings show the Maple\texttrademark{} scripts and their outputs for some of the calculations performed in the present work.\footnote{
+	Maple 17. Maplesoft, a division of Waterloo Maple Inc., Waterloo, Ontario.
+}
+Maple is a trademark of Waterloo Maple Inc.
+
+
+\begin{lst}{lst:radial-spherical-a}{Integration of \vref{eq:radial-spherical-a}.}
+interface(showassumed=0):
+assume(R >= 0, r > 0, r <= R):
+
+Ltheta1 := r -> -r / (2 * R):
+Lplus := (r, x) -> -r * x + sqrt(R^2 + r^2 * (x^2 - 1)):
+
+int1 := int(int(r2^2, r2=0..R), x=-1..Ltheta1(r)):
+int2 := int(int(r2^2, r2=0..Lplus(r, x)), x=Ltheta1(r)..1):
+simplify(int1 + int2);
+\end{lst}
+
+\noindent outputs
+
+\begin{lstplain}
+     3        2           3
+2/3 R  - 1/2 R  r + 1/24 r
+\end{lstplain}
+
+
+\begin{lst}{lst:radial-spherical-b}{Integration of \vref{eq:radial-spherical-b}.}
+interface(showassumed=0):
+assume(R >= 0, r > 0, r^2 <= 2 * R^2):
+
+Ltheta1 := r -> -r / (2 * R):
+Ltheta2 := r -> -sqrt(1 - (R/r)^2):
+Lminus := (r, x) -> -r * x - sqrt(R^2 + r^2 * (x^2 - 1)):
+Lplus := (r, x) -> -r * x + sqrt(R^2 + r^2 * (x^2 - 1)):
+
+int1 := int(int(r2^2, r2=Lminus(r, x)..R), x=-1..Ltheta1(r)):
+int2 := int(int(r2^2, r2=Lminus(r, x)..Lplus(r, x)), x=Ltheta1(r)..Ltheta2(r)):
+simplify(int1 + int2);
+\end{lst}
+
+\noindent outputs
+
+\begin{lstplain}
+     3          2         3
+2/3 R  - 1/2 r R  + 1/24 r
+\end{lstplain}
+
+
+\begin{lst}{lst:radial-spherical-c}{Integration of \vref{eq:radial-spherical-c}.}
+interface(showassumed=0):
+assume(R >= 0, r > 0, 2 * R^2 - r^2 <= 0):
+
+Ltheta1 := r -> -r / (2 * R):
+Lminus := (r, x) -> -r * x - sqrt(R^2 + r^2 * (x^2 - 1)):
+
+int1 := int(int(r2^2, r2=Lminus(r, x)..R), x=-1..Ltheta1(r)):
+simplify(int1);
+\end{lst}
+
+\noindent outputs
+
+\begin{lstplain}
+     3         3          2
+2/3 R  + 1/24 r  - 1/2 r R
+\end{lstplain}
+
+
+\begin{lst}{lst:radial-box-a}{Integration of \vref{eq:radial-box-a}.}
+int(1/sqrt(r^2 - x^2 - y^2), y=0..sqrt(r^2 - x^2), x=0..r);
+int(1/sqrt(r^2 - x^2 - y^2), y=0..sqrt(r^2 - x^2), x=sqrt(r^2 - M^2)..M);
+\end{lst}
+
+\noindent outputs
+
+\begin{lstplain}
+Pi r
+----
+ 2
+
+           2    2 1/2
+Pi (M - (-M  + r )   )
+----------------------
+          2
+\end{lstplain}
+
+
+\begin{lst}{lst:radial-box-b}{Integration of \vref{eq:radial-box-b}.}
+interface(showassumed=0):
+assume(A >= 0, A >= y, B >= 0, M >= 0):
+
+int(1/sqrt(A^2 - y^2), y=B..M);
+\end{lst}
+
+\noindent outputs
+
+\begin{lstplain}
+-arcsin(B/A) + arcsin(M/A)
+\end{lstplain}
+
+
+\begin{lst}{lst:radial-box-c}{Integration of \vref{eq:radial-box-c}.}
+interface(showassumed=0):
+assume(r >= 0, M >= 0, r >= sqrt(2) * M):
+
+simplify(int(arcsin(x/sqrt(r^2 - x^2)), x=0..M));
+simplify(int(-arcsin(sqrt(r^2 - 2 * x^2)/sqrt(r^2 - x^2)), x=0..M));
+\end{lst}
+
+\noindent outputs
+
+\begin{lstplain}
+                                                   2    2 1/2
+               M          r Pi                (-2 M  + r )    r
+M arcsin(-------------) - ---- + 1/2 r arctan(-----------------)
+            2    2 1/2     4                          2
+         (-M  + r )                                  M
+
+                       2    2 1/2                      2    2 1/2
+  r Pi            (-2 M  + r )                    (-2 M  + r )    r
+- ---- - M arcsin(---------------) + 1/2 r arctan(-----------------)
+   4                  2    2 1/2                          2
+                   (-M  + r )                            M
+\end{lstplain}

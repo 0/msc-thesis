@@ -1,0 +1,592 @@
+\section{Integration of radial distribution}
+
+\label{sec:radial}
+
+The simplest structural property of fluids is the \emph{radial} (or \emph{pair}) \emph{distribution function} $g(r)$, which describes the local density $\rho(r)$ relative to the bulk density $\rho$ a distance $r$ away from a fixed particle in a fluid~\cite[257-259]{mcquarrie1976statistical},\cite[54-55]{allen1989computer}.
+It is obtained from the distribution $g(\vec{q}_1, \vec{q}_2, \ldots, \vec{q}_N)$ of all $N$ particles by integrating over all the positions except $\vec{q}_1$ and $\vec{q}_2$, giving the function $g(\vec{q}_1, \vec{q}_2)$.
+We assume that the fluid is homogeneous, so the absolute spatial position of the particles cannot matter, and we write simply $g(r)$, where $r = \abs{\vec{q}_1 - \vec{q}_2}$ is the distance between the two remaining particles.
+
+It is common to integrate radial distribution functions (perhaps together with other functions of only $r$) to obtain quantities such as the structure factor or virial coefficients~\cite[260,263]{mcquarrie1976statistical}.
+In this \namecref{sec:radial}, we investigate the integrals of $g(r)$ in a spherical volume and in a periodic volume.
+
+
+\subsection{Spherical volume}
+
+Consider two particles with (``space-fixed'' frame) positions $\vec{q}_1$, $\vec{q}_2$ confined to a closed\footnote{
+	We could just as well work with an open ball, since a single spherical shell has no effect on the result of integration.
+	However, if we are concrete on this matter, we can be consistent in our choice of $\le$ or $<$ in the relevant inequalities.
+} ball $\ball$ of radius $R$ centered at the origin.
+If we have some function $g(\abs[0]{\vec{q}_1 - \vec{q}_2})$ that depends only on the relative distance between the two particles, it is natural to use center of mass and relative distance vectors.
+However, the center of mass vector is mass-weighted and we wish to avoid explicit mass dependence in our expressions.
+Thus, we will use the simpler vector
+\begin{align}
+	\vec{Q}_2
+	&= \vec{q}_2
+\end{align}
+along with the usual
+\begin{align}
+	\vec{r}
+	&= \vec{q}_1 - \vec{q}_2.
+\end{align}
+The inverse transformation is
+\begin{subequations}
+\begin{align}
+	\vec{q}_1
+	&= \vec{Q}_2 + \vec{r} \\
+	\vec{q}_2
+	&= \vec{Q}_2,
+\end{align}
+\end{subequations}
+so the Jacobian determinant for the forward transformation is conveniently
+\begin{align}
+	\begin{vmatrix}
+			\frac{\partial \vec{q}_1}{\partial \vec{r}} & \frac{\partial \vec{q}_1}{\partial \vec{Q}_2} \\[1 mm]
+			\frac{\partial \vec{q}_2}{\partial \vec{r}} & \frac{\partial \vec{q}_2}{\partial \vec{Q}_2}
+		\end{vmatrix}
+	&= \begin{vmatrix}
+			\mat{1} & \mat{1} \\[1 mm]
+			\mat{0} & \mat{1}
+		\end{vmatrix}
+	= 1.
+\end{align}
+In the following, we will write $\vec{q}_2$ instead of $\vec{Q}_2$.
+
+We want to integrate $g(r)$ over all the space of interest:
+\begin{align}
+	\mathcal{I}[g(r)]
+	&= \int_\ball\! \dif \vec{q}_1 \int_\ball\! \dif \vec{q}_2 \, g(\abs[0]{\vec{q}_1 - \vec{q}_2})
+	= \int_{\ball^{(2)}}\! \dif \vec{r} \, g(\abs[0]{\vec{r}}) \int_{V_{\vec{q}_2}(\vec{r})}\! \dif \vec{q_2}.
+\end{align}
+Since the maximum possible separation between the two particles is twice the radius of the original ball, we have introduced $\ball^{(2)}$, the closed ball of radius $2 R$ centered at the origin.
+We write $V_{\vec{q}_2}(\vec{r})$ for the (yet to be determined) domain of integration for the inner integral.
+It should be possible to reduce this integral to a simpler form, as we expect that there are redundant degrees of freedom.
+Unfortunately, as the expression is currently written, the two integrals are not trivially separable, since the domain of integration over $\vec{q}_2$ depends on $\vec{r}$.
+That is, if we allow the separation distance $\vec{r}$ to take on any value, then $\vec{q}_2$ is constrained by the spherical boundary conditions.
+
+Thankfully, there is a great deal of symmetry in this problem.
+To exploit it, we represent $\vec{r}$ and $\vec{q}_2$ in spherical coordinates with radial distances $r, r_2 \in \intco{0, \infty}$, polar angles $\theta_r, \theta_2 \in \intcc{0, \pi}$, and azimuthal angles $\phi_r, \phi_2 \in \intco{0, 2 \pi}$.
+We can then write the integral as
+\begin{align}
+	\mathcal{I}[g(r)]
+	&= \int_0^{2 R}\! \dif r \, r^2 g(r) \int_{-1}^1\! \dif \cos{\theta_r} \int_0^{2 \pi}\! \dif \phi_r
+		\int_{V_{\vec{q}_2}(r, \theta_r, \phi_r)}\! \dif \vec{q_2}.
+\end{align}
+We see now that if we evaluate everything starting from the second integral sign, we remove all the extraneous degrees of freedom and compress them into an effective Jacobian for the integration over $r$.
+If we combine it with the existing Jacobian from the spherical coordinates, we get
+\begin{subequations}
+\begin{align}
+	J(r)
+	&= r^2 \int_{-1}^1\! \dif \cos{\theta_r} \int_0^{2 \pi}\! \dif \phi_r
+		\int_{V_{\vec{q}_2}(r, \theta_r, \phi_r)}\! \dif \vec{q_2} \\
+	\mathcal{I}[g(r)]
+	&= \int_0^{2 R}\! \dif r \, J(r) g(r).
+\end{align}
+\end{subequations}
+
+It is easier to evaluate $J(r)$ if we reorder the integrals as
+\begin{align}
+	J(r)
+	&= r^2 \int_{-1}^1\! \dif \cos{\theta_2} \int_0^{2 \pi}\! \dif \phi_2 \int_0^{2 \pi}\! \dif \phi_r \int_{V_{\theta_r}(r)}\! \dif \cos{\theta_r} \int_{V_{r_2}(r, \theta_r)}\! \dif r_2 \, r_2^2,
+\end{align}
+where we don't yet know the domains of integration for the last two.
+However, we do know that they can't depend on the variables of the first three integrals.
+Given some separation distance $r$, we are free to orient $\vec{q}_2$ any way we wish without changing anything, which accounts for the integrals over $\theta_2$ and $\phi_2$.
+For the sake of visualization, it is convenient to fix $\vec{q}_2$ along the negative $z$-axis.
+Then we immediately see that $\phi_r$ also has no impact on the result, leaving us with only $r$, $r_2$, and $\theta_r$.
+We have reduced our problem to a plane geometry problem!
+All we have left to do is find
+\begin{align}
+	J(r)
+	&= 8 \pi^2 r^2 \int_{V_{\theta_r}(r)}\! \dif \cos{\theta_r}
+		\int_{V_{r_2}(r, \theta_r)}\! \dif r_2 \, r_2^2.
+\end{align}
+
+Before we can perform the integrals, we must identify the bounds of integration.
+The constraints that we must satisfy are
+\begin{subequations}
+\begin{align}
+	0
+	&< r \le 2 R \\
+	-1
+	&\le \cos{\theta_r} \le 1 \\
+	0
+	&\le r_2 \le R \\
+	0
+	&\le \abs{\vec{q}_1}^2 \le R^2.
+		\label{eq:ineq-q1-abs}
+\end{align}
+\end{subequations}
+We have left out the trivial $r = 0$ case so that we are free to divide by $r$.
+The first three constraints are independent, but if we expand the last, we see that it couples them:
+\begin{subequations}
+\begin{align}
+	0
+	&\le \abs{\vec{q}_1}^2
+	= \abs{\vec{q}_2 + \vec{r}}^2
+	= r_2^2 + r^2 + 2 \vec{q}_2 \cdot \vec{r}
+	= r_2^2 + r^2 + 2 r_2 r \cos{\theta_r}
+	\le R^2 \\
+	r^2 (\cos^2{\theta_r} - 1)
+	&\le (r_2 + r \cos{\theta_r})^2
+	\le R^2 + r^2 (\cos^2{\theta_r} - 1).
+\end{align}
+\end{subequations}
+Since
+\begin{align}
+	r^2 (\cos^2{\theta_r} - 1)
+	& \le 0,
+\end{align}
+we may write \cref{eq:ineq-q1-abs} as
+\begin{align}
+	(r_2 + r \cos{\theta_r})^2
+	&\le R^2 + r^2 (\cos^2{\theta_r} - 1).
+\end{align}
+As long as
+\begin{align}
+	1 - \left( \frac{R}{r} \right)^2
+	&\le \cos^2{\theta_r}
+		\label{eq:bound-cos2}
+\end{align}
+so that the right-hand side is non-negative, this gives us
+\begin{subequations}
+\begin{align}
+	\abs{r_2 + r \cos{\theta_r}}
+	&\le \sqrt{R^2 + r^2 (\cos^2{\theta_r} - 1)} \\
+	-r \cos{\theta_r} - \sqrt{R^2 + r^2 (\cos^2{\theta_r} - 1)}
+	\le r_2
+	&\le -r \cos{\theta_r} + \sqrt{R^2 + r^2 (\cos^2{\theta_r} - 1)}.
+		\label{eq:bound-r2}
+\end{align}
+\end{subequations}
+Note that \cref{eq:bound-r2} cannot be satisfied when either $R < r$ and $0 < \cos{\theta_r}$, or $\sqrt{2} R < r$ and
+\begin{align}
+	-\frac{r}{2 R}
+	&< \cos{\theta_r}
+	< -\frac{R}{r}.
+\end{align}
+In anticipation of bounds we will encounter later, we define
+\begin{align}
+	L^\pm(r, \cos{\theta_r})
+	&= -r \cos{\theta_r} \pm \sqrt{R^2 + r^2 (\cos^2{\theta_r} - 1)}.
+\end{align}
+Because we get qualitatively different behaviour for different ranges of $r$, we will consider them separately:
+\begin{align}
+	J(r)
+	&= 8 \pi^2 r^2 \begin{cases}
+			0 & \text{if } r = 0 \\
+			J_R(r) & \text{if } 0 < r \le R \\
+			J_{\sqrt{2} R}(r) & \text{if } R < r \le \sqrt{2} R \\
+			J_{2 R}(r) & \text{if } \sqrt{2} R < r \le 2 R
+		\end{cases}.
+\end{align}
+
+We start with the simple case of $0 < r \le R$, where all angles $\theta_r$ are allowed and we are always permitted to set $r_2 = 0$.
+Both \cref{eq:bound-cos2} and the first inequality in \cref{eq:bound-r2} are trivially satisfied.
+The second inequality in \cref{eq:bound-r2} is relevant when
+\begin{align}
+	-\frac{r}{2 R}
+	&< \cos{\theta_r},
+\end{align}
+so we have
+\begin{align}
+	J_R(r)
+	&= \int_{-1}^{L_{\theta,1}(r)}\! \dif \cos{\theta_r} \int_0^R\! \dif r_2 \, r_2^2
+		+ \int_{L_{\theta,1}(r)}^{1}\! \dif \cos{\theta_r} \int_0^{L^+(r, \cos{\theta_r})}\! \dif r_2 \, r_2^2,
+			\label{eq:radial-spherical-a}
+\end{align}
+where
+\begin{align}
+	L_{\theta,1}(r)
+	&= -\frac{r}{2 R}.
+\end{align}
+This simplifies (according to \vref{lst:radial-spherical-a}) to
+\begin{align}
+	J_R(r)
+	&= \frac{2}{3} R^3 - \frac{1}{2} R^2 r + \frac{1}{24} r^3.
+\end{align}
+
+Things get more interesting for $R < r \le \sqrt{2} R$.
+Now $\cos{\theta_r} \le 0$, but \cref{eq:bound-cos2} amounts to
+\begin{align}
+	\sqrt{1 - \left( \frac{R}{r} \right)^2}
+	&\le \abs{\cos{\theta_r}},
+\end{align}
+so
+\begin{align}
+	\cos{\theta_r}
+	&\le -\sqrt{1 - \left( \frac{R}{r} \right)^2}.
+		\label{eq:cos-neg-sqrt}
+\end{align}
+The first inequality in \cref{eq:bound-r2} must always be taken into account, and the second when $L_{\theta,1}(r) \le \cos{\theta_r}$, which results in
+\begin{align}
+	J_{\sqrt{2} R}(r)
+	&= \int_{-1}^{L_{\theta,1}(r)}\! \dif \cos{\theta_r} \int_{L^-(r, \cos{\theta_r})}^R\! \dif r_2 \, r_2^2
+		+ \int_{L_{\theta,1}(r)}^{L_{\theta,2}(r)}\! \dif \cos{\theta_r} \int_{L^-(r, \cos{\theta_r})}^{L^+(r, \cos{\theta_r})}\! \dif r_2 \, r_2^2,
+			\label{eq:radial-spherical-b}
+\end{align}
+where
+\begin{align}
+	L_{\theta,2}(r)
+	&= -\sqrt{1 - \left( \frac{R}{r} \right)^2}
+\end{align}
+and $L_{\theta,1}(r) \le L_{\theta,2}(r)$.
+This also simplifies (according to \vref{lst:radial-spherical-b}) to
+\begin{align}
+	J_{\sqrt{2} R}(r)
+	&= \frac{2}{3} R^3 - \frac{1}{2} R^2 r + \frac{1}{24} r^3.
+\end{align}
+
+Finally, we consider $\sqrt{2} R < r \le 2 R$.
+This is the same as the previous case, but with the added restriction that one of
+\begin{subequations}
+\begin{align}
+	\cos{\theta_r}
+	&\le L_{\theta,1}(r) \\
+	-\frac{R}{r}
+	&\le \cos{\theta_r}
+\end{align}
+\end{subequations}
+must always hold.
+The latter is impossible due to \cref{eq:cos-neg-sqrt}, so we get just
+\begin{align}
+	J_{2 R}(r)
+	&= \int_{-1}^{L_{\theta,1}(r)}\! \dif \cos{\theta_r} \int_{L^-(r, \cos{\theta_r})}^R\! \dif r_2 \, r_2^2,
+			\label{eq:radial-spherical-c}
+\end{align}
+which amazingly also simplifies (according to \vref{lst:radial-spherical-c}) to
+\begin{align}
+	J_{2 R}(r)
+	&= \frac{2}{3} R^3 - \frac{1}{2} R^2 r + \frac{1}{24} r^3.
+\end{align}
+
+Thus, all the pieces of our piecewise Jacobian are identical and we have the compact expression
+\begin{align}
+	J(r)
+	&= 8 \pi^2 r^2 \left( \frac{2}{3} R^3 - \frac{1}{2} R^2 r + \frac{1}{24} r^3 \right),
+\end{align}
+which means our integral may be written as
+\begin{align}
+	\mathcal{I}[g(r)]
+	&= \frac{\pi^2}{3} \int_0^{2 R}\! \dif r \, \left( 16 R^3 - 12 R^2 r + r^3 \right) r^2 g(r).
+\end{align}
+
+
+\subsection{Periodic volume}
+
+Consider two particles with (``space-fixed'' frame) positions $\vec{q}_1$, $\vec{q}_2$ confined to the interior of a cube $\cube$ with side length $L$.
+For reasons of convenience, we position this cube with its center at the origin and align its edges with the Cartesian coordinate axes.
+We have a function $g(r)$ that depends only on the separation distance of the particles, and we impose periodic boundary conditions with the minimum-image convention.
+This gives us infinitely many particles in an infinite volume, but still with a finite density $2/L^3$.
+
+We would like to integrate the function over the cube:
+\begin{align}
+	\mathcal{I}[g(r)]
+	&= \int_\cube\! \dif \vec{q}_2 \int_\cube\! \dif \vec{q}_1 \, g(\abs[0]{\vec{q}_1 - \vec{q}_2}).
+\end{align}
+Every point in space is surrounded by a ``minimal-image cube'' of points, each of which has an analog in the original cube.
+This means that for all $\vec{q}_2$, the sets $\{ \abs[0]{\vec{q}_1 - \vec{q}_2} : \vec{q}_1 \in \cube \}$ are identical.
+One of these sets is $\{ \abs[0]{\vec{q}} : \vec{q} \in \cube \}$ (with $\vec{q}_2 = \vec{0}$), so we may write
+\begin{align}
+	\mathcal{I}[g(r)]
+	&= \int_\cube\! \dif \vec{q}_2 \int_\cube\! \dif \vec{q} \, g(\abs[0]{\vec{q}})
+	= L^3 \int_\cube\! \dif \vec{q} \, g(\abs[0]{\vec{q}}).
+\end{align}
+Since the result of integration is the same in each octant, we may consider only the first octant ($\cube/8$), where our variables are non-negative:
+\begin{align*}
+	\mathcal{I}[g(r)]
+	&= 8 L^3 \int_{\cube/8}\! \dif \vec{q} \, g(\abs[0]{\vec{q}})
+	= 8 L^3 \int_0^{\frac{L}{2}}\! \dif x \int_0^{\frac{L}{2}}\! \dif y \int_0^{\frac{L}{2}}\! \dif z \, g(\sqrt{x^2 + y^2 + z^2}).
+\end{align*}
+
+The obvious thing to do now is change to spherical coordinates to get our hands on $r$, but as before that turns out to not be the simplest approach.
+Instead, we use
+\begin{align}
+	X
+	&= x
+	&
+	Y
+	&= y
+	&
+	r
+	&= \sqrt{x^2 + y^2 + z^2},
+\end{align}
+with inverse
+\begin{align}
+	x
+	&= X
+	&
+	y
+	&= Y
+	&
+	z
+	&= \sqrt{r^2 - X^2 - Y^2},
+\end{align}
+and Jacobian determinant
+\begin{align}
+	\begin{vmatrix}
+			\dpd{x}{X} & \dpd{x}{Y} & \dpd{x}{r} \\[3 mm]
+			\dpd{y}{X} & \dpd{y}{Y} & \dpd{y}{r} \\[3 mm]
+			\dpd{z}{X} & \dpd{z}{Y} & \dpd{z}{r}
+		\end{vmatrix}
+	&= \begin{vmatrix}
+			1 & 0 & 0 \\
+			0 & 1 & 0 \\
+			-\frac{X}{\sqrt{r^2 - X^2 - Y^2}} & -\frac{Y}{\sqrt{r^2 - X^2 - Y^2}} & \frac{r}{\sqrt{r^2 - X^2 - Y^2}}
+		\end{vmatrix}
+	= \frac{r}{\sqrt{r^2 - X^2 - Y^2}}.
+\end{align}
+We will use $M = L / 2$ throughout.
+Clearly, $r$ cannot exceed $\sqrt{M^2 + M^2 + M^2} = \sqrt{3} M$.
+In general, $X, Y \in \intcc{0, M}$, but there might be some constraints on them depending on the values of the other variables.
+We will refer to $X$ and $Y$ as simply $x$ and $y$ in the following, and we define the shorthand
+\begin{align}
+	K(r, x, y)
+	&= \frac{1}{\sqrt{r^2 - x^2 - y^2}}
+\end{align}
+so that the Jacobian determinant is $r K(r, x, y)$.
+
+We choose to do the integrals in the following order (from the outside): $r$, then $x$, then $y$.
+If $r \le M$, the boundary of the cube does not matter, and $x$ and $y$ may take on their regular values: $x \le r$, $y \le \sqrt{r^2 - x^2}$.
+
+Things become challenging when $r > M$.
+Now it is impossible for the contribution from either $x$, $y$, or $z$ alone to produce $r$; for example, we can no longer allow $x$ and $y$ to be zero simultaneously.
+We can express the constraint for $z^2$ in terms of the transformed variables as
+\begin{align}
+	0
+	\le r^2 - x^2 - y^2
+	&= z^2
+	\le M^2,
+\end{align}
+which leads us to conclude that $y \le \sqrt{r^2 - x^2}$ always, and when $x \le \sqrt{r^2 - M^2}$, then $y \ge \sqrt{r^2 - x^2 - M^2}$.
+Of course, the upper bound on $y$ is only of interest when it is less than $M$, which happens when $x \ge \sqrt{r^2 - M^2}$ (and $r \le \sqrt{2} M$).
+On the other hand, the lower bound only makes sense when it does not exceed $M$.
+If $r \le \sqrt{2} M$, this is always the case; otherwise, we need that $x \ge \sqrt{r^2 - 2 M^2}$.
+
+Thus, we may write our integral piecewise as
+\begin{align}
+	\mathcal{I}[g(r)]
+	&= 8 L^3 \int_0^M\! \dif r \, r g(r) \int_0^r\! \dif x
+			\int_0^{\sqrt{r^2 - x^2}}\! \dif y \, K(r, x, y) \notag \\
+	&\qquad
+		+ 8 L^3 \int_M^{\sqrt{2} M}\! \dif r \, r g(r)
+			\int_0^{\sqrt{r^2 - M^2}}\! \dif x
+				\int_{\sqrt{r^2 - x^2 - M^2}}^M\! \dif y \, K(r, x, y) \notag \\
+	&\qquad
+		+ 8 L^3 \int_M^{\sqrt{2} M}\! \dif r \, r g(r)
+			\int_{\sqrt{r^2 - M^2}}^M\! \dif x
+				\int_0^{\sqrt{r^2 - x^2}}\! \dif y \, K(r, x, y) \notag \\
+	&\qquad
+		+ 8 L^3 \int_{\sqrt{2} M}^{\sqrt{3} M}\! \dif r \, r g(r) \int_{\sqrt{r^2 - 2 M^2}}^M\! \dif x
+				\int_{\sqrt{r^2 - x^2 - M^2}}^M\! \dif y \, K(r, x, y).
+\end{align}
+Two of these are easy to do (see \vref{lst:radial-box-a}):
+\begin{subequations} \label{eq:radial-box-a}
+\begin{align}
+	\int_0^r\! \dif x \int_0^{\sqrt{r^2 - x^2}}\! \dif y \, K(r, x, y)
+	&= \frac{\pi}{2} r \\
+	\int_{\sqrt{r^2 - M^2}}^M\! \dif x \int_0^{\sqrt{r^2 - x^2}}\! \dif y \, K(r, x, y)
+	&= \frac{\pi}{2} \left( M - \sqrt{r^2 - M^2} \right).
+\end{align}
+\end{subequations}
+For the other two, since (by \vref{lst:radial-box-b})
+\begin{align}
+	\int_B^M\! \frac{\dif y}{\sqrt{A^2 - y^2}}
+	&= \arcsin{\frac{M}{A}} - \arcsin{\frac{B}{A}}
+		\label{eq:radial-box-b}
+\end{align}
+for $A \ge y$, the $y$ integrals are
+\begin{align}
+	f(M, x)
+	&= \int_{\sqrt{r^2 - x^2 - M^2}}^M\! \dif y \, K(r, x, y)
+	= \arcsin{\frac{M}{\sqrt{r^2 - x^2}}} - \arcsin{\frac{\sqrt{r^2 - x^2 - M^2}}{\sqrt{r^2 - x^2}}}.
+\end{align}
+We want to integrate this over $x$ to find
+\begin{subequations}
+\begin{align}
+	\int_0^{\sqrt{r^2 - M^2}}\! \dif x \, f(M, x)
+		\label{eq:radial-box-bad-integral-a} \\
+	\int_{\sqrt{r^2 - 2 M^2}}^M\! \dif x \, f(M, x),
+		\label{eq:radial-box-bad-integral-b}
+\end{align}
+\end{subequations}
+but we don't get anything reasonable if we integrate the $\arcsin$ directly.
+
+What would Feynman do?
+Probably differentiate under the integral sign!
+The general expression is~\cite{flanders1973differentiation}
+\begin{align}
+	\dod{}{M} \int_{a(M)}^{b(M)}\! \dif x \, f(M, x)
+	&= f(M, b(M)) b'(M) - f(M, a(M)) a'(M) + \int_{a(M)}^{b(M)}\! \dif x \, f_M(M, x).
+\end{align}
+This is useful for us, because the fundamental theorem of calculus states that~\cite[384]{stewart2008calculus}
+\begin{align}
+	f(M)
+	&= f(M_0) + \int_{M_0}^M\! \dif M' \, f'(M'),
+\end{align}
+so
+\begin{subequations}
+\begin{align}
+	\int_{a(M)}^{b(M)}\! \dif x \, f(M, x)
+	&= \int_{a(M_0)}^{b(M_0)}\! \dif x \, f(M_0, x)
+		+ \int_{M_0}^M\! \dif M' \, \left[ \dod{}{M} \int_{a(M)}^{b(M)}\! \dif x \, f(M, x) \right]_{M = M'} \\
+	&= \int_{a(M_0)}^{b(M_0)}\! \dif x \, f(M_0, x) + \int_{M_0}^M\! \dif M' \, f(M', b(M')) b'(M') \notag \\
+	&\qquad
+		- \int_{M_0}^M\! \dif M' \, f(M', a(M')) a'(M') + \int_{M_0}^M\! \dif M' \int_{a(M')}^{b(M')}\! \dif x \, f_M(M', x).
+\end{align}
+\end{subequations}
+In our case,
+\begin{subequations}
+\begin{align}
+	f_M(M, x)
+	&= \dpd{}{M} \left[ \arcsin{\frac{M}{\sqrt{r^2 - x^2}}} - \arcsin{\frac{\sqrt{r^2 - x^2 - M^2}}{\sqrt{r^2 - x^2}}} \right]
+	= \frac{2}{\sqrt{r^2 - x^2 - M^2}} \\
+	\int_{a(M)}^{b(M)}\! \dif x \, f_M(M, x)
+	&= 2 \int_{a(M)}^{b(M)}\! \frac{\dif x}{\sqrt{r^2 - x^2 - M^2}}
+	= 2 \arcsin{\frac{b(M)}{\sqrt{r^2 - M^2}}} - 2 \arcsin{\frac{a(M)}{\sqrt{r^2 - M^2}}}.
+\end{align}
+\end{subequations}
+It doesn't look like we've achieved anything useful, but we have!
+We choose $M_0 = 0$,
+\begin{subequations}
+\begin{align}
+	f(M = 0, x)
+	&= -\frac{\pi}{2} \\
+	\int_{a(0)}^{b(0)}\! \dif x \, f(M = 0, x)
+	&= \frac{\pi}{2} (a(0) - b(0)),
+\end{align}
+\end{subequations}
+so we can reconstruct the desired integrals as
+\begin{align}
+	\int_{a(M)}^{b(M)}\! \dif x \, f(M, x)
+	&= \frac{\pi}{2} (a(0) - b(0)) + \int_0^M\! \dif M' \, f(M', b(M')) b'(M') \notag \\
+	&\qquad
+		- \int_0^M\! \dif M' \, f(M', a(M')) a'(M') + \int_0^M\! \dif M' \int_{a(M')}^{b(M')}\! \dif x \, f_M(M', x).
+\end{align}
+
+For \cref{eq:radial-box-bad-integral-a},
+\begin{subequations}
+\begin{align}
+	a(M)
+	&= 0
+	&
+	a'(M)
+	&= 0 \\
+	b(M)
+	&= \sqrt{r^2 - M^2}
+	&
+	b'(M)
+	&= -\frac{M}{\sqrt{r^2 - M^2}} \\
+	f(M, b(M))
+	&= \arcsin{1} - \arcsin{0}
+	= \frac{\pi}{2},
+\end{align}
+\end{subequations}
+so
+\begin{subequations}
+\begin{align}
+	\int_0^{\sqrt{r^2 - M^2}}\! \dif x \, f(M, x)
+	&= -\frac{\pi}{2} r
+		- \frac{\pi}{2} \int_{0}^M\! \dif M' \, \frac{M'}{\sqrt{r^2 - (M')^2}}
+		+ \frac{\pi}{2} 2 \int_{0}^M\! \dif M' \\
+	&= \frac{\pi}{2} (2 M - 2 r + \sqrt{r^2 - M^2}).
+\end{align}
+\end{subequations}
+
+For \cref{eq:radial-box-bad-integral-b},
+\begin{subequations}
+\begin{align}
+	a(M)
+	&= \sqrt{r^2 - 2 M^2}
+	&
+	a'(M)
+	&= -\frac{2 M}{\sqrt{r^2 - 2 M^2}} \\
+	b(M)
+	&= M
+	&
+	b'(M)
+	&= 1 \\
+	f(M, a(M))
+	&= \arcsin{\frac{1}{\sqrt{2}}} - \arcsin{\frac{1}{\sqrt{2}}}
+	= 0 \\
+	f(M, b(M))
+	&= \arcsin{\frac{M}{\sqrt{r^2 - M^2}}} - \arcsin{\frac{\sqrt{r^2 - 2 M^2}}{\sqrt{r^2 - M^2}}},
+\end{align}
+\end{subequations}
+so
+\begin{align}
+	\int_{\sqrt{r^2 - 2 M^2}}^M\! \dif x \, f(M, x)
+	&= \frac{\pi}{2} r + 3 \int_0^M\! \dif M' \, \left( \arcsin{\frac{M'}{\sqrt{r^2 - (M')^2}}} - \arcsin{\frac{\sqrt{r^2 - 2 (M')^2}}{\sqrt{r^2 - (M')^2}}} \right).
+		\label{eq:radial-box-c}
+\end{align}
+Again it looks like we're not making any progress, but we can actually evaluate the integral over $M'$ (see \vref{lst:radial-box-c}):
+\begin{align}
+	M \arcsin{\frac{M}{\sqrt{r^2 - M^2}}}
+	- M \arcsin{\frac{\sqrt{r^2 - 2 M^2}}{\sqrt{r^2 - M^2}}}
+	+ r \arctan{\frac{r \sqrt{r^2 - 2 M^2}}{M^2}}
+	- \frac{\pi}{2} r.
+\end{align}
+If we define
+\begin{align}
+	\Xi(r)
+	&= M \arcsin{\frac{M}{\sqrt{r^2 - M^2}}}
+		- M \arcsin{\frac{\sqrt{r^2 - 2 M^2}}{\sqrt{r^2 - M^2}}}
+		+ r \arctan{\frac{r \sqrt{r^2 - 2 M^2}}{M^2}},
+\end{align}
+then
+\begin{align}
+	\int_{\sqrt{r^2 - 2 M^2}}^M\! \dif x \, f(M, x)
+	&= 3 \Xi(r) - \pi r.
+\end{align}
+
+The end result is
+\begin{subequations}
+\begin{align}
+	\mathcal{I}[g(r)]
+	&= 4 \pi L^3 \int_0^M\! \dif r \, r^2 g(r) \notag \\
+	&\qquad
+		+ 4 \pi L^3 \int_M^{\sqrt{2} M}\! \dif r \, r \left( 2 M - 2 r + \sqrt{r^2 - M^2} + M - \sqrt{r^2 - M^2} \right) g(r) \notag \\
+	&\qquad
+		+ 8 L^3 \int_{\sqrt{2} M}^{\sqrt{3} M}\! \dif r \, r (3 \Xi(r) - \pi r) g(r) \\
+	&= 4 \pi L^3 \int_0^{\frac{L}{2}}\! \dif r \, r^2 g(r)
+		+ 2 \pi L^3 \int_{\frac{L}{2}}^{\frac{L}{\sqrt{2}}}\! \dif r \, r (3 L - 4 r) g(r)
+		+ 8 L^3 \int_{\frac{L}{\sqrt{2}}}^{\frac{\sqrt{3} L}{2}}\! \dif r \, r (3 \Xi(r) - \pi r) g(r).
+\end{align}
+\end{subequations}
+That doesn't look like the nicest expression in the world, but at least it's in closed form (except for the $r$ integrals, of course).
+We can clean it up a bit if we introduce $\xi = r / M$ and the dimensionless piecewise Jacobian (shown in \cref{fig:radial-box-jacobian})
+\begin{align}
+	J_\mathrm{d}(\xi)
+	&= \frac{\pi}{2} \xi \begin{cases}
+			\xi & \mathrm{if}\, 0 \le \xi \le 1 \\
+			3 - 2 \xi & \mathrm{if}\, 1 < \xi \le \sqrt{2} \\
+			6 \Xi_\mathrm{d}(\xi) / \pi - 2 \xi & \mathrm{if}\, \sqrt{2} < \xi \le \sqrt{3}
+		\end{cases},
+			\label{eq:radial-box-jacobian}
+\end{align}
+where
+\begin{align}
+	\Xi_\mathrm{d}(\xi)
+	&= \frac{\Xi(M \xi)}{M}
+	= \arcsin{\frac{1}{\sqrt{\xi^2 - 1}}}
+		- \arcsin{\frac{\sqrt{\xi^2 - 2}}{\sqrt{\xi^2 - 1}}}
+		+ \xi \arctan{(\xi \sqrt{\xi^2 - 2})},
+\end{align}
+with which we can write
+\begin{align}
+	\mathcal{I}[g(r)]
+	&= 2 L^5 \int_0^{\sqrt{3} M}\! \dif r \, J_\mathrm{d}(r / M) g(r)
+	= L^6 \int_0^{\sqrt{3}}\! \dif \xi \, J_\mathrm{d}(\xi) g(M \xi).
+\end{align}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=\textwidth]{15/radial_box_jacobian}
+	\caption[
+		Dimensionless piecewise Jacobian for integration in periodic boundary conditions
+	]{
+		Dimensionless piecewise Jacobian from \cref{eq:radial-box-jacobian} for integration in periodic boundary conditions.
+		Dotted lines mark $1$, $\sqrt{2}$, and $\sqrt{3}$.
+		The cusp occurs when $\xi$ begins to leave the cube.
+	}
+	\label{fig:radial-box-jacobian}
+\end{figure}

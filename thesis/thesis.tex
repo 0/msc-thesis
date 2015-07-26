@@ -104,6 +104,25 @@
 % Prevent hyphenation.
 \hyphenation{LePIGS}
 
+\usepackage[final]{listings}
+\lstset{
+	basicstyle=\ttfamily\footnotesize,
+	frame=single,
+}
+
+\lstnewenvironment{lst}[2]{
+\noindent\minipage{\textwidth}
+\lstset{label=#1,caption=#2}
+}{
+\endminipage
+}
+
+\lstnewenvironment{lstplain}{
+\noindent\minipage{\textwidth}
+}{
+\endminipage
+}
+
 \usepackage{varioref}
 \usepackage[final, hidelinks]{hyperref}
 \usepackage{cleveref}
@@ -162,6 +181,9 @@
 \newcommand{\MM}{_M}
 \newcommand{\RR}{_R}
 \newcommand{\RRup}{_\mathrm{R}}
+
+\newcommand{\ball}{B}
+\newcommand{\cube}{Q}
 
 \newcommand{\halfsqrt}{\frac{1}{\sqrt{2}}}
 
@@ -280,6 +302,7 @@ Waterloo, Ontario, Canada
 \input{12_0_renyi_entropy}
 \input{13_0_semiclassical}
 \input{14_conclusion}
+\input{15_0_bonus}
 
 \appendix
 
@@ -288,6 +311,7 @@ Waterloo, Ontario, Canada
 \input{23_oscillators}
 \input{24_solutions}
 \input{25_software}
+\input{26_listings}
 
 \backmatter
 

@@ -373,6 +373,7 @@ WBaduk beginner problem BP00107
 				\phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \cdots & \phantom{-}2 & -1 \\
 				\phantom{-}0 & \phantom{-}0 & \phantom{-}0 & \cdots & -1 & \phantom{-}1 \\
 			\end{pmatrix}.
+				\label{eq:nm-matrix-full}
 	\end{align}
 	If we diagonalize $\mat{A}$ as
 	\begin{align}
@@ -585,7 +586,9 @@ WBaduk beginner problem BP00107
 			\end{cases}.
 	\end{align}
 
-	Thus, we have rederived the open path normal mode transformation and found it to be the same Discrete Cosine Transform as in ref.~\cite{constable2012path}.\footnote{
+	Thus, we have rederived the open path normal mode transformation\footnote{
+		The reader may be interested in comparing this to the closed path normal mode transformation derived in \cref{sec:pile-odd}.
+	} and found it to be the same Discrete Cosine Transform as in ref.~\cite{constable2012path}.\footnote{
 		There are some technical details relating to the DCT discussed in \vref{chap:dct}.
 	}
 	The spring potential from \cref{eq:pigs-spring-cartesian} may be written in the new coordinates as
