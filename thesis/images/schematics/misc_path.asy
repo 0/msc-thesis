@@ -11,6 +11,8 @@ real path_y_pos(int idx) {
 	return path_y_scaling * idx + path_y_offset;
 }
 
+real label_x_offset = -0.6;
+
 real box_extra = 0.4;
 
 
@@ -82,7 +84,7 @@ void draw_detailed_path(int start_idx, int end_idx, int other_idx=-1, int other_
 
 
 void draw_path_label(int idx, string L) {
-	label(L, (-0.6, path_y_pos(idx) - 0.1), Align);
+	label(L, (label_x_offset, path_y_pos(idx) - 0.1), Align);
 }
 
 void draw_path_labels(string[] Ls) {

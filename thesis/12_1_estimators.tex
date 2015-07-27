@@ -84,6 +84,7 @@ On the other hand, we may express the trace from \cref{eq:trace-symbols} as
 \begin{align}
 	\Tr{\rho_A^2}
 	&\propto \int\! \dif \vec{q} \, \symbdist{12/path_permuted},
+		\label{eq:trace-unnormalized}
 \end{align}
 and it is clear that we cannot view this as a product of integrals.
 We have been careful to claim that these quantities are not equal, but only proportional.
@@ -179,3 +180,33 @@ but
 	\ne \frac{\mean{\mathcal{N}_\mathrm{M}}}{\mean{\mathcal{D}_\mathrm{M}}},
 \end{align}
 so these provide distinct estimates of the trace.
+
+It seems that there is inherent asymmetry in reconnecting the paths on the ``left'' side (\ie{} between beads $M - 1$ and $M$), and that it would be better to use an even number of beads so that there is a middle link.
+However, if we allow ourselves the use of perspective in our diagrams, we can show that this is not necessary.
+In \cref{fig:permuted-twisted}, we see that the paths corresponding to \cref{eq:trace-unnormalized} cross on one side when drawn in the usual way.
+However, in \cref{fig:permuted-untwisted}, we see the same paths without any asymmetry between the left and right sides.
+When viewed in this way, it instead seems that the middle bead is special, but none of the links are privileged.
+
+\begin{figure}
+	\setlength{\figspacing}{5 mm}
+	\centering
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=0.95\textwidth]{12/permuted_twisted}
+		\caption{Twisted permuted paths.}
+		\label{fig:permuted-twisted}
+		\vspace{\figspacing}
+	\end{subfigure}
+	\begin{subfigure}[b]{\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{12/permuted_untwisted}
+		\caption{Untwisted permuted paths.}
+		\label{fig:permuted-untwisted}
+	\end{subfigure}
+	\caption[
+		Untwisting of permuted paths
+	]{
+		Untwisting of permuted paths for the trace.
+		The symmetry that is plainly visible in \subref{fig:permuted-untwisted} is not evident in \subref{fig:permuted-twisted}.
+	}
+\end{figure}
