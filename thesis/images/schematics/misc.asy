@@ -114,3 +114,13 @@ void label_distance(pair A, pair B, string L, bool bars=true, bool rotate=false)
 	}
 	label(L2, LD);
 }
+
+void label_angle(pair A, pair B, pair C, real R, string L, pair L_offset=(0, 0)) {
+	path circ = circle(B, R);
+	real circ_start = arctime(circ, arclength(circ) * angle(A - B) / (2 * pi));
+	real circ_end = arctime(circ, arclength(circ) * angle(C - B) / (2 * pi));
+	path mark = subpath(circ, circ_start, circ_end);
+
+	draw(mark);
+	label(L, midpoint(mark) + L_offset);
+}

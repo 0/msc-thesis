@@ -91,15 +91,42 @@ It is easier to evaluate $J(r)$ if we reorder the integrals as
 where we don't yet know the domains of integration for the last two.
 However, we do know that they can't depend on the variables of the first three integrals.
 Given some separation distance $r$, we are free to orient $\vec{q}_2$ any way we wish without changing anything, which accounts for the integrals over $\theta_2$ and $\phi_2$.
-For the sake of visualization, it is convenient to fix $\vec{q}_2$ along the negative $z$-axis.
+For the sake of visualization, it is convenient to fix $\vec{q}_2$ along the negative $z$-axis, as in \cref{fig:radial-spherical-sphere}.
 Then we immediately see that $\phi_r$ also has no impact on the result, leaving us with only $r$, $r_2$, and $\theta_r$.
-We have reduced our problem to a plane geometry problem!
+As shown in \cref{fig:radial-spherical-plane}, we have reduced our problem to a plane geometry problem!
 All we have left to do is find
 \begin{align}
 	J(r)
 	&= 8 \pi^2 r^2 \int_{V_{\theta_r}(r)}\! \dif \cos{\theta_r}
 		\int_{V_{r_2}(r, \theta_r)}\! \dif r_2 \, r_2^2.
 \end{align}
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{15/radial_spherical_sphere}
+		\caption{
+			Full three-dimensional problem.
+		}
+		\label{fig:radial-spherical-sphere}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.67\textwidth]{15/radial_spherical_plane}
+		\vspace{5.2 mm}
+		\caption{
+			Reduced two-dimensional problem.
+		}
+		\label{fig:radial-spherical-plane}
+	\end{subfigure}
+	\caption[
+		Reduction of spherical volume problem
+	]{
+		Reduction of the spherical volume problem to a plane geometry problem.
+	}
+\end{figure}
 
 Before we can perform the integrals, we must identify the bounds of integration.
 The constraints that we must satisfy are
@@ -347,6 +374,7 @@ We will refer to $X$ and $Y$ as simply $x$ and $y$ in the following, and we defi
 so that the Jacobian determinant is $r K(r, x, y)$.
 
 We choose to do the integrals in the following order (from the outside): $r$, then $x$, then $y$.
+To show what happens to the regions of the spheres confined to the cube as $r$ is varied, some example spherical shells are displayed in \cref{fig:radial-box}.
 If $r \le M$, the boundary of the cube does not matter, and $x$ and $y$ may take on their regular values: $x \le r$, $y \le \sqrt{r^2 - x^2}$.
 
 Things become challenging when $r > M$.
@@ -362,6 +390,39 @@ which leads us to conclude that $y \le \sqrt{r^2 - x^2}$ always, and when $x \le
 Of course, the upper bound on $y$ is only of interest when it is less than $M$, which happens when $x \ge \sqrt{r^2 - M^2}$ (and $r \le \sqrt{2} M$).
 On the other hand, the lower bound only makes sense when it does not exceed $M$.
 If $r \le \sqrt{2} M$, this is always the case; otherwise, we need that $x \ge \sqrt{r^2 - 2 M^2}$.
+
+\begin{figure}
+	\centering
+	\begin{subfigure}[b]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{15/radial_box_a}
+		\caption{
+			$0 < r < M$
+		}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{15/radial_box_b}
+		\caption{
+			$M < r < \sqrt{2} M$
+		}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[b]{0.32\textwidth}
+		\centering
+		\includegraphics[width=\textwidth]{15/radial_box_c}
+		\caption{
+			$\sqrt{2} M < r < \sqrt{3} M$
+		}
+	\end{subfigure}
+	\caption[
+		Representative spherical shells
+	]{
+		Representative spherical shells for different ranges of $r$.
+	}
+	\label{fig:radial-box}
+\end{figure}
 
 Thus, we may write our integral piecewise as
 \begin{align}
