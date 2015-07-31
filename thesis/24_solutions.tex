@@ -604,9 +604,23 @@ WBaduk beginner problem BP00107
 	\begin{align}
 		\omega_k
 		&= 2 \omega_\links \sin{\left[ \frac{\pi k}{2 P} \right]}
-		= \frac{2}{\hbar \tau} \sin{\left[ \frac{\pi k}{2 P} \right]}.
+		= \frac{2}{\hbar \tau} \sin{\left[ \frac{\pi k}{2 P} \right]},
 	\end{align}
+	whose distribution is shown in \cref{fig:pigs-nm-omegas}.
 	In these coordinates, we have obtained $N P D$ independent harmonic oscillators with masses $\fict{m}_n$ and frequencies $\omega_k$.
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\textwidth]{24/pigs_nm_omegas}
+		\caption[
+			PIGS normal mode frequency distribution
+		]{
+			Distribution of $\omega_k$ for PIGS free particle normal modes for $P = 129$.
+			The scale is arbitrary, set by a particular choice of $\tau$, but the general shape of the distribution is the same for any $P$ and $\tau$.
+			Most of the modes are clustered at the higher frequencies.
+		}
+		\label{fig:pigs-nm-omegas}
+	\end{figure}
 
 	It remains necessary to find the canonical momenta for these new coordinates.
 	Since there are not any quantum momenta with which to confuse them, we will use the label $p$ (rather than $\fict{p}$) for the fictitious momenta.
