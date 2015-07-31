@@ -47,7 +47,7 @@ by sampling from $\pi(\vec{q})$ and evaluating $\mathcal{S}(\vec{q})$ at the sam
 Consider the distribution
 \begin{align}
 	\pi_q(q\LL, q\MM, q\RR)
-	&= \braket{0 | q\LL} \expb{-\frac{m}{2 \hbar^2 \tau} \left( (q\LL - q\MM)^2 + (q\MM - q\RR)^2 \right)} \braket{q\RR | 0},
+	&= \braket{0 | q\LL} \expb{-\frac{m}{2 \hbar^2 \tau} \left( \left( q\LL - q\MM \right)^2 + \left( q\MM - q\RR \right)^2 \right)} \braket{q\RR | 0},
 		\label{eq:hk-dist-q}
 \end{align}
 which we have written in a suggestive form (with $L = M - 1$ and $R = M + 1$).
@@ -62,7 +62,7 @@ Consider also the distribution
 which we combine with the previous one to make the product distribution
 \begin{subequations}
 \begin{align}
-	\pi(p, q\LL, q\MM, q\RR)
+	& \pi(p, q\LL, q\MM, q\RR) \notag \\
 	&= \pi_p(p) \pi_q(q\LL, q\MM, q\RR) \\
 	&= \expb{-\frac{p^2}{2 \sigma_p^2}}
 		\braket{0 | q\LL} \expb{-\frac{m}{2 \hbar^2 \tau} \left( (q\LL - q\MM)^2 + (q\MM - q\RR)^2 \right)} \braket{q\RR | 0}.
@@ -75,16 +75,16 @@ However, due to the deformation, we are not interested in the normalization, so 
 	&\propto \iiiint\! \dif p \dif q\LL \dif q\MM \dif q\RR \,
 			\pi(p, q\LL, q\MM, q\RR) R\coh{p}{q\MM}_t \notag \\
 	&\qquad\qquad\times
-			\expb{-\frac{m}{2 \hbar^2 \tau} \left( (q\LL - q\coh{p}{q\MM}_t)^2 - (q\LL - q\MM)^2 \right)} \notag \\
+			\expb{-\frac{m}{2 \hbar^2 \tau} \left( \left( q\LL - q\coh{p}{q\MM}_t \right)^2 - \left( q\LL - q\MM \right)^2 \right)} \notag \\
 	&\qquad\qquad\times
-			\expb{\frac{i}{\hbar} \left( S\coh{p}{q\MM}_t + p\coh{p}{q\MM}_t (q\LL - q\coh{p}{q\MM}_t) - p (q\RR - q\MM) \right)}.
+			\expb{\frac{i}{\hbar} \left( S\coh{p}{q\MM}_t + p\coh{p}{q\MM}_t \left( q\LL - q\coh{p}{q\MM}_t \right) - p \left( q\RR - q\MM \right) \right)}.
 \end{align}
 We have explicitly chosen $\gamma = m / \hbar^2 \tau$, and as a result our estimator is
 \begin{align}
-	\mathcal{S}_\mathrm{P}(p, q\LL, q\MM, q\RR, t)
-	&= R\coh{p}{q\MM}_t \expb{-\frac{m}{2 \hbar^2 \tau} \left( (q\LL - q\coh{p}{q\MM}_t)^2 - (q\LL - q\MM)^2 \right)} \notag \\
+	& \mathcal{S}_\mathrm{P}(p, q\LL, q\MM, q\RR, t) \notag \\
+	&= R\coh{p}{q\MM}_t \expb{-\frac{m}{2 \hbar^2 \tau} \left( \left( q\LL - q\coh{p}{q\MM}_t \right)^2 - \left( q\LL - q\MM \right)^2 \right)} \notag \\
 	&\qquad\qquad\times
-		\expb{\frac{i}{\hbar} \left( S\coh{p}{q\MM}_t + p\coh{p}{q\MM}_t (q\LL - q\coh{p}{q\MM}_t) - p (q\RR - q\MM) \right)}.
+		\expb{\frac{i}{\hbar} \left( S\coh{p}{q\MM}_t + p\coh{p}{q\MM}_t \left( q\LL - q\coh{p}{q\MM}_t \right) - p \left( q\RR - q\MM \right) \right)}.
 \end{align}
 Since this is the obvious estimator to use, we will refer to it as the \emph{primitive estimator of the survival amplitude}, with the position distribution
 \begin{align}
@@ -101,9 +101,9 @@ If we excise it, we are left with the position distribution
 and the corresponding \emph{minimal estimator of the survival amplitude}
 \begin{align}
 	\mathcal{S}_\mathrm{M}(p, q\LL, q\MM, q\RR, t)
-	&= R\coh{p}{q\MM}_t \expb{-\frac{m}{2 \hbar^2 \tau} \left( (q\LL - q\coh{p}{q\MM}_t)^2 \right)} \notag \\
+	&= R\coh{p}{q\MM}_t \expb{-\frac{m}{2 \hbar^2 \tau} \left( q\LL - q\coh{p}{q\MM}_t \right)^2} \notag \\
 	&\qquad\times
-		\expb{\frac{i}{\hbar} \left( S\coh{p}{q\MM}_t + p\coh{p}{q\MM}_t (q\LL - q\coh{p}{q\MM}_t) - p (q\RR - q\MM) \right)}.
+		\expb{\frac{i}{\hbar} \left( S\coh{p}{q\MM}_t + p\coh{p}{q\MM}_t \left( q\LL - q\coh{p}{q\MM}_t \right) - p \left( q\RR - q\MM \right) \right)}.
 \end{align}
 We hope that the reader is not biased toward or against any estimator names due to the results of \cref{chap:renyi}.
 
@@ -165,10 +165,16 @@ We may suspect that this is due to a poor choice of parameters in the LePIGS sim
 	\label{fig:harmonic-oscillator-survival-primitive}
 \end{figure}
 
-However, for the harmonic oscillator system, we may sample from $\pi_q(q_L, q_M, q_R)$ in \cref{eq:hk-dist-q} directly, since it is Gaussian:
+However, for the harmonic oscillator system, we may sample from $\pi_q(q\LL, q\MM, q\RR)$ in \cref{eq:hk-dist-q} directly, since it is Gaussian:
 \begin{align}
 	\pi_q(q\LL, q\MM, q\RR)
-	&\propto \expb{-\frac{m \omega}{2 \hbar} (q\LL^2 + q\RR^2) - \frac{m}{2 \hbar^2 \tau} \left( (q\LL - q\MM)^2 + (q\MM - q\RR)^2 \right)}.
+	&\propto \expb{
+			-\frac{m \omega}{2 \hbar} \left( \left( q\LL \right)^2 + \left( q\RR \right)^2 \right)
+		} \notag \\
+	&\qquad\times
+		\expb{
+			-\frac{m}{2 \hbar^2 \tau} \left( \left( q\LL - q\MM \right)^2 + \left( q\MM - q\RR \right)^2 \right)
+		}.
 \end{align}
 This allows us to bypass PIGS altogether and see what the survival amplitude should look like given a finite number of samples.
 As we see in \cref{fig:harmonic-oscillator-survival-primitive-exact}, the situation was hopeless to start with.
@@ -189,7 +195,7 @@ As we see in \cref{fig:harmonic-oscillator-survival-primitive-exact}, the situat
 The minimal estimator fares much better, as shown in \cref{fig:harmonic-oscillator-survival-minimal}.
 All the error bars are fairly small and the mean values are mostly along smooth curves.
 Again, we get much better results if we break paths in the simulation and sample from a different sector.
-Perhaps surprising in this particular case is the fact that $\pi_\mathrm{M}(q_L, q_M, q_R)$ is composed of two independent pieces!
+Perhaps surprising in this particular case is the fact that $\pi_\mathrm{M}(q\LL, q\MM, q\RR)$ is composed of two independent pieces!
 
 \begin{figure}
 	\centering
