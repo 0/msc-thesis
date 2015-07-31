@@ -67,6 +67,30 @@ simplify(int1);
 \end{lstplain}
 
 
+\begin{lst}{lst:radial-spherical-expected}{Integration of \vref{eq:radial-spherical-expected}.}
+with(VectorCalculus):
+
+S := Sphere(<0, 0, 0>, R):
+
+int(int(1, [x1, y1, z1]=S), [x2, y2, z2]=S);
+int(int((x1-x2)^2 + (y1-y2)^2 + (z1-z2)^2, [x1, y1, z1]=S), [x2, y2, z2]=S);
+\end{lst}
+
+\noindent outputs
+
+\begin{lstplain}
+     2  6
+16 Pi  R
+---------
+    9
+
+     2  8
+32 Pi  R
+---------
+   15
+\end{lstplain}
+
+
 \begin{lst}{lst:radial-box-a}{Integration of \vref{eq:radial-box-a}.}
 int(1/sqrt(r^2 - x^2 - y^2), y=0..sqrt(r^2 - x^2), x=0..r);
 int(1/sqrt(r^2 - x^2 - y^2), y=0..sqrt(r^2 - x^2), x=sqrt(r^2 - M^2)..M);
@@ -122,4 +146,38 @@ M arcsin(-------------) - ---- + 1/2 r arctan(-----------------)
 - ---- - M arcsin(---------------) + 1/2 r arctan(-----------------)
    4                  2    2 1/2                          2
                    (-M  + r )                            M
+\end{lstplain}
+
+
+\begin{lst}{lst:radial-box-expected}{Integration of \vref{eq:radial-box-expected}.}
+with(VectorCalculus):
+
+P := Parallelepiped(-L/2..L/2, -L/2..L/2, -L/2..L/2):
+
+L^3 * int(1, [x, y, z]=P);
+L^3 * int(x^2 + y^2 + z^2, [x, y, z]=P);
+
+L := 42:
+
+L^3 * int(1, [x, y, z]=P);
+L^3 * int(x^2 + y^2 + z^2, [x, y, z]=P);
+evalf(L^3 * int(exp(-(x^2 + y^2 + z^2)), [x, y, z]=P));
+\end{lst}
+
+\noindent outputs
+
+\begin{lstplain}
+ 6
+L
+
+  8
+ L
+----
+ 4
+
+5489031744
+
+2420662999104
+
+412546.2847
 \end{lstplain}
