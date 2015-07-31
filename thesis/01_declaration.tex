@@ -1,15 +1,21 @@
-\newgeometry{left=2.5 in, right=2.5 in}
-
 \chapter*{}
 
 \mbox{}\vfill
 
+\newlength{\oldparskip}
+\setlength{\oldparskip}{\parskip}
+
+\begin{center}
+\begin{minipage}{0.6\textwidth}
+\setlength{\parindent}{\oldparindent}
+\setlength{\parskip}{\oldparskip}
 I hereby declare that I am the sole author of this thesis.
 This is \emph{not yet} a true copy of the thesis, including any required final revisions, as accepted by my examiners.
 
 I understand that my thesis may be made electronically available to the public.
+\end{minipage}
+\end{center}
 
 \vfill
 \vfill
-
-\restoregeometry
+\vfill
