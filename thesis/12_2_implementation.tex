@@ -61,14 +61,14 @@ The ability to view the connectivity as it changed during a simulation was added
 
 In order to simplify for the end user the manipulation of the scaling of the force fields and the connectivity of the paths, the Cython class \texttt{PIReconnector} was provided.
 If a class inheriting from \texttt{PIReconnector} is given to the path integral integrator, its \texttt{step} method is called at the end of each integrator step, allowing the user to manipulate the simulation.
-For convenience, the following methods are provided:
+For convenience, the following methods are provided in \texttt{PIReconnector}:
 \begin{itemize}
-	\item \texttt{getScaling} to get the scaling of a force field term;
-	\item \texttt{setScaling} to set the scaling of a force field term;
-	\item \texttt{openPath} to open a closed path (\textit{i.e.} make a linear path out of a cyclic one);
-	\item \texttt{closePath} to close an open path (\textit{i.e.} make a cyclic path out of a linear one);
-	\item \texttt{breakPath} to break a single path into two paths; and
-	\item \texttt{joinPaths} to join two paths into a single path.
+	\item \texttt{getScaling(self, Py\_ssize\_t t)} to get the scaling of a force field term;
+	\item \texttt{setScaling(self, Py\_ssize\_t t, double x)} to set the scaling of a force field term;
+	\item \texttt{openPath(self, Py\_ssize\_t p)} to open a closed path (\textit{i.e.} cyclic to linear);
+	\item \texttt{closePath(self, Py\_ssize\_t p)} to close an open path (\textit{i.e.} linear to cyclic);
+	\item \texttt{breakPath(self, Py\_ssize\_t p)} to break a single path into two paths; and
+	\item \texttt{joinPaths(self, Py\_ssize\_t p1, Py\_ssize\_t p2)} to join two paths into a single path.
 \end{itemize}
 The four methods for operating on paths allow the user to achieve any connectivity with the restriction that a single bead may be connected via no more than two links.
 Additionally, because one can manipulate the connectivity during the simulation, it is possible to perform the sort of updates discussed in ref.~\cite{herdman2014path} which are necessary to preserve permutation symmetry with broken paths.
