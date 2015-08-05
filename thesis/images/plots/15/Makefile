@@ -1,16 +1,1 @@
-IMAGES = $(wildcard *.py)
-PDFS = $(IMAGES:.py=.pdf)
-
-export PYTHONPATH := ..:$(PYTHONPATH)
-
-
-.PHONY: all clean
-
-all: $(PDFS)
-
-clean:
-	rm -f $(PDFS)
-
-
-%.pdf: %.py %.data $(wildcard ../*.py)
-	./$<
+../Makefile.local
