@@ -387,6 +387,8 @@ In order to obtain the ground state wavefunction, we use a numerical PIGS matrix
 The results of the convergence studies in \cref{fig:double-well-survival-zero-q-a,fig:double-well-survival-zero-q-b} are shown in \cref{tab:model-sa0-double-well}.
 If we try to use these values to generate ground state survival amplitudes, we see in \cref{fig:double-well-survival-bad} that we do a terrible job regardless of $\gamma$.
 In fact, the curves end where they do because the values diverge and the calculations are aborted.
+By changing some of the parameters, we are able to improve the shape of the curves and prolong the length of the calculations, as shown in \cref{fig:double-well-survival-better} using the parameters from \cref{tab:model-sas-double-well}.
+However, the results are still far from perfect.
 
 \begin{figure}
 	\setlength{\figspacing}{5 mm}
@@ -450,9 +452,6 @@ In fact, the curves end where they do because the values diverge and the calcula
 	\label{fig:double-well-survival-bad}
 \end{figure}
 
-By changing some of the parameters, we are able to improve the shape of the curves and prolong the length of the calculations, as shown in \cref{fig:double-well-survival-better} using the parameters from \cref{tab:model-sas-double-well}.
-However, the results are still far from perfect.
-
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{13/double_well_sas_better}
@@ -463,4 +462,59 @@ However, the results are still far from perfect.
 		\explainplotsas{}
 	}
 	\label{fig:double-well-survival-better}
+\end{figure}
+
+We can get a feel for why the double well system is much more difficult to approach using this method by comparing \cref{fig:harmonic-oscillator-swirling-abs,fig:harmonic-oscillator-swirling-phase} to \cref{fig:double-well-swirling-abs,fig:double-well-swirling-phase}.
+In the former, the magnitude does not change at all, and the phase changes gradually throughout.
+In the latter, the magnitude and phase both appear to undergo some sort of ``swirling,'' which requires a much finer grid to resolve well at later times.
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{13/harmonic_oscillator_swirling_abs}
+	\caption[
+		Time evolution of integrand for harmonic oscillator
+	]{
+		Time evolution of the magnitude of the partially integrated HK integrand for a harmonic oscillator.
+		\explainsketch{}
+		\explainparadiff{}
+	}
+	\label{fig:harmonic-oscillator-swirling-abs}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{13/harmonic_oscillator_swirling_phase}
+	\caption[
+		Time evolution of integrand for harmonic oscillator \cont
+	]{
+		Time evolution of the phase of the partially integrated HK integrand for a harmonic oscillator.
+		\explainsketch{}
+		\explainparadiff{}
+	}
+	\label{fig:harmonic-oscillator-swirling-phase}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{13/double_well_swirling_abs}
+	\caption[
+		Time evolution of integrand for double well
+	]{
+		Time evolution of the magnitude of the partially integrated HK integrand for a double well.
+		\explainsketch{}
+		Some of the extremely large values at later times are clipped to better demonstrate the resulting shape.
+	}
+	\label{fig:double-well-swirling-abs}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{13/double_well_swirling_phase}
+	\caption[
+		Time evolution of integrand for double well \cont
+	]{
+		Time evolution of the phase of the partially integrated HK integrand for a double well.
+		\explainsketch{}
+	}
+	\label{fig:double-well-swirling-phase}
 \end{figure}

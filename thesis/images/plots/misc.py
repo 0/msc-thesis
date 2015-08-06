@@ -6,6 +6,7 @@ import numpy as np
 COLORS = ['blue', 'red', 'green', 'brown', 'magenta', 'cyan', 'orange', 'lime', 'grey']
 HISTOGRAM_COLOR = '#bbccff'
 COLORMAP = cm.YlOrRd
+COLORMAP_PHASE = cm.hsv
 
 EXACT_ENERGIES = [
         1.0,
