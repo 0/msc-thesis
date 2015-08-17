@@ -25,7 +25,7 @@ fig = plt.gcf()
 fig.set_size_inches(10, 5)
 
 plt.title(r'Distribution of traces for primitive estimator')
-plt.xlabel(r'$\Tr{\rho_A^2}$')
+plt.xlabel(r'$\Tr{\hat{\rho}_A^2}$')
 plt.ylabel(r'Density')
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')

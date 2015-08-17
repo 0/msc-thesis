@@ -12,9 +12,4 @@ pair[][] springs = {
 pair[][] potentials = {
 };
 
-pair[][] potentials_central = {
-	{(0, 0), (1, 0)},
-	{(2, 0), (1, 0)},
-};
-
-draw_symbol(springs, potentials, potentials_central=potentials_central, extend=true, num_paths=1, links_wide=2);
+draw_symbol(springs, potentials, extend=true, num_paths=1, links_wide=2);
