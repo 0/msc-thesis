@@ -41,6 +41,6 @@ plt.title(r'Convergence of entropy using minimal estimator')
 plt.xlabel(r'$\Delta t / \si{\pico\second}$')
 plt.ylabel(r'$S_2$')
 
-plt.legend(prop={'size': 6})
+plt.legend()
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')

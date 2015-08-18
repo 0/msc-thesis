@@ -45,6 +45,6 @@ plt.ylabel(r'$\Re{(S_{0,t=0}^\mathrm{HK})}$')
 
 plt.ylim(0.6, 1.1)
 
-plt.legend(prop={'size': 6}, loc=3)
+plt.legend(loc=3)
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')

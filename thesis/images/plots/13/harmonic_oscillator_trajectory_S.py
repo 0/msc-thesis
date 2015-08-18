@@ -43,6 +43,6 @@ plt.title(r'Classical action of harmonic oscillator trajectories')
 plt.xlabel(r'$t / \si{\pico\second}$')
 plt.ylabel(r'$S_t / \si{\kilo\joule\pico\second\per\mole}$')
 
-plt.legend(prop={'size': 6})
+plt.legend()
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')

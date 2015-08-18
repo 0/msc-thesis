@@ -54,6 +54,6 @@ axes[1].set_ylabel(r'$\Im{(S_{0,t}^\mathrm{HK,G})}$')
 for axis in axes:
     axis.set_ylim(-1.1, 1.1)
 
-    axis.legend(prop={'size': 6})
+    axis.legend()
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')

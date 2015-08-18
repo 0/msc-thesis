@@ -38,6 +38,6 @@ plt.ylabel(r'Standard error of trace')
 
 plt.ylim(0.0, 0.15)
 
-plt.legend(prop={'size': 6})
+plt.legend()
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')

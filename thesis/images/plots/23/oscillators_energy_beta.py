@@ -41,6 +41,6 @@ plt.title(r'Convergence of energy')
 plt.xlabel(r'$\beta / \si{\per\kelvin}$')
 plt.ylabel(r'$E_0 / \si{\kelvin}$')
 
-plt.legend(prop={'size': 6}, loc=2)
+plt.legend(loc=2)
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')

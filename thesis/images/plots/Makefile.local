@@ -12,5 +12,5 @@ clean:
 	rm -f $(PDFS)
 
 
-%.pdf: %.py %.data $(wildcard ../*.py)
+%.pdf: %.py %.data $(wildcard ../*.py) ../matplotlibrc
 	./$<

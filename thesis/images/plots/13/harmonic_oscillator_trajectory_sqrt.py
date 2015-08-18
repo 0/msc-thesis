@@ -52,6 +52,6 @@ axes[0].set_ylabel(r'$\Re{(R_t)}$')
 axes[1].set_ylabel(r'$\Im{(R_t)}$')
 
 for axis in axes:
-    axis.legend(prop={'size': 6})
+    axis.legend()
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')

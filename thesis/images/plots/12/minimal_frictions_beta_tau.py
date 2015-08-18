@@ -36,6 +36,6 @@ plt.title(r'Error minimization for minimal estimator')
 plt.xlabel(r'$\gamma^{(0)} / \si{\per\pico\second}$')
 plt.ylabel(r'Standard error of trace')
 
-plt.legend(prop={'size': 6}, loc=2)
+plt.legend(loc=2)
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')

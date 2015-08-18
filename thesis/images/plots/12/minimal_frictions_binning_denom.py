@@ -36,6 +36,6 @@ plt.title(r'Binning convergence for minimal estimator (denominator)')
 plt.xlabel(r'Binning level')
 plt.ylabel(r'Standard error of trace')
 
-plt.legend(prop={'size': 6}, loc=2)
+plt.legend(loc=2)
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')

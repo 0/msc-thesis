@@ -44,6 +44,6 @@ plt.title(r'Convergence of energy')
 plt.xlabel(r'$\tau / \si{\per\kelvin}$')
 plt.ylabel(r'$E_0 / \si{\kelvin}$')
 
-plt.legend(prop={'size': 6})
+plt.legend()
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')

@@ -41,6 +41,6 @@ plt.title(r'Convergence of entropy using primitive estimator')
 plt.xlabel(r'$\beta / \si{\per\kelvin}$')
 plt.ylabel(r'$S_2$')
 
-plt.legend(prop={'size': 6}, loc=4)
+plt.legend(loc=4)
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')

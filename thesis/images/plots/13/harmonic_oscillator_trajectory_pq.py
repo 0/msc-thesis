@@ -42,6 +42,6 @@ plt.title(r'Phase space of harmonic oscillator trajectories')
 plt.xlabel(r'$q / \si{\nano\meter}$')
 plt.ylabel(r'$p / \si{\gram\nano\meter\per\pico\second\per\mole}$')
 
-plt.legend(prop={'size': 6})
+plt.legend()
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')

@@ -43,6 +43,6 @@ plt.title(r'Convergence of $t = 0$ survival amplitude')
 plt.xlabel(r'$\Delta q / \si{\nano\meter}$')
 plt.ylabel(r'$\Re{(S_{0,t=0}^\mathrm{HK})}$')
 
-plt.legend(prop={'size': 6}, loc=2)
+plt.legend(loc=2)
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')

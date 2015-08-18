@@ -44,6 +44,6 @@ plt.title(r'Convergence of entropy using primitive estimator')
 plt.xlabel(r'$\tau / \si{\per\kelvin}$')
 plt.ylabel(r'$S_2$')
 
-plt.legend(prop={'size': 6})
+plt.legend()
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')
