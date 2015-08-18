@@ -4,8 +4,8 @@ real shift_scaling = 0.08;
 pen finedashed = linetype(new real[] {2, 2});
 pen shortdashed = linetype(new real[] {4, 4});
 
-pen blue = rgb(0.0, 0.0, 0.7);
-pen red = rgb(0.7, 0.0, 0.0);
+pen blue = cmyk(1.0, 0.8, 0.0, 0.0);
+pen red = cmyk(0.0, 1.0, 1.0, 0.2);
 
 
 bool isin(int[] a, int key) {
