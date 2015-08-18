@@ -3,7 +3,7 @@ from matplotlib import cm
 import numpy as np
 
 
-COLORS = ['blue', 'red', 'green', 'brown', 'magenta', 'cyan', 'orange', 'lime', 'grey']
+COLORS = ['blue', 'red', 'green', 'brown', 'magenta', 'cyan', 'orange']
 HISTOGRAM_COLOR = '#bbccff'
 COLORMAP = cm.YlOrRd
 COLORMAP_PHASE = cm.hsv

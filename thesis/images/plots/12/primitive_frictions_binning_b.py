@@ -24,10 +24,15 @@ frictions = [
         '10',
         '100',
         ]  # 1/ps
+skip = [2, 5]
+c = iter(COLORS)
 
 
 for i, friction in enumerate(frictions):
-    plt.plot(data[:, 0], data[:, 1+i], color=COLORS[i], label=r'$\gamma^{(0)} = \SI{' + friction + r'}{\per\pico\second}$')
+    if i in skip:
+        continue
+
+    plt.plot(data[:, 0], data[:, 1+i], color=next(c), label=r'$\gamma^{(0)} = \SI{' + friction + r'}{\per\pico\second}$')
 
 fig = plt.gcf()
 fig.set_size_inches(10, 5)
