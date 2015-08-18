@@ -360,6 +360,7 @@ It is stated but not proved in ref.~\cite{tuckerman1992reversible} that
 \begin{align}
 	e^{c \frac{\partial}{\partial x}} f(x)
 	&= f(x + c)
+		\label{eq:exp-deriv-statement}
 \end{align}
 when $c$ is independent of $x$.
 This is a contraction of
@@ -367,8 +368,8 @@ This is a contraction of
 	e^{c \frac{\partial}{\partial x}} f(x, \ldots)
 	&= f(x + c, \ldots),
 \end{align}
-where the other parameters are irrelevant, so we keep the partial derivative notation.
-To show that this is true, we start with the (operator) Taylor series~\cite[48]{sakurai1985modern}
+where the other parameters are irrelevant, but we keep the partial derivative notation.
+To show that \cref{eq:exp-deriv-statement} is true, we start with the (operator) Taylor series~\cite[48]{sakurai1985modern}
 \begin{align}
 	e^{\hat{A}}
 	&= \sum_{n=0}^\infty \frac{1}{n!} \hat{A}^n
