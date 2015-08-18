@@ -150,6 +150,7 @@ We can generalize this approach by making the observation that
 	= \frac{\int\! \dif \vec{q} \, \pi'(\vec{q}) \mathcal{N}'(\vec{q})}{\int\! \dif \vec{q} \, \pi'(\vec{q}) \mathcal{D}'(\vec{q})}
 	= \frac{\int\! \dif \vec{q} \, \pi'(\vec{q}) \mathcal{N}'(\vec{q})}{\int\! \dif \vec{q} \, \pi'(\vec{q})} \frac{\int\! \dif \vec{q} \, \pi'(\vec{q})}{\int\! \dif \vec{q} \, \pi'(\vec{q}) \mathcal{D}'(\vec{q})}
 	= \frac{\mean{\mathcal{N}'}_{\pi'}}{\mean{\mathcal{D}'}_{\pi'}}
+		\label{eq:dist-change}
 \end{align}
 for a suitably chosen distribution $\pi'(\vec{q})$ and estimators $\mathcal{N}'(\vec{q})$ and $\mathcal{D}'(\vec{q})$.
 Obviously, we may choose anything whatsoever for $\pi'(\vec{q})$ and offload the details onto the estimators by dividing out the unnecessary bits and multiplying in the required ones, but most arbitrary choices of distribution would not be very sensible.
@@ -168,18 +169,11 @@ and the estimators
 			\label{eq:renyi-estimator-minimal}
 \end{align}
 We will refer to the ratio estimator $\mean{\mathcal{N}_\mathrm{M}} / \mean{\mathcal{D}_\mathrm{M}}$ as the \emph{minimal estimator of the trace}.
-Clearly,
+As we might expect from \cref{eq:dist-change},
 \begin{align}
 	\mathcal{N}_\mathrm{P}
-	&= \frac{\mathcal{N}_\mathrm{M}}{\mathcal{D}_\mathrm{M}},
+	&= \frac{\mathcal{N}_\mathrm{M}}{\mathcal{D}_\mathrm{M}}.
 \end{align}
-but
-\begin{align}
-	\mean{\mathcal{N}_\mathrm{P}}
-	&= \bigmean{\frac{\mathcal{N}_\mathrm{M}}{\mathcal{D}_\mathrm{M}}}
-	\ne \frac{\mean{\mathcal{N}_\mathrm{M}}}{\mean{\mathcal{D}_\mathrm{M}}},
-\end{align}
-so these provide distinct estimates of the trace.
 
 It seems that there is inherent asymmetry in reconnecting the paths on the ``left'' side (\ie{} between beads $M - 1$ and $M$), and that it would be better to use an even number of beads so that there is a middle link.
 However, if we allow ourselves the use of perspective in our diagrams, we can show that this is not necessary.

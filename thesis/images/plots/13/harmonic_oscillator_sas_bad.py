@@ -52,7 +52,7 @@ axes[1].set_ylabel(r'$\Im{(S_{0,t}^\mathrm{HK})}$')
 for axis in axes:
     axis.set_ylim(-1.1, 1.1)
 
-axes[0].legend(loc=3)
+axes[0].legend(loc=4)
 axes[1].legend(loc=2)
 
 plt.savefig('{}.pdf'.format(name), bbox_inches='tight')

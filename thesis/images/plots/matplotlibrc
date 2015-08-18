@@ -1,7 +1,7 @@
 font.family: serif
 font.serif: cm
 
-legend.fontsize: 6
+legend.fontsize: 10
 
 text.latex.preamble: \usepackage{amsopn},\usepackage[retain-unity-mantissa=false]{siunitx},\DeclareMathOperator{\Tr}{Tr},\renewcommand{\rho}{\varrho}
 text.usetex: True

@@ -99,7 +99,7 @@ which is the maximum possible von Neumann entropy for a two-level state~\cite[25
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.6\textwidth]{12/particle_partition}
+	\includegraphics[width=0.4\textwidth]{12/particle_partition}
 	\caption[
 		Example particle partition
 	]{
@@ -120,7 +120,9 @@ Our density matrix\footnote{
 	&= \int\! \dif \vec{q}_B \, \rho(\vec{q}_A, \vec{q}_B ; \vec{q}_A', \vec{q}_B).
 \end{align}
 
-Thus, we have (at least in principle) a prescription for finding the von Neumann entropy for particle entanglement of any $N$-body system.
+Thus, we have (at least in principle) a prescription for finding the von Neumann entropy for particle entanglement of any $N$-body system.\footnote{
+	Since we are usually interested in systems of \emph{indistinguishable} particles, we must also be careful to preserve permutation symmetry when identical particles are split between $A$ and $B$.
+}
 We just need to have access to the density matrix of the state of interest, but quantum mechanics rarely yields to such demands.
 Thus, we must search for another method of measuring the entanglement of a state.
 Conveniently, there is a generalization of the Shannon and von Neumann entropies, named the \emph{Rényi entropy}~\cite{herdman2014path,renyi1961measures}:
@@ -129,8 +131,7 @@ Conveniently, there is a generalization of the Shannon and von Neumann entropies
 	&= \frac{1}{1 - \alpha} \log{\left( \Tr{\hat{\rho}_A^\alpha} \right)}
 \end{align}
 for $\alpha \ge 0$.
-It is a generalization in the sense that $S_\alpha \to S_\mathrm{vN}$ as $\alpha \to 1$.
-It was originally obtained by Rényi by relaxing the subadditivty requirement of Shannon~\cite{shannon1948mathematical,renyi1961measures}.
+It is a generalization in the sense that $S_\alpha \to S_\mathrm{vN}$ as $\alpha \to 1$ and was originally obtained by Rényi by relaxing the subadditivty requirement of Shannon (that the joint entropy must not exceed the sum of the individual entropies)~\cite{shannon1948mathematical,renyi1961measures}.
 As we will see shortly, this measure of entropy can be used with existing methods of quantum statistical mechanics (as described in \cref{chap:introduction}) to get around the need to obtain $\hat{\rho}$ explicitly.
 
 
