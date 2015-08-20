@@ -663,8 +663,8 @@ WBaduk beginner problem BP00107
 		\fict{m}_n
 		&= \frac{m_n}{\links}.
 	\end{align}
-	Since for the time being we are not particularly interested in particles, beads, or dimensions, we will index things with a generic subscript $f \in \{ 0, 1, \ldots, F - 1 \}$, signifying the $f$th degree of freedom, greatly reducing visual clutter.
-	To find the simulation algorithm, we will follow closely the approach of refs.~\cite{bussi2007accurate,ceriotti2010efficient}.
+	Since we are not particularly interested in particles, beads, or dimensions for the time being, we will index things with a generic subscript $f \in \{ 0, 1, \ldots, F - 1 \}$, signifying the $f$th degree of freedom, greatly reducing visual clutter.
+	To find the simulation algorithm, we will closely follow the approach of refs.~\cite{bussi2007accurate,ceriotti2010efficient}.
 
 	For the framework of the algorithm, we want to use the Trotter expansion of the real-time propagator presented in ref.~\cite{tuckerman1992reversible}, so we will need to figure out what this propagator is.\footnote{
 		Some background on the subject is provided in ref.~\cite[44-50]{evans2008statistical} and ref.~\cite[31-35]{zwanzig2001nonequilibrium}.
@@ -723,7 +723,7 @@ WBaduk beginner problem BP00107
 		= \sum_f \dpd{H}{\nm{p}_f} \dpd{}{\nm{q}_f} - \dpd{H}{\nm{q}_f} \dpd{}{\nm{p}_f}.
 	\end{align}
 	However, \cref{eq:langevin-eom-p} is a stochastic differential equation, so things are not as pleasant as in the case of Hamiltonian dynamics.
-	We will use eqs.~(3.110), (3.118), (3.119), (4.96), and (4.97) from ref.~\cite[54-55,83]{risken1984fokker}.
+	To deal with it, we use eqs.~(3.110), (3.118), (3.119), (4.96), and (4.97) from ref.~\cite[54-55,83]{risken1984fokker}.
 	Because the force field will in general couple the degrees of freedom, we put them all together and consider a system of $2 F$ Langevin equations.
 	We introduce the shorthand $\nm{\vec{\Gamma}}$ to mean the combined vector of momenta $\nm{\vec{p}}$ and positions $\nm{\vec{q}}$.
 	The $h$ and $g$ functions of ref.~\cite{risken1984fokker} are then
@@ -832,7 +832,8 @@ WBaduk beginner problem BP00107
 			\right),
 	\end{align}
 	\end{subequations}
-	(so that $\hat{L} = \hat{L}_0 + \hat{L}_V + \hat{L}_\gamma$), and this leads to (for a single time step)~\cite{tuckerman1992reversible,bussi2007accurate}
+	so that $\hat{L} = \hat{L}_0 + \hat{L}_V + \hat{L}_\gamma$.
+	This leads to (for a single time step)~\cite{tuckerman1992reversible,bussi2007accurate}
 	\begin{align}
 		e^{\hat{L} \dt}
 		&= e^{\hat{L}_\gamma \frac{\dt}{2}}

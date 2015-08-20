@@ -46,7 +46,7 @@ which lets us write
 \end{align}
 We refer to the 4-tuple $T\coh{i}{k}_t = \left( p\coh{i}{k}_t, q\coh{i}{k}_t, R\coh{i}{k}_t, S\coh{i}{k}_t \right)$ as the \emph{classical trajectory} with initial conditions $p_i$, $q_i$.
 
-As mentioned earlier, we do not have as obvious a guideline for how to set up our momentum grid as we do for the position grids.
+As mentioned earlier, we do not have as obvious a guideline for setting up our momentum grid as we do for the position grids.
 Taking a hint from the Fourier-transform-like form of the $p$ contribution in \cref{eq:survival-hk-num}, we choose the $p_i$ grid to be the momentum space grid corresponding to a position grid, but it is not immediately clear which position grid to use.
 If we look only at the initial time, we see
 \begin{align}
@@ -73,7 +73,7 @@ Given the ground state wavefunction on the grid ($w$) and the classical trajecto
 All the details are in the propagation of the classical trajectory.
 The phase space variables $p\coh{i}{k}_t$ and $q\coh{i}{k}_t$ may be found from the initial conditions\footnote{
 	While the initial conditions are confined to a grid, there is no such restriction placed on the time-propagated phase space variables.
-} using a symplectic integrator such as the well-known velocity Verlet algorithm or the lesser known (but higher order) integrator due to Ruth and Forest~\cite{forest1990fourth}.
+} using a symplectic integrator such as the well-known velocity Verlet algorithm or the lesser known (but higher order) integrator by Ruth and Forest~\cite{forest1990fourth}.
 The classical action $S\coh{i}{k}_t$ is not difficult to obtain once one has the momenta.
 
 \begin{figure}
@@ -95,7 +95,7 @@ The classical action $S\coh{i}{k}_t$ is not difficult to obtain once one has the
 	\caption[
 		Example classical trajectories for harmonic oscillator
 	]{
-		Some example phase space diagrams and classical actions resulting from harmonic oscillator trajectories with different time steps.
+		Phase space diagrams and classical actions resulting from harmonic oscillator trajectories with different time steps.
 		\explainplotsas{}
 	}
 	\label{fig:harmonic-oscillator-trajectory-a}
@@ -107,7 +107,7 @@ The classical action $S\coh{i}{k}_t$ is not difficult to obtain once one has the
 	\caption[
 		Example HK prefactors for harmonic oscillator
 	]{
-		Some example HK prefactors resulting from harmonic oscillator trajectories with different time steps.
+		HK prefactors resulting from harmonic oscillator trajectories with different time steps.
 		\explainplotsas{}
 	}
 	\label{fig:harmonic-oscillator-trajectory-b}
@@ -185,7 +185,7 @@ As elsewhere in the present work, we use $m = m_\mathrm{e}$ (mass of an electron
 This still leaves us with several parameters to choose: $\dt\alt$, $\gamma$, $q\mx$, $\DQ$, $q\mx\alt$, $\DQ\alt$.
 Unless otherwise specified, the parameter values from \cref{tab:model-sa0-harmonic-oscillator} are used for this model system.
 
-One may wish to choose $\dt\alt$ to be sufficiently small that the classical trajectories are stable, but no smaller.
+One may wish to choose $\dt\alt$ to be sufficiently small so that the classical trajectories are stable, but no smaller.
 From \cref{fig:harmonic-oscillator-trajectory-a,fig:harmonic-oscillator-trajectory-b}, this appears to be about $\SI{5}{\pico\second}$.
 However, since we would like to have good temporal resolution, we typically choose a shorter time step.
 For this system, we may cheat and choose the optimal $\gamma$, one which matches that of the system itself: $\gamma = m \omega / \hbar$; however, we want to see the effect this parameter has on the results, so we also perturb it from this value.
@@ -345,7 +345,7 @@ We now move on to a more challenging, anharmonic system: a particle of mass $m$ 
 	\hat{H}
 	&= \frac{\hat{p}^2}{2 m} - 2 \frac{d}{w^2} \hat{q}^2 + \frac{d}{w^4} \hat{q}^4,
 \end{align}
-where $d$ is the depth of the minima and $w$ is the distance from the $y$-axis to the minima.
+where $d$ is the depth of each minimum and $w$ is the distance from the $y$-axis to the minima.
 We use $m = m_\mathrm{e}$ (mass of an electron), $d = \SI{2}{\kelvin}$, and $w = \SI{50}{\nano\meter}$.
 In order to obtain the ground state wavefunction, we use a numerical PIGS matrix multiplication method with sufficiently converged $\beta$ and $\tau$.
 

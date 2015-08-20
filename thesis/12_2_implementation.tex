@@ -25,7 +25,7 @@ The former is unchanged between the sectors we are considering, but the latter i
 
 Application of the force fields is similarly straightforward: some of the forces may be scaled or missing entirely, so the changes to the momenta will be modified accordingly.
 
-Thermostatting of the normal modes is potentially tricky, due to the appearance of $\beta$, which in the derivation starts out as the imaginary time propagation length.
+Thermostatting of the normal modes is potentially tricky, due to the appearance of $\beta$, which in the derivation starts out as the imaginary-time propagation length.
 Since some of the paths may change length, it may be tempting to adjust the value of $\beta$ for each path to account for the varying length.
 However, that would be incorrect, because the $\beta$ which appears in the thermostat is related to the temperature of the simulation and is a global property.
 Indeed, it is the same $\beta$ which appears in the exponent of \vref{eq:classical-Z}, and it is not affected by anything we might do to the connectivity of paths or scaling of potentials inside $\Hcl$.
@@ -59,7 +59,7 @@ Two additional consequences of this new array were the ability to combine the fi
 This connectivity data may be written to the output trajectory file and analyzed later.
 The ability to view the connectivity as it changed during a simulation was added to the \texttt{tviewer} application which is included with MMTK.
 
-In order to simplify for the end user the manipulation of the scaling of the force fields and the connectivity of the paths, the Cython class \texttt{PIReconnector} was provided.
+In order to abstract away the above details for the end user, the Cython class \texttt{PIReconnector} was provided.
 If a class inheriting from \texttt{PIReconnector} is given to the path integral integrator, its \texttt{step} method is called at the end of each integrator step, allowing the user to manipulate the simulation.
 For convenience, the following methods are provided in \texttt{PIReconnector}:
 \begin{itemize}

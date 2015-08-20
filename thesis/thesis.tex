@@ -31,6 +31,7 @@
 \usepackage{textcomp}
 \usepackage{titlesec}
 \usepackage[nottoc]{tocbibind}
+\usepackage[normalem]{ulem}
 
 \usepackage[backend=biber, style=phys, biblabel=brackets, defernumbers=true, doi, isbn]{biblatex}
 % We use shorthands for the bib entries, and they should be sorted in
@@ -224,6 +225,7 @@
 \newcommand{\nomencl}[2]{#2 (#1\nomenclature{#1}{#2})}
 
 \newcommand{\DOTS}{\leaders\hbox{\hspace{2 pt} .}\hfill\,}
+\newcommand{\sumitem}[2]{\item \hyperref[#1]{#2} \DOTS \vref{#1}}
 
 \newcommand{\explainplotentropy}{Dashed lines indicate the exact answer; dotted curves are the expected convergence obtained from a direct numerical method; crosses mark the values in \vref{tab:model-parameters}.}
 \newcommand{\explainplotsazero}{Dashed lines indicate the exact answer; dotted lines mark the values in \vref{tab:model-sa0-harmonic-oscillator}.}

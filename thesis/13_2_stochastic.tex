@@ -32,8 +32,8 @@ Once we add the Gaussian weight, we instead obtain the expression
 				+ \frac{i}{\hbar} \left( S\coh{p}{q}_t + p\coh{p}{q}_t (q\LLup - q\coh{p}{q}_t) - p (q\RRup - q) \right)
 			}.
 \end{align}
-This introduces another parameter, $\sigma_p$, but that is not as bad as it might seem at first: the trade-off is that we no longer have all the grid parameters to tune.
-Additionally, we will choose $\gamma$ so that we are able to sample all three position coordinates from the same PIGS simulation.
+This introduces $\sigma_p$, which is yet another parameter, but that is not as bad as it might seem at first: the trade-off is that we no longer have all the grid parameters to tune.
+Additionally, we choose $\gamma$ so that we are able to sample all three position coordinates from the same PIGS simulation.
 
 Recall that we may evaluate integrals of the form
 \begin{align}
@@ -69,7 +69,7 @@ which we combine with the previous one to make the product distribution
 \end{align}
 \end{subequations}
 Because they are obtained from a LePIGS simulation, the wavefunctions $\braket{q | 0}$ will not be normalized.
-However, due to the deformation, we are not interested in the normalization, so we may disregard this and write just
+However, due to the deformation, we are not interested in the normalization, so we may disregard it and write
 \begin{align}
 	S_0\hkg(t)
 	&\propto \iiiint\! \dif p \dif q\LL \dif q\MM \dif q\RR \,
@@ -110,7 +110,7 @@ We hope that the reader is not biased toward or against any estimator names due 
 
 \subsection{Harmonic oscillator}
 
-Before we try this stochastic approach with the harmonic oscillator system from \cref{sec:semiclassical-numerical-ho}, we see (using the numerical method used previously) what happens when we deform the integral with the Gaussian weight and then explicitly renormalize the survival amplitude.
+Before we try this stochastic approach with the harmonic oscillator system from \cref{sec:semiclassical-numerical-ho}, we can see (using the numerical method used previously) what happens when we deform the integral with the Gaussian weight and then explicitly renormalize the survival amplitude.
 Unless otherwise specified, the parameter values from \cref{tab:model-sas-harmonic-oscillator-stochastic} are used for this model system.
 The results shown in \cref{fig:harmonic-oscillator-survival-smoothing-norm} are very good over a wide range of $\sigma_p$.\footnote{
 	In fact, for the narrowest momentum distribution, we end up using only a single momentum: zero.
@@ -132,7 +132,20 @@ Thus, we may expect that performing the same deformed integral using the stochas
 
 On the contrary, we find the disappointing result in \cref{fig:harmonic-oscillator-survival-primitive}.
 The overall frequency appears to be correct, but the shapes of both the real and imaginary components are distorted, and the error bars are incredibly large at some points.
-We may suspect that this is due to a poor choice of parameters in the LePIGS simulation.
+One may suspect that this is due to a poor choice of parameters in the LePIGS simulation.
+However, for the harmonic oscillator system, we can sample from $\pi_q(q\LL, q\MM, q\RR)$ in \cref{eq:hk-dist-q} directly, since it is Gaussian:
+\begin{align}
+	\pi_q(q\LL, q\MM, q\RR)
+	&\propto \expb{
+			-\frac{m \omega}{2 \hbar} \left( \left( q\LL \right)^2 + \left( q\RR \right)^2 \right)
+		} \notag \\
+	&\qquad\times
+		\expb{
+			-\frac{m}{2 \hbar^2 \tau} \left( \left( q\LL - q\MM \right)^2 + \left( q\MM - q\RR \right)^2 \right)
+		}.
+\end{align}
+This allows us to bypass PIGS altogether and see what the survival amplitude should look like given a finite number of samples.
+As we see in \cref{fig:harmonic-oscillator-survival-primitive-exact}, the situation was hopeless to start with.
 
 \begin{table}
 	\begin{center}
@@ -164,20 +177,6 @@ We may suspect that this is due to a poor choice of parameters in the LePIGS sim
 	}
 	\label{fig:harmonic-oscillator-survival-primitive}
 \end{figure}
-
-However, for the harmonic oscillator system, we may sample from $\pi_q(q\LL, q\MM, q\RR)$ in \cref{eq:hk-dist-q} directly, since it is Gaussian:
-\begin{align}
-	\pi_q(q\LL, q\MM, q\RR)
-	&\propto \expb{
-			-\frac{m \omega}{2 \hbar} \left( \left( q\LL \right)^2 + \left( q\RR \right)^2 \right)
-		} \notag \\
-	&\qquad\times
-		\expb{
-			-\frac{m}{2 \hbar^2 \tau} \left( \left( q\LL - q\MM \right)^2 + \left( q\MM - q\RR \right)^2 \right)
-		}.
-\end{align}
-This allows us to bypass PIGS altogether and see what the survival amplitude should look like given a finite number of samples.
-As we see in \cref{fig:harmonic-oscillator-survival-primitive-exact}, the situation was hopeless to start with.
 
 \begin{figure}
 	\centering

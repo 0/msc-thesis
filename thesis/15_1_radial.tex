@@ -59,7 +59,7 @@ We want to integrate $g(r)$ over all the space of interest:
 \end{align}
 Since the maximum possible separation between the two particles is twice the radius of the original ball, we have introduced $\ball^{(2)}$, the closed ball of radius $2 R$ centered at the origin.
 We write $V_{\vec{q}_2}(\vec{r})$ for the (yet to be determined) domain of integration for the inner integral.
-It should be possible to reduce this integral to a simpler form, as we expect that there are redundant degrees of freedom.
+It should be possible to reduce this integral to a simpler form, as we expect there to be redundant degrees of freedom.
 Unfortunately, as the expression is currently written, the two integrals are not trivially separable, since the domain of integration over $\vec{q}_2$ depends on $\vec{r}$.
 That is, if we allow the separation distance $\vec{r}$ to take on any value, then $\vec{q}_2$ is constrained by the spherical boundary conditions.
 
@@ -399,7 +399,7 @@ and Jacobian determinant
 \end{align}
 We will use $M = L / 2$ throughout.
 Clearly, $r$ cannot exceed $\sqrt{M^2 + M^2 + M^2} = \sqrt{3} M$.
-In general, $X, Y \in \intcc{0, M}$, but there might be some constraints on them depending on the values of the other variables.
+In general, $X, Y \in \intcc{0, M}$, though there might be some constraints on them depending on the values of the other variables.
 We will refer to $X$ and $Y$ as simply $x$ and $y$ in the following, and we define the shorthand
 \begin{align}
 	K(r, x, y)
@@ -412,7 +412,7 @@ To show what happens to the regions of the spheres confined to the cube as $r$ i
 If $r \le M$, the boundary of the cube does not matter, and $x$ and $y$ may take on their regular values: $x \le r$, $y \le \sqrt{r^2 - x^2}$.
 
 Things become challenging when $r > M$.
-Now it is impossible for the contribution from either $x$, $y$, or $z$ alone to produce $r$; for example, we can no longer allow $x$ and $y$ to be zero simultaneously.
+Now it is impossible for the contribution from $x$, $y$, or $z$ alone to produce $r$; for example, we can no longer allow $x$ and $y$ to be zero simultaneously.
 We can express the constraint for $z^2$ in terms of the transformed variables as
 \begin{align}
 	0

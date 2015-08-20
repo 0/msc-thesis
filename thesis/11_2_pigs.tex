@@ -1,7 +1,7 @@
 \section{Path integral ground state}
 
 Quantum many-body problems are in general impossible to approach in a direct fashion~\cite[391-392]{tuckerman2010statistical}.
-This is due to the well-known ``curse of dimensionality,'' which implies that the amount of memory and computational effort needed to perform a calculation scale exponentially with the number of degrees of freedom.
+This is due to the well-known ``curse of dimensionality,'' which implies that the memory and computational effort needed to perform a calculation scale exponentially with the number of degrees of freedom.
 For a cluster of only 16 point particles in 3 dimensions (48 degrees of freedom), a grid of just 2 points in each spatial direction (which is so small as to be utterly useless) would require on the order of terabytes to represent a single state vector.
 There are various tricks involving more sophisticated representations, which allow either the reduction of necessary degrees of freedom (by some clever choice of coordinates) or of the number of points used to represent each degree of freedom (by some clever choice of basis set), but these only offer a limited improvement to the problem.
 One of more effective ways to get around the curse is to use statistical methods, such as those based on the path integral formulation of quantum mechanics.
@@ -90,7 +90,7 @@ The family of methods that make use of this isomorphism is known as \nomencl{PIM
 }
 In order to use these methods to sample from the canonical distribution, one needs to have thermostatted equations of motion describing the evolution of the classical system.
 While this is in principle a solved problem (there are several well-known thermostat algorithms for simulating the canonical ensemble, such as Andersen and Nose--Hoover chains), many approaches suffer from issues including not sampling the correct ensemble and inefficient sampling~\cite{bussi2007accurate,ceriotti2010efficient}.
-In order to avoid these issues, the \nomencl{PILE}{Path Integral Langevin Equation} method, makes use of a transformation to normal modes and a Langevin dynamics thermostat~\cite{ceriotti2010efficient}.
+In order to avoid these issues, the \nomencl{PILE}{Path Integral Langevin Equation} method makes use of a transformation to normal modes and a Langevin dynamics thermostat~\cite{ceriotti2010efficient}.
 
 Since the PILE is applicable only to finite-temperature quantum systems (which feature closed paths), it is necessary to modify it for the open paths of PIGS.
 This was done in ref.~\cite{constable2013langevin}, which introduced the \nomencl{LePIGS}{Langevin equation Path Integral Ground State} method. 
