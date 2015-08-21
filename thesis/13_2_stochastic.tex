@@ -2,18 +2,6 @@
 
 \collab{Neil Raymond}
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\textwidth]{13/path_explanation}
-	\caption[
-		Graphical notation for survival amplitude
-	]{
-		Details of the graphical notation used for the survival amplitude.
-		Dashed box indicates the region of interest.
-	}
-	\label{fig:survival-path-explanation}
-\end{figure}
-
 Most interesting problems will be too large for us to find their survival amplitudes by direct integration, so we are forced to use a stochastic method.
 The main issue is that there is no obvious sampling distribution for the momenta.
 One cannot, after all, uniformly sample from $\intcc{-\infty, \infty}$!
@@ -91,6 +79,18 @@ Since this is the obvious estimator to use, we will refer to it as the \emph{pri
 	\pi_\mathrm{P}(q\LL, q\MM, q\RR)
 	&= \symbdistwide{13/dist_primitive}.
 \end{align}
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=\textwidth]{13/path_explanation}
+	\caption[
+		Graphical notation for survival amplitude
+	]{
+		Details of the graphical notation used for the survival amplitude.
+		Dashed box indicates the region of interest.
+	}
+	\label{fig:survival-path-explanation}
+\end{figure}
 
 We notice that even though we have preemptively removed the extraneous potentials from the distribution, we still have a spring contribution that we remove in the estimator.
 If we excise it, we are left with the position distribution

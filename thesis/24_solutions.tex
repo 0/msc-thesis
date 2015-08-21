@@ -98,11 +98,7 @@ WBaduk beginner problem BP00107
 	\begin{align}
 		\VT(\vec{q}) = -\frac{1}{\tau} \ln{\psiT(\vec{q})}
 	\end{align}
-	arising due to the presence of the trial function:
-	\begin{align}
-		\psiT(\vec{q})
-		&= e^{-\tau \VT(\vec{q})}.
-	\end{align}
+	arising due to the presence of the trial function.
 	Thus, we obtain the expression
 	\begin{align}
 		Z_\beta
@@ -928,18 +924,22 @@ WBaduk beginner problem BP00107
 		= \expb{\frac{\dt}{2} \nm{\vec{F}}_{V} \cdot \frac{\partial}{\partial \nm{\vec{p}}}}.
 	\end{align}
 	Thus,
+	\begin{subequations}
 	\begin{align}
 		(\nm{\vec{p}}(t\final), \nm{\vec{q}}(t\final))
-		&= e^{\hat{L}_V \frac{\dt}{2}} (\nm{\vec{p}}(t\initial), \nm{\vec{q}}(t\initial))
-		= \left( \nm{\vec{p}}(t\initial) + \frac{\dt}{2} \nm{\vec{F}}_V, \nm{\vec{q}}(t\initial) \right).
+		&= e^{\hat{L}_V \frac{\dt}{2}} (\nm{\vec{p}}(t\initial), \nm{\vec{q}}(t\initial)) \\
+		&= \left( \nm{\vec{p}}(t\initial) + \frac{\dt}{2} \nm{\vec{F}}_V, \nm{\vec{q}}(t\initial) \right).
 	\end{align}
+	\end{subequations}
 	The only potential difficulty with this result is that in practice $\vec{F}_V$ will most likely be expressed in Cartesian coordinates.
 	However, this is easy to handle, since
+	\begin{subequations}
 	\begin{align}
 		\nm{\vec{p}}_{n,d} + \frac{\dt}{2} \nm{\vec{F}}_{V,n,d}
-		&= \mat{S} \vec{p}_{n,d} + \frac{\dt}{2} \mat{S} \vec{F}_{V,n,d}
-		= \mat{S} \left( \mat{S}\trans \nm{\vec{p}}_{n,d} + \frac{\dt}{2} \vec{F}_{V,n,d} \right)
+		&= \mat{S} \vec{p}_{n,d} + \frac{\dt}{2} \mat{S} \vec{F}_{V,n,d} \\
+		&= \mat{S} \left( \mat{S}\trans \nm{\vec{p}}_{n,d} + \frac{\dt}{2} \vec{F}_{V,n,d} \right)
 	\end{align}
+	\end{subequations}
 	means that we can update $\vec{p}$ in Cartesian coordinates using our regular expression for the force.
 
 	Finally, we must attack the thermostat propagator $e^{\hat{L}_\gamma \frac{\dt}{2}}$.
