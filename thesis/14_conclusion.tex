@@ -10,7 +10,7 @@ First, we demonstrated that it is futile to attempt this with the replica trick 
 Then we added to MMTK the capability to change sectors and successfully used the replica trick along with a modified sampling distribution to efficiently sample the entropy.
 So far, we have only done this for a simple model system, but the implementation should be directly applicable to more interesting systems, such as molecular clusters.
 
-We have also combined the Herman--Kluk SC-IVR propagator with LePIGS simulations to obtain ground state survival amplitudes.
+We have also combined the Herman--Kluk SC-IVR propagator with wavefunctions in the position representation to obtain ground state survival amplitudes.
 This worked well for the harmonic oscillator, using both direct numerical integration and the stochastic LePIGS approach.
 As with the entanglement entropy, we showed that improved results are possible if one is willing to move away from the $Z$-sector.
 Unfortunately, we were not able to obtain acceptable results for the double well system.
@@ -18,16 +18,16 @@ Unfortunately, we were not able to obtain acceptable results for the double well
 
 \section{Future work}
 
-The natural next step for both methods is the application to physical systems.
+The natural next step for both methods is the application to chemical systems.
 Such systems include molecular dimers and trimers, as well as entire molecular clusters.
 For example, we would like to compare the Lindemann criterion for determining whether a cluster is ``solid-like'' or ``liquid-like''~\cite{schmidt2014inclusion} to the Rényi entropy to investigate any connections between the structure of and entanglement within clusters.
-Since the clusters in question are composed of bosons, we would have to add updates to our simulations in order to preserve permutation symmetry~\cite{herdman2014path}, but the major part of the implementation for this is already in place.
+Since the clusters in question would be composed of bosons, we would have to add updates to our simulations in order to preserve permutation symmetry~\cite{herdman2014path}, but the major part of the implementation for this is already in place.
 
 
 \subsection{Entanglement entropy}
 
 In addition to particle entanglement, it is also possible to partition space rather than particles and investigate \emph{spatial entanglement}~\cite{herdman2014path}.
-As the necessary connectivity updates for spatial entanglement are coupled to the spatial moves, they are non-trivial to implement in a molecular dynamics framework, which does not reject any updates.
+Since the necessary connectivity updates for spatial entanglement are coupled to the spatial moves, they are non-trivial to implement in a molecular dynamics framework, which does not reject any updates.
 It may be necessary to reset the momenta after a rejected update, as described in ref.~\cite[296]{tuckerman2010statistical}.
 
 The present work is restricted to ground state systems, but it is also interesting (perhaps more interesting) to look at finite-temperature systems.

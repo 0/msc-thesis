@@ -24,12 +24,12 @@ We may choose to remove the link between beads $M-1$ and $M$ (where $M = \links 
 \begin{align}
 	\pi(\vec{q})
 	&= \psiT(\vec{q}\bead{0})
-		\left[ \prod_{j=0}^{M-2} \expb{
+		\left[ \prod_{j=0}^{\red{M-2}} \expb{
 			-\frac{m}{2 \hbar^2 \tau} \abs{\vec{q}\bead{j} - \vec{q}\bead{j+1}}^2
 			- \frac{\tau}{2} \left( V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right)
 		} \right] \notag \\
 	&\qquad\qquad\times
-		\left[ \prod_{j=M}^{P-2} \expb{
+		\left[ \prod_{j=\red{M}}^{P-2} \expb{
 			-\frac{m}{2 \hbar^2 \tau} \abs{\vec{q}\bead{j} - \vec{q}\bead{j+1}}^2
 			- \frac{\tau}{2} \left( V(\vec{q}\bead{j}) + V(\vec{q}\bead{j+1}) \right)
 		} \right]

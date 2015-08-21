@@ -1,7 +1,7 @@
 \section{Path integral ground state}
 
 Quantum many-body problems are in general impossible to approach in a direct fashion~\cite[391-392]{tuckerman2010statistical}.
-This is due to the well-known ``curse of dimensionality,'' which implies that the memory and computational effort needed to perform a calculation scale exponentially with the number of degrees of freedom.
+This is due to the ``curse of dimensionality,'' which implies that the memory and computational effort needed to perform a calculation scale exponentially with the number of degrees of freedom.
 For a cluster of only 16 point particles in 3 dimensions (48 degrees of freedom), a grid of just 2 points in each spatial direction (which is so small as to be utterly useless) would require on the order of terabytes to represent a single state vector.
 There are various tricks involving more sophisticated representations, which allow either the reduction of necessary degrees of freedom (by some clever choice of coordinates) or of the number of points used to represent each degree of freedom (by some clever choice of basis set), but these only offer a limited improvement to the problem.
 One of more effective ways to get around the curse is to use statistical methods, such as those based on the path integral formulation of quantum mechanics.
@@ -80,7 +80,7 @@ The classical simulations consist of many copies of the quantum system coupled b
 		Examples of paths used in path integral simulations with the PILE and LePIGS integrators.
 		In both cases, there are two particles $A$ and $B$ made up of seven beads each.
 		The beads interact via the ``kinetic'' springs (shown as blue wavy lines) and the scaled quantum potential (shown as red dashed lines).
-		The segment labelled $\tau$ corresponds to propagation in imaginary time by $\tau$.
+		The segments labelled $\tau$ correspond to propagation in imaginary time by $\tau$.
 	}
 	\label{fig:beads}
 \end{figure}
@@ -94,7 +94,7 @@ In order to avoid these issues, the \nomencl{PILE}{Path Integral Langevin Equati
 
 Since the PILE is applicable only to finite-temperature quantum systems (which feature closed paths), it is necessary to modify it for the open paths of PIGS.
 This was done in ref.~\cite{constable2013langevin}, which introduced the \nomencl{LePIGS}{Langevin equation Path Integral Ground State} method. 
-This method is a variant of the PILE and offers a way to efficiently simulate classical systems of polymers corresponding to an approximate PIGS ground state.
+This method is a variant of the PILE and offers a way to efficiently simulate classical systems of polymers corresponding to approximate PIGS ground states.
 Both the PILE and LePIGS are implemented in the \nomencl{MMTK}{Molecular Modelling Toolkit}~\cite{hinsen2000molecular}.\footnote{
 	\url{http://dirac.cnrs-orleans.fr/MMTK/}
 }

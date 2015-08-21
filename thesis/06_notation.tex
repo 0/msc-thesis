@@ -3,6 +3,8 @@
 In this work, symbols for scalars are italic ($x$), while symbols for vectors are bold ($\vec{x}$).
 A matrix denoted by $\mat{X}$ has matrix elements $x_{i,j}$.
 Unless otherwise specified, vectors and matrices are zero-indexed (\ie{} the first element of $\vec{x}$ is $x_0$).
+Operators are dressed in hats, whether they are scalar ($\hat{x}$) or vector ($\hat{\vec{x}}$) operators.
+The identity matrix and operator are $\mat{1}$ and $\hat{1}$.
 \Cref{tab:symbols} lists some of the more commonly used symbols.
 
 \begin{table}[h]
@@ -42,7 +44,7 @@ To avoid ambiguity between indexing of particles and beads within a vector, we u
 The bead notation is also borrowed for indexing normal modes, but there is no contention as the two are mutually exclusive.
 Additionally, the following labels are used to narrow the meaning of the above symbols:
 \begin{itemize}
-	\item partition A: $\vec{x}_A$; and
+	\item partition $A$: $\vec{x}_A$; and
 	\item replica $\lambda$: $\vec{x}\sys{\lambda}$.
 \end{itemize}
 When these are in use, $\vec{x}$ may refer to all the degrees of freedom across all the replicas if this is obvious from context.

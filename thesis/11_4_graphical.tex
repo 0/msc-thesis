@@ -15,7 +15,7 @@ In the case of the kets, not only is there less clutter for common activities, l
 	\braket{\phi | \psi}
 	&= \int\! \dif x \, \phi\conj(x) \psi(x),
 \end{align}
-but there are also conceptual advantages.
+but there are conceptual advantages.
 Kets are not tied to any basis, allowing us to think in more abstract terms.
 They can also represent objects which cannot even exist in Hilbert space (such as the delta-function-normalized position basis states $\ket{q}$), and which would normally require the theory of distributions and a rigged Hilbert space to account for rigorously~\cite{de2005role}.
 
@@ -26,8 +26,9 @@ It is therefore beneficial to introduce a graphical notation for representing pa
 The elements in which we're interested are the beads themselves, the ``kinetic'' spring links between them, and the interaction terms due to the quantum potential.
 The beads, being point particles, are naturally represented as points in a schematic drawing.
 The springs connect beads and can be represented as wavy curves between the points.
-The basic ``unit'' of interaction is half of a single term, since each link contributes half of the interactions on either side.
+The basic unit of interaction is half of a single term, since each link contributes half of the interactions on either side.
 Additionally, interactions may either involve multiple particles or a single particle; the former are referred to as \emph{$N$-body} interactions and the latter are referred to as \emph{central} or \emph{trapping} interactions.
+In either case, we use dashed segments to represent such interactions.
 
 \begin{figure}
 	\setlength{\figspacing}{10 mm}
@@ -35,7 +36,7 @@ Additionally, interactions may either involve multiple particles or a single par
 	\begin{subfigure}[b]{\textwidth}
 		\includegraphics[width=\textwidth]{11/paths_with_central}
 		\caption{
-			Two interacting quantum particles depicted as classical polymers (paths) composed of $P$ beads, showing the Trotter springs (blue, wavy) and potentials (red, dashed) connecting the beads.
+			Two interacting quantum particles depicted as classical polymers (paths) composed of $P$ beads, showing the springs (blue, wavy) and potentials (red, dashed) connecting the beads.
 			The end beads experience only half of the regular potential, but they also feel a potential due to the trial function, which is not displayed here.
 			The letters along the left are the particle labels and the numbers along the top are the bead indices.
 			Most beads have been elided, as indicated by the $\cdots$, implying that their presence would add nothing of interest to the diagram.

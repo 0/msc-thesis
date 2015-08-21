@@ -50,9 +50,9 @@ WBaduk beginner problem BP00107
 		\hat{1}
 		&= \int\! \dif \vec{x} \, \ketbraself{\vec{x}},
 	\end{align}
-	we can introduce introduce $\tau$, $P$, and $\links$ such that $\beta = (P-1) \tau = \links \tau$\footnote{
+	we can introduce $\tau$, $P$, and $\links$ such that $\beta = (P-1) \tau = \links \tau$\footnote{
 		As per the existing convention, $P$ is the number of \emph{beads}.
-		At finite temperature, paths would be closed loops thanks to the additional trace operation, so the number of beads would be equal to the number of links.
+		At finite temperature, paths would be closed loops thanks to the additional trace operation, so the number of beads would be equal to the number of \emph{links}.
 		In the ground state, paths turn out to be open chains capped by a trial function, so there must be one fewer link than there are beads.
 		As a consequence, the value $P - 1$ crops up frequently, but saying $P - 1$ everywhere is tedious, so instead we use $\links$.
 	} and (without making any approximations) expand the Boltzmann operator as follows:
@@ -82,12 +82,7 @@ WBaduk beginner problem BP00107
 				\braket{\vec{q}\bead{j} | e^{-\tau \hat{H}} | \vec{q}\bead{j+1}}.
 	\end{align}
 	\end{subequations}
-	The integrand resembles a path of $P$ positions connected by $\links$ ``links'' of a nature that is still to be determined.
-	Some authors prefer the ``Green's function'' notation
-	\begin{align}
-		G(\vec{q}\bead{j}, \vec{q}\bead{j+1}; \tau)
-	\end{align}
-	for the links~\cite{sarsa2000pigs}, but we choose to work with the Dirac notation.
+	The integrand resembles a path of $P$ positions (referred to as ``beads'') connected by $\links$ ``links'' of a nature that is still to be determined.
 
 	We require (without loss of generality) that $\braket{\vec{q} | \psiT} = \psiT(\vec{q})$ be a nodeless, positive, real function.
 	This is a perfectly reasonable demand to make, since we expect our ground state wavefunction to also be a nodeless, positive, real function.
@@ -99,7 +94,7 @@ WBaduk beginner problem BP00107
 	\begin{align}
 		\psiT(\vec{q}) = e^{\ln{\psiT(\vec{q})}},
 	\end{align}
-	so, following ref.~\cite{schmidt2014inclusion}, we can define a fictitious potential
+	so following ref.~\cite{schmidt2014inclusion} we can define a fictitious potential
 	\begin{align}
 		\VT(\vec{q}) = -\frac{1}{\tau} \ln{\psiT(\vec{q})}
 	\end{align}
@@ -117,9 +112,9 @@ WBaduk beginner problem BP00107
 				\braket{\vec{q}\bead{j} | e^{-\tau \hat{H}} | \vec{q}\bead{j+1}}.
 	\end{align}
 
-	We would like to act with our high-temperature Boltzmann operator $e^{-\tau \hat{H}}$ on the position ket, but to do so would require us to diagonalize the Hamiltonian.
+	We would like to act with the high-temperature Boltzmann operator $e^{-\tau \hat{H}}$ on the position ket, but to do so would require us to diagonalize the Hamiltonian.
 	If we could do that, this entire work would be moot!
-	We could try to make use of the fact that $\hat{H} = \hat{K} + \hat{V}$, but unfortunately since $\hat{K}$ and $\hat{V}$ in general don't commute, we have the inconvenient inequality
+	We could try to make use of the fact that $\hat{H} = \hat{K} + \hat{V}$, but since $\hat{K}$ and $\hat{V}$ in general don't commute, we have the inconvenient inequality
 	\begin{align}
 		e^{-\tau \hat{H}}
 		= e^{-\tau \hat{K} - \tau \hat{V}}
@@ -149,7 +144,7 @@ WBaduk beginner problem BP00107
 	\end{subequations}
 	Since the potential operator is diagonal in the position representation, we were able to simply act with the potential part of the exponential.
 	The kinetic part is not as obvious, but we can still treat it exactly.
-	Using \cref{eq:pq-inner,eq:gaussian-integral-amu} on \cpageref{eq:pq-inner,eq:gaussian-integral-amu} we find that the kinetic matrix elements are
+	Using \cref{eq:pq-inner,eq:gaussian-integral-amu} on \cpageref{eq:pq-inner,eq:gaussian-integral-amu} we find that the matrix elements are
 	\begin{subequations}
 	\begin{align}
 		& \braket{
@@ -267,7 +262,7 @@ WBaduk beginner problem BP00107
 						\frac{1}{2} \frac{m_n}{\links} \omega_\links^2 \abs{\vec{q}_n\bead{j} - \vec{q}_n\bead{j+1}}^2
 				}.
 	\end{align}
-	The only approximation we have made so far to $Z_\beta$ is the Trotter factorization, and we now have what looks like a classical potential composed of: the real system potential; the potential from the trial function; the ``kinetic'' potential in the form of harmonic springs with force constant $m_n \omega_\links^2 / \links$.
+	The only approximation we have made so far to $Z_\beta$ is the Trotter factorization, and we now have what looks like a classical potential composed of: the real system potential; the potential from the trial function; the ``kinetic'' potential in the form of harmonic springs with force constants $m_n \omega_\links^2 / \links$.
 	Note that the springs connect the beads of a single particle in sequence, forming a structure similar to an open-chain polymer.
 
 	Our goal is to relate the quantum system to a classical one, so we need to make $Z_\beta$ look like a classical partition function:
@@ -384,7 +379,7 @@ WBaduk beginner problem BP00107
 		= \mat{S} \mat{A} \mat{S}\trans,
 			\label{eq:nm-diagonalization}
 	\end{align}
-	where $\mat{\Lambda}$ is diagonal and $\mat{S}$ is orthogonal, then we'll get a new set of coordinates $\nm{\vec{q}}$ corresponding to the normal modes with frequencies that are the diagonal elements of $\mat{\Lambda}$:
+	where $\mat{\Lambda}$ is diagonal and $\mat{S}$ is orthogonal, then we'll get a new set of coordinates $\nm{\vec{q}}$ corresponding to normal modes with frequencies that are the diagonal elements of $\mat{\Lambda}$:
 	\begin{subequations}
 	\begin{align}
 		\vec{q}_{n,d}\trans \mat{A} \vec{q}_{n,d}
@@ -587,9 +582,9 @@ WBaduk beginner problem BP00107
 	\end{align}
 
 	Thus, we have rederived the open path normal mode transformation\footnote{
-		The reader may be interested in comparing this to the closed path normal mode transformation derived in \cref{sec:pile-odd}.
+		The reader may be interested in comparing this to the closed path normal mode transformation derived in \vref{sec:pile-odd}.
 	} and found it to be the same Discrete Cosine Transform as in ref.~\cite{constable2012path}.\footnote{
-		There are some technical details relating to the DCT discussed in \vref{chap:dct}.
+		Some technical details relating to the DCT are discussed in \vref{chap:dct}.
 	}
 	The spring potential from \cref{eq:pigs-spring-cartesian} may be written in the new coordinates as
 	\begin{subequations}
@@ -623,7 +618,7 @@ WBaduk beginner problem BP00107
 	\end{figure}
 
 	It remains necessary to find the canonical momenta for these new coordinates.
-	Since there are not any quantum momenta with which to confuse them, we will use the label $p$ (rather than $\fict{p}$) for the fictitious momenta.
+	Since there are no quantum momenta with which to confuse them, we will use the label $p$ (rather than $\fict{p}$) for the fictitious momenta.
 	In terms of the Lagrangian $\mathcal{L}$, the canonical momenta are~\cite[35]{evans2008statistical}
 	\begin{align}
 		\nm{p}_{n,d}\bead{k}
@@ -666,7 +661,7 @@ WBaduk beginner problem BP00107
 	Since we are not particularly interested in particles, beads, or dimensions for the time being, we will index things with a generic subscript $f \in \{ 0, 1, \ldots, F - 1 \}$, signifying the $f$th degree of freedom, greatly reducing visual clutter.
 	To find the simulation algorithm, we will closely follow the approach of refs.~\cite{bussi2007accurate,ceriotti2010efficient}.
 
-	For the framework of the algorithm, we want to use the Trotter expansion of the real-time propagator presented in ref.~\cite{tuckerman1992reversible}, so we will need to figure out what this propagator is.\footnote{
+	For the framework of the algorithm, we want to use the Trotter-like expansion of the real-time propagator presented in ref.~\cite{tuckerman1992reversible}, so we will need to figure out what this propagator is.\footnote{
 		Some background on the subject is provided in ref.~\cite[44-50]{evans2008statistical} and ref.~\cite[31-35]{zwanzig2001nonequilibrium}.
 	}
 	Because it is more convenient for all parts of the algorithm other than application of the potential $V_\links$, we will do everything in the normal mode coordinates given by the transformation $\mat{S}$ in \vref{eq:pigs-nm-transform}.
@@ -677,7 +672,7 @@ WBaduk beginner problem BP00107
 		&= \nm{F}_f(\nm{\vec{q}}(t)) - \gamma_f \nm{p}_f(t) + R_f(t)
 			\label{eq:langevin-eom-p} \\
 		\dot{\nm{q}}_f(t)
-		&= \frac{\nm{p}_f(t)}{m_f}
+		&= \frac{\nm{p}_f(t)}{m_f},
 	\end{align}
 	\end{subequations}
 	where $\vec{\gamma}$ are \emph{frictions} and $\vec{R}(t)$ are \emph{random forces} (independent for each degree of freedom).
@@ -698,7 +693,7 @@ WBaduk beginner problem BP00107
 		&= \frac{2 m_f \gamma_f}{\beta} \ddf{t - t'}.
 	\end{align}
 	\end{subequations}
-	It is crucial to note that $\beta = 1/\kB T$ here is exactly that temperature which we are trying to simulate, and it is only indirectly related to concepts like path length and imaginary propagation time; this distinction becomes important when the classical polymers in the simulation may have different lengths.
+	It is crucial to note that $\beta = 1/\kB T$ here is exactly the temperature we are trying to simulate, and it is only indirectly related to concepts like path length and imaginary propagation time; this distinction becomes important when the classical polymers in the simulation may have different lengths.
 	The autocorrelation of a standard normal random number (``Gaussian number'') $\xi_f(t)$ is~\cite{ceriotti2010efficient}
 	\begin{align}
 		\mean{\xi_f(t) \xi_f(t')}
@@ -713,10 +708,10 @@ WBaduk beginner problem BP00107
 	To find the time evolution operator, we need the Fokker--Planck equation corresponding to the Langevin equations in \cref{eq:langevin-eom}.
 	If we were dealing with Hamiltonian dynamics, this would just be the Liouville equation~\cite[32]{zwanzig2001nonequilibrium}
 	\begin{align}
-		\dpd{}{t} f
-		&= -\hat{L} f
+		\dpd{}{t} \phi
+		&= -\hat{L} \phi
 	\end{align}
-	for the probability distribution function $f$, with the Liouvillian
+	for the probability distribution function $\phi$, with the Liouvillian
 	\begin{align}
 		\hat{L}
 		&= -\dpd{}{t}
@@ -739,7 +734,7 @@ WBaduk beginner problem BP00107
 		&= 0.
 	\end{align}
 	\end{subequations}
-	Note that in our case there is no explicit time dependence.
+	In our case there is no explicit time dependence.
 	The Kramers--Moyal coefficients are
 	\begin{subequations}
 	\begin{align}
@@ -779,7 +774,7 @@ WBaduk beginner problem BP00107
 		Our expression for a single degree of freedom in \cref{eq:fokker-planck-operator} differs slightly from eq.~(4) of ref.~\cite{bussi2007accurate}, because we have chosen a different convention for the operator (using its adjoint instead).
 	}
 
-	We may now apply the Trotter factorization to this propagator.
+	We may now apply the factorization to this propagator.
 	We will break the total time $t$ into $S$ time steps of length $\dt$: $t = S \dt$.
 	Instead of the splitting recommended in ref.~\cite{bussi2007accurate}, we will group the ``kinetic'' spring potential (see \cref{eq:classical-potential-spring}) with the free particle motion and use the splitting given in ref.~\cite{ceriotti2010efficient}.
 	The effective potential in \cref{eq:classical-potential} is already in the form we desire, so it should be simple to split the force.
@@ -938,8 +933,8 @@ WBaduk beginner problem BP00107
 		&= e^{\hat{L}_V \frac{\dt}{2}} (\nm{\vec{p}}(t\initial), \nm{\vec{q}}(t\initial))
 		= \left( \nm{\vec{p}}(t\initial) + \frac{\dt}{2} \nm{\vec{F}}_V, \nm{\vec{q}}(t\initial) \right).
 	\end{align}
-	The only difficulty with this result is that in practice $\vec{F}_V$ will most likely be expressed in Cartesian coordinates.
-	However, this difficulty is easy to handle, since
+	The only potential difficulty with this result is that in practice $\vec{F}_V$ will most likely be expressed in Cartesian coordinates.
+	However, this is easy to handle, since
 	\begin{align}
 		\nm{\vec{p}}_{n,d} + \frac{\dt}{2} \nm{\vec{F}}_{V,n,d}
 		&= \mat{S} \vec{p}_{n,d} + \frac{\dt}{2} \mat{S} \vec{F}_{V,n,d}
@@ -981,9 +976,9 @@ WBaduk beginner problem BP00107
 	\end{subequations}
 
 	We finally have a procedure for taking one time step in a LePIGS simulation.
-	All the individual steps are exact, and the only error we introduce is due to the Trotter factorization with a finite time step $\dt$.
+	All the individual substeps are exact, and the only error we introduce is due to the factorization with a finite time step $\dt$.
 	The complete procedure for a single time step $\dt$ is as follows:
-	\begin{enumerate}
+	\begin{enumerate}[itemsep=1 mm]
 		\item $\nm{p}_{n,d}\bead{k} \gets c_{1,n,d}\bead{k} \nm{p}_{n,d}\bead{k} + c_{2,n,d}\bead{k} \xi_{n,d}\bead{k}$ \label{item:alg-step-thermo}
 		\item $p_{n,d}\bead{j} \gets p_{n,d}\bead{j} + \frac{\dt}{2} F_{V,n,d}\bead{j}(\vec{q})$ \label{item:alg-step-force}
 		\item $
@@ -1017,7 +1012,7 @@ WBaduk beginner problem BP00107
 		\gamma_{n,d}\bead{k}
 		&= 2 \omega_k.
 	\end{align}
-	The centroid friction ($\gamma_{n,d}\bead{0}$) remains a free parameter of the simulation.
+	The centroid frictions $\gamma_{n,d}\bead{0}$ remain free parameters of the simulation.
 \end{DefAnswer}
 
 \begin{DefAnswer}{ex:harmonic-oscillator-classical-trajectory}

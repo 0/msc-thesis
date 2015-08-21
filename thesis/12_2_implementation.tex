@@ -25,7 +25,7 @@ The former is unchanged between the sectors we are considering, but the latter i
 
 Application of the force fields is similarly straightforward: some of the forces may be scaled or missing entirely, so the changes to the momenta will be modified accordingly.
 
-Thermostatting of the normal modes is potentially tricky, due to the appearance of $\beta$, which in the derivation starts out as the imaginary-time propagation length.
+Thermostatting of the normal modes is potentially tricky, due to the appearance of $\beta$, which starts out as the imaginary-time propagation length in the derivation.
 Since some of the paths may change length, it may be tempting to adjust the value of $\beta$ for each path to account for the varying length.
 However, that would be incorrect, because the $\beta$ which appears in the thermostat is related to the temperature of the simulation and is a global property.
 Indeed, it is the same $\beta$ which appears in the exponent of \vref{eq:classical-Z}, and it is not affected by anything we might do to the connectivity of paths or scaling of potentials inside $\Hcl$.
@@ -37,14 +37,14 @@ Thus, to implement transitions to the sectors of interest, there were three requ
 	\item there must be a convenient mechanism for changing the force field scaling and path connectivity.
 \end{itemize}
 
-In order for the force fields to be scalable, it was necessary to add a function pointer field called \texttt{scale\_func} to the \texttt{PyFFEnergyTermObject} struct.
+In order for the force fields to be scalable, it was necessary to add the function pointer field \texttt{scale\_func} to the \texttt{PyFFEnergyTermObject} struct.
 This function takes the new scaling value and is responsible for updating the force field to effect the change.
 To declare that it has support for this mechanism, a force field must override \texttt{supportsDynamicScaling} to return \texttt{True}.
 Pure Python force fields, which do not have direct access to the fields of \texttt{PyFFEnergyTermObject}, should implement a \texttt{setScaling} method; it is assigned automatically in the \texttt{PyEnergyTerm} Cython class from which all pure Python force field terms inherit.
 The built-in restraint force fields, such as \texttt{HarmonicDistanceRestraint}, were modified to support this scaling; these modifications involve scaling the energy, gradients, and force constants by the required amount.
 
-In order for the integrator to deal with paths explicitly (rather than with particles, which only map to paths exactly in the $Z$-sector), it was necessary to perform some subtle changes.
-When calculating $\omega_\links$ (see \vref{eq:omega-links}) in \texttt{propagateOscillators}, \texttt{springEnergyNormalModes}, and \texttt{applyThermostat}, it would no longer be correct to determine $\tau$ as $\beta / \links$ (since the effective $\beta$ of each path would change with $\links$, while $\tau$ remains constant), so a particular value of $\tau$ was assigned to each path, and this value does not change even as the paths are broken and recombined.
+In order for the integrator to deal with paths explicitly (rather than with particles, which only map to paths exactly in the $Z$-sector), it was necessary to make some subtle changes.
+When calculating $\omega_\links$ (see \vref{eq:omega-links}) in \texttt{propagateOscillators}, \texttt{springEnergyNormalModes}, and \texttt{applyThermostat}, it would no longer be correct to determine $\tau$ as $\beta / \links$ (since the effective $\beta$ of each path would change with $\links$, while $\tau$ remains constant), so a particular value of $\tau$ is assigned to each path, and this value does not change even as the paths are broken and recombined.
 On the other hand, it was important \emph{not} to change the $\beta$ which appears in the random force component of \texttt{applyThermostat}, as this has to do with the ``physical'' temperature of the simulation, not the length of the path.
 
 To keep track of the connectivity of the paths, the global array \texttt{connectivity} was introduced, alongside the existing \texttt{bead\_data}.

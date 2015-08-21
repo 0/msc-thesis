@@ -37,16 +37,16 @@ with
 			2 & \text{otherwise}
 		\end{cases}.
 \end{align}
-We would like our transforms to be orthogonal.
-Thus, \emph{after} a forward transform we must be careful to scale the first element by $\sqrt{\frac{1}{4 N}}$ and the others by $\sqrt{\frac{1}{2 N}}$.
-On the other hand, \emph{before} the reverse transform, we need to scale the first element by $\sqrt{\frac{1}{N}}$ and the others by $\sqrt{\frac{1}{2 N}}$.
+We would like our DCT to be orthogonal.
+Thus, \emph{after} a forward transform we must be careful to scale the first element by $\sqrt{1 / 4 N}$ and the others by $\sqrt{1 / 2 N}$.
+On the other hand, \emph{before} the reverse transform, we need to scale the first element by $\sqrt{1 / N}$ and the others by $\sqrt{1 / 2 N}$.
 
 
 \section{DCT via FFT}
 
 In some situations, it may be convenient to perform an FFT (fast DFT), but not nearly as convenient to perform a fast DCT.
 For example, one may be using NumPy~\cite{van2011numpy}, which provides the \texttt{numpy.fft} package for FFTs, but no facility for DCTs.
-It turns out to be possible to MacGyver a length $2 N$ DFT on specially-prepared input to simulate a fast length $N$ DCT.
+It turns out to be possible to MacGyver a length $2 N$ DFT on specially-prepared input to simulate a length $N$ DCT.
 
 We let
 \begin{subequations}
@@ -95,7 +95,7 @@ We may write the former as
 		\right].
 \end{align}
 \end{subequations}
-If we set up $\vec{y}$ in such a way that
+If we set up $\vec{y}$ so that
 \begin{align}
 	y_n
 	&= \begin{cases}
@@ -125,7 +125,7 @@ where
 			1 & \text{otherwise}
 		\end{cases}.
 \end{align}
-If one is using NumPy's \texttt{numpy.fft} package, the \texttt{rfft} function is handy, since it only computes the first half of the transform, which is all that is necessary here.
+If one is using NumPy's \texttt{numpy.fft} package, the \texttt{rfft} function is handy for this, since it only computes the first half of the transform, which is all that is necessary here.
 
 To go in the other direction and perform an inverse DCT, we simply have to perform all the actions in the reverse order.
 When using NumPy's \texttt{irfft} function, one must be careful to set up the last element of the input array correctly:

@@ -5,7 +5,7 @@
 
 Real-time correlation functions are of particular interest in chemistry, because they relate to experimental observables.
 For example, the spectrum (\textit{i.e.} the Fourier transform) of the dipole-dipole correlation function of a molecule is proportional to the electromagnetic spectrum of that molecule~\cite[12,56]{zwanzig2001nonequilibrium},\cite[473]{mcquarrie1976statistical}.
-The ability to computationally generate spectra for molecules in various chemical environments, such as clusters, could help with the identification of existing compounds and the creation of novel ones.
+The ability to computationally generate spectra for molecules in various chemical environments, such as clusters, could help with the identification of existing compounds and the synthesis of novel ones.
 
 The time evolution of a quantum mechanical system is well-known and is described in the Schrödinger picture by the time-dependent Schrödinger equation~\cite[111]{dirac1981principles}
 \begin{align}
@@ -54,7 +54,7 @@ At $t = 0$, this is simply the ground state expectation value of $\hat{A} \hat{B
 However, at later times, we must take into account the real-time propagator $\hat{U}(t)$; to do this exactly is as difficult as diagonalizing $\hat{H}$, which is essentially impossible for interesting problems.
 
 Consider a particle of mass $m$ in a potential $\hat{V}$.\footnote{
-	In this \namecref{chap:semiclassical}, we look at only the one-dimensional problem, but all the discussion is applicable to any number of degrees of freedom with some modifications.
+	In this \namecref{chap:semiclassical}, we look at only the one-dimensional problem, but all the ideas are applicable to any number of degrees of freedom with some modifications.
 	Among other things, the scaling factor in the coherent state resolution of the identity is changed to $(2 \pi \hbar)^{-F}$ for $F$ degrees of freedom, $\gamma$ is turned into a matrix, and the HK prefactor is generalized to be in the form of the determinant of a matrix.
 }
 One approximation to the real-time propagator is given by the \nomencl{HK}{Herman--Kluk} propagator~\cite{miller2002alternate}
@@ -100,7 +100,7 @@ At $t = 0$, it is exact:
 At later times, we need to obtain the aforementioned quantities from classical trajectories.
 For all but the most trivial of problems, this will need to be done by numerical integration of the equations of motion with a time step $\dt\alt$.
 
-For simplicity, we will consider $\hat{A} = \hat{B} = \hat{1}$, in which case the correlation function is trivially unity:
+For simplicity, we will consider $\hat{A} = \hat{B} = \hat{1}$, in which case the correlation function is trivially unity at all times:
 \begin{align}
 	C_{\hat{1} \hat{1}}(t)
 	&= e^{\frac{i E_0 t}{\hbar}} \braket{0 | \hat{U}(t) | 0}
@@ -133,7 +133,7 @@ We may try to get around the difference in representations by inserting a resolu
 	&= \int\! \dif q' \, \expb{-\frac{\gamma}{2} (q' - q)^2 - \frac{i}{\hbar} p (q' - q)} \braket{q' | 0}.
 \end{align}
 \end{subequations}
-When we try to use the HK propagator to obtain the ground state survival amplitude, we get
+When we try to use this with the HK propagator to obtain the ground state survival amplitude, we get
 \begin{subequations}
 \begin{align}
 	S_0\hk(t)

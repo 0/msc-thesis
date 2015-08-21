@@ -31,7 +31,7 @@ Since~\cite[59]{sakurai1985modern}
 	\ddf{\vec{x}}
 	&= \prod_{i=0}^{F-1} \ddf{x_i},
 \end{align}
-for $F$-dimensional vectors $\vec{q}$ and $\vec{p}$ we instead have
+for $F$-dimensional vectors $\vec{p}$ and $\vec{q}$ we instead have
 \begin{subequations}
 \begin{align}
 	\ddf{\vec{p} - \vec{p}'}
@@ -63,9 +63,9 @@ How do we know that
 		\label{eq:gaussian-integral-a}
 \end{align}
 for all $a > 0$?
-The usual squaring trick with polar coordinates is supposedly due to Poisson\footnote{
+The usual squaring trick with polar coordinates is supposedly due to Poisson:\footnote{
 	\url{http://www.york.ac.uk/depts/maths/histstat/normal_history.pdf}
-}:
+}
 \begin{subequations}
 \begin{align}
 	(G(a))^2
@@ -130,7 +130,7 @@ Since $e^{-\lambda z^2}$ (with $\lambda, z \in \mathbb{C}$) is analytic everywhe
 	\oint_C\! \dif z \, e^{-\lambda z^2}
 	&= 0.
 \end{align}
-We will choose $C$ to be in the counter-clockwise direction along the rectangle with vertices at $L_1$, $L_2$, $L_2 - i \beta$, and $L_1 - i \beta$, where $L_1, L_2, \beta \in \mathbb{R}$.
+We will choose $C$ to be the rectangle with vertices at $L_1$, $L_2$, $L_2 - i \beta$, and $L_1 - i \beta$, where $L_1, L_2, \beta \in \mathbb{R}$.
 We may therefore split our contour integral into simple line integrals as follows~\cite[122]{kwok2002applied}:
 \begin{align}
 	\oint_C\! \dif z \, e^{-\lambda z^2}
@@ -154,14 +154,8 @@ Thus, we have (reusing the result from \cref{eq:infinite-integral-translation})
 	&= \int_{-\infty}^\infty\! \dif x \, e^{-\lambda (x - i \beta)^2}
 	= \int_{-\infty}^\infty\! \dif x \, e^{-\lambda (x - \alpha - i \beta)^2}
 \end{align}
-for $\alpha, \beta \in \mathbb{R}$ and $\mu \in \mathbb{C}$.
-More concisely,
-\begin{align}
-	\int_{-\infty}^\infty\! \dif x \, e^{-\lambda x^2}
-	= \int_{-\infty}^\infty\! \dif x \, e^{-\lambda (x - \xi)^2}
-\end{align}
-for $\lambda, \xi \in \mathbb{C}$.
-These equalities, of course, rely on the convergence of the integral on the left-hand side.
+for $\alpha, \beta \in \mathbb{R}$ and $\lambda \in \mathbb{C}$.
+This equation relies on the convergence of the integral on the left-hand side.
 We know that if we restrict $\lambda$ to only positive real numbers, the integral \emph{does} converge and we can generalize \cref{eq:gaussian-integral-ab} to
 \begin{align}
 	\int\! \dif x \, e^{-a x^2 + \mu x}
@@ -181,7 +175,7 @@ For symmetrical coupled integrals (with $a, k > 0$, $b \in \mathbb{R}$, $\abs{b}
 \begin{align}
 	\iint\! \dif x \dif y \, e^{-k (a (x^2 + y^2) + b x y)}
 	&= \sqrt{\frac{\pi}{k a}}
-		\iint\! \dif x \, e^{-k \left( \frac{4 a^2 - b^2}{4 a} \right) x^2}
+		\int\! \dif x \, e^{-k \left( \frac{4 a^2 - b^2}{4 a} \right) x^2}
 	= \frac{2 \pi}{k \sqrt{4 a^2 - b^2}}.
 		\label{eq:gaussian-integral-coupled}
 \end{align}
@@ -272,7 +266,7 @@ The $N$th roots of unity ($N = 1, 2, \ldots$) are given by powers of
 	\omega_N
 	&= e^{\frac{2 \pi i}{N}}.
 \end{align}
-For any complex number $z \not\in \{ 0, 1 \}$ and any $N \ge 1$, we have
+For any complex number $z \not\in \{ 0, 1 \}$ and any integer $N \ge 1$, we have
 \begin{align}
 	z^N + \sum_{k=0}^{N-1} z^k
 	&= 1 + \sum_{k=1}^{N} z^k
@@ -424,4 +418,4 @@ Additionally, if $\vec{c}$ and $\vec{x}$ are instead vectors (with all elements 
 	&= \vec{x} + \vec{c},
 		\label{eq:exp-deriv}
 \end{align}
-since all the $\frac{\partial}{\partial x_i}$ operators commute and we can apply the operators to each element of the vector individually.
+since all the $\frac{\partial}{\partial x_i}$ commute and we can apply the operators to each element of the vector individually.

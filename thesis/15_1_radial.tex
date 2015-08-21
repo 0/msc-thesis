@@ -2,7 +2,7 @@
 
 \label{sec:radial}
 
-The simplest structural property of fluids is the \emph{radial} (or \emph{pair}) \emph{distribution function} $g(r)$, which describes the local density $\rho(r)$ relative to the bulk density $\rho$ a distance $r$ away from a fixed particle in a fluid~\cite[257-259]{mcquarrie1976statistical},\cite[54-55]{allen1989computer}.
+The simplest structural property of fluids is the \emph{radial} (or \emph{pair}) \emph{distribution function} $g(r)$, which describes the local density $\rho(r)$ relative to the bulk density $\rho$ at a distance $r$ away from a fixed particle in a fluid~\cite[257-259]{mcquarrie1976statistical},\cite[54-55]{allen1989computer}.
 It is obtained from the distribution $g(\vec{q}_1, \vec{q}_2, \ldots, \vec{q}_N)$ of all $N$ particles by integrating over all the positions except $\vec{q}_1$ and $\vec{q}_2$, giving the function $g(\vec{q}_1, \vec{q}_2)$.
 We assume that the fluid is homogeneous, so the absolute spatial position of the particles cannot matter, and we write simply $g(r)$, where $r = \abs{\vec{q}_1 - \vec{q}_2}$ is the distance between the two remaining particles.
 
@@ -71,7 +71,7 @@ We can then write the integral as
 	&= \int_0^{2 R}\! \dif r \, r^2 g(r) \int_{-1}^1\! \dif \cos{\theta_r} \int_0^{2 \pi}\! \dif \phi_r
 		\int_{V_{\vec{q}_2}(r, \theta_r, \phi_r)}\! \dif \vec{q_2}.
 \end{align}
-We see now that if we evaluate everything starting from the second integral sign, we remove all the extraneous degrees of freedom and compress them into an effective Jacobian for the integration over $r$.
+We now see that if we evaluate everything starting from the second integral sign, we remove all the extraneous degrees of freedom and compress them into an effective Jacobian for the integration over $r$.
 If we combine it with the existing Jacobian from the spherical coordinates, we get
 \begin{subequations}
 \begin{align}
@@ -90,7 +90,7 @@ It is easier to evaluate $J(r)$ if we reorder the integrals as
 \end{align}
 where we don't yet know the domains of integration for the last two.
 However, we do know that they can't depend on the variables of the first three integrals.
-Given some separation distance $r$, we are free to orient $\vec{q}_2$ any way we wish without changing anything, which accounts for the integrals over $\theta_2$ and $\phi_2$.
+Given some separation distance $r$, we are free to orient $\vec{q}_2$ any way we wish, which accounts for the integrals over $\theta_2$ and $\phi_2$.
 For the sake of visualization, it is convenient to fix $\vec{q}_2$ along the negative $z$-axis, as in \cref{fig:radial-spherical-sphere}.
 Then we immediately see that $\phi_r$ also has no impact on the result, leaving us with only $r$, $r_2$, and $\theta_r$.
 As shown in \cref{fig:radial-spherical-plane}, we have reduced our problem to a plane geometry problem!
@@ -353,7 +353,7 @@ One of these sets is $\{ \abs[0]{\vec{q}} : \vec{q} \in \cube \}$ (with $\vec{q}
 	= L^3 \int_\cube\! \dif \vec{q} \, g(\abs[0]{\vec{q}}).
 		\label{eq:periodic-box-minimal-image}
 \end{align}
-Since the result of integration is the same in each octant, we may consider only the first octant ($\cube/8$), where our variables are non-negative:
+Since the result of integration is the same in each octant, we may consider only the first octant ($\cube/8$), where the variables of integration are non-negative:
 \begin{align*}
 	\mathcal{I}[g(r)]
 	&= 8 L^3 \int_{\cube/8}\! \dif \vec{q} \, g(\abs[0]{\vec{q}})
@@ -505,7 +505,7 @@ We want to integrate this over $x$ to find
 		\label{eq:radial-box-bad-integral-b}
 \end{align}
 \end{subequations}
-but we don't get anything reasonable if we integrate the $\arcsin$ directly.
+but we don't get anything reasonable if we integrate the arcsines directly.
 
 What would Feynman do?
 Probably differentiate under the integral sign!
@@ -542,7 +542,7 @@ In our case,
 \end{align}
 \end{subequations}
 It doesn't look like we've achieved anything useful, but we have!
-We choose $M_0 = 0$,
+If we choose $M_0 = 0$,
 \begin{subequations}
 \begin{align}
 	f(M = 0, x)
@@ -648,7 +648,7 @@ The end result is
 		+ 8 L^3 \int_{\frac{L}{\sqrt{2}}}^{\frac{\sqrt{3} L}{2}}\! \dif r \, r (3 \Xi(r) - \pi r) g(r).
 \end{align}
 \end{subequations}
-That doesn't look like the nicest expression in the world, but at least it's in closed form (except for the $r$ integrals, of course).
+The last term is distressing, but at least the entire expression is in closed form (except for the $r$ integrals, of course).
 We can clean it up a bit if we introduce $\xi = r / M$ and the dimensionless piecewise Jacobian (shown in \cref{fig:radial-box-jacobian})
 \begin{align}
 	J_\mathrm{d}(\xi)
