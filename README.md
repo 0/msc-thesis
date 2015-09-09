@@ -10,4 +10,9 @@ University of Waterloo
 
 August 2015
 
-A thesis presented to the University of Waterloo in fulfillment of the thesis requirement for the degree of Master of Science in Chemistry.
+A thesis presented to the University of Waterloo in fulfilment of the thesis requirement for the degree of Master of Science in Chemistry.
+
+
+## Official version
+
+The [official version](https://uwspace.uwaterloo.ca/handle/10012/9559) was compiled from the `final` tag (commit `e66c39d`).
