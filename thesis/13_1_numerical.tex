@@ -8,17 +8,17 @@ These grids are symmetric about zero and extend in each direction to $p\mx$, $q\
 We may then approximate the integrals in \cref{eq:survival-hk} by sums:
 \begin{align}
 	S_0\hk(t)
-	&\approx \frac{\DP (\DQ\alt)^2 \DQ}{2 \pi \hbar} \sum_{i,j,k,\ell}
+	&\approx \frac{\DP (\DQ\alt)^2 \DQ}{2 \pi \hbar} \sqrt{\frac{\gamma}{\pi}} \sum_{i,j,k,\ell}
 			R\coh{p_i}{q_k}_t \braket{0 | q_j} \braket{q_\ell | 0}
 			\expb{-\frac{\gamma}{2} \left( (q_j - q\coh{p_i}{q_k}_t)^2 + (q_\ell - q_k)^2 \right)} \notag \\
-	&\qquad\qquad\qquad\qquad\qquad\times
+	&\qquad\qquad\qquad\qquad\qquad\qquad\times
 			\expb{\frac{i}{\hbar} \left( S\coh{p_i}{q_k}_t + p\coh{p_i}{q_k}_t (q_j - q\coh{p_i}{q_k}_t) - p_i (q_\ell - q_k) \right)}.
 \end{align}
 For brevity, we introduce
 \begin{subequations}
 \begin{align}
 	C
-	&= \frac{\DP (\DQ\alt)^2 \DQ}{2 \pi \hbar}
+	&= \frac{\DP (\DQ\alt)^2 \DQ}{2 \pi \hbar} \sqrt{\frac{\gamma}{\pi}}
 	&
 	w^j
 	&= \braket{q_j | 0} \\
