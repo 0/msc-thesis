@@ -22,3 +22,4 @@ The [official version](https://uwspace.uwaterloo.ca/handle/10012/9559) was compi
 The following errors in the official version have been corrected on the `master` branch:
 
 * Missing coherent state prefactor in chapter 3 (SC-IVR). The prefactor was present in [the code](https://github.com/0/realtimepork/blob/3a3c1937c083618963fd0257c03124729d615611/realtimepork/correlation.py#L72) used to generate the data, but not in the text.
+* Flipped sign in eq. (C.8). The expression is only used squared, so the sign doesn't affect anything else.
